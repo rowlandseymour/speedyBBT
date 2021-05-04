@@ -14,19 +14,12 @@
 #'
 #' @export
 construct.design.matrix <- function(N){
-  X <- matrix(0, 0, N)
-  for(i in 1:(N-1)){
 
-    neg.one.diag <- -1*diag(N-i)
-    ones          <- matrix(1, N-i, 1)
-    zeros         <- matrix(0, N-i, i - 1)
+  all.pairs  <- t(combn(N, 2))
+  winners    <- Matrix::sparseMatrix(i = 1:(N*(N-1)/2), j = all.pairs[, 1], x = 1, dims = c(N*(N-1)/2, N))
+  losers     <- Matrix::sparseMatrix(i = 1:(N*(N-1)/2), j = all.pairs[, 2], x = -1)
+  X <- winners + losers
 
-    #Add to end of design matrix
-    temp <- cbind(zeros, ones)
-    temp <- cbind(temp, neg.one.diag)
-    X <- rbind(X, temp)
-  }
-  X <- Matrix::Matrix(X, sparse = T)
   return(X)
 }
 
