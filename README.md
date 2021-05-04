@@ -1,9 +1,10 @@
-# speedyBBT <img src='man/figures/speedyBBT.png' align="right" height="140px" />
+# speedyBBT <img src='man/figures/speedyBBT.png' align="right" height="140px"/>
 ---
 ## Efficient Bayesian Inference for the Bradley--Terry Model
 <!-- badges: start -->
+[![Travis build status](https://travis-ci.com/rowlandseymour/speedyBBT.svg?branch=master)](https://travis-ci.com/rowlandseymour/speedyBBT)
 <!-- badges: end -->
-📦 The `speedyBBT` allows you to perform fast and efficient Bayesian inference for the Bradley--Terry model. The package estimates the object qualities usig a data augmentation method with Polya-Gamma prior distributions. 
+📦 The `speedyBBT` allows you to perform fast and efficient Bayesian inference for the Bradley--Terry model. The package estimates the object qualities using a data augmentation method with Polya-Gamma prior distributions. 
 
 
 
@@ -14,9 +15,8 @@ devtools::install_github("rowlandseymour/BSBT", dependencies = TRUE)
 
 ```
 
-
 ## Example
-
+To analyse the comparative judgement data set on deprivation in Dar es Salaam, Taznania, use the following code. 
 ``` r
 library(speedyBBT)
 library(BSBT)
