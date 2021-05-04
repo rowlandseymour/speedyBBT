@@ -15,7 +15,7 @@
 #' @export
 construct.design.matrix <- function(N){
 
-  all.pairs  <- t(combn(N, 2))
+  all.pairs  <- t(utils::combn(N, 2))
   winners    <- Matrix::sparseMatrix(i = 1:(N*(N-1)/2), j = all.pairs[, 1], x = 1, dims = c(N*(N-1)/2, N))
   losers     <- Matrix::sparseMatrix(i = 1:(N*(N-1)/2), j = all.pairs[, 2], x = -1)
   X <- winners + losers
@@ -30,7 +30,7 @@ construct.design.matrix <- function(N){
 #' @param n a vector containing the the number of times each pair was compared
 #' @param X optional design matrix. If one is not supplied, a generic Bradley-Terry deisgn matrix is used
 #' @param prior.sigma.inverse the inverse of the prior covariance matrix
-#' @param lamabda.initial a vector containing the initial value for each object
+#' @param lambda.initial a vector containing the initial value for each object
 #' @param n.iter the number of samples to be drawn
 #' @param hyperparameter boolean indicating if inference should be performed for the prior variance hyperparameter. If TRUE the prior variance (main diagonal of the covariance matrix) must be set to 1.
 #'
@@ -52,23 +52,23 @@ gibbs.bt <- function(N, y, n, X, prior.sigma.inverse, lambda.initial, n.iter = 2
   alpha.sq.vector  <- numeric(n.iter)
   unnormalised.mu  <- Matrix::t(X)%*%(y - n/2)
   alpha.sq         <- 1
-  pb <- txtProgressBar(min = 0, max = n.iter, style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
   for(i in 1:n.iter){
 
     if(hyperparameter == TRUE)
       alpha.sq     <- 1/stats::rgamma(1, 0.01 + N/2, 0.5*t(lambda)%*%prior.sigma.inverse%*%lambda + 0.01)
 
-    omega        <- rpg(non.zero.n, n, as.numeric(X%*%lambda))
+    omega        <- BayesLogit::rpg(non.zero.n, n, as.numeric(X%*%lambda))
     d.omega      <- Matrix::sparseMatrix(i = 1:non.zero.n, j = 1:non.zero.n, x = omega)
     V            <- base::chol2inv(base::chol(Matrix::t(X)%*%d.omega%*%X + prior.sigma.inverse/alpha.sq))
     mu           <- V%*%unnormalised.mu
     V.chol       <- base::chol(V)
-    lambda       <- t(V.chol)%*%rnorm(N, 0, 1) + mu
+    lambda       <- t(V.chol)%*%stats::rnorm(N, 0, 1) + mu
     lambda       <- as.numeric(lambda - mean(as.numeric(lambda)))
 
     lambda.matrix[i, ] <- lambda
     alpha.sq.vector[i] <- alpha.sq
-    setTxtProgressBar(pb, i) # update text progress bar after each iter
+    utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
   if(hyperparameter == TRUE)
     return(list("lambda" = lambda.matrix, "alpha.sq" = alpha.sq.vector))

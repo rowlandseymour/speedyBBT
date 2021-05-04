@@ -26,11 +26,11 @@ gibbs.bt(
 
 \item{prior.sigma.inverse}{the inverse of the prior covariance matrix}
 
+\item{lambda.initial}{a vector containing the initial value for each object}
+
 \item{n.iter}{the number of samples to be drawn}
 
 \item{hyperparameter}{boolean indicating if inference should be performed for the prior variance hyperparameter. If TRUE the prior variance (main diagonal of the covariance matrix) must be set to 1.}
-
-\item{lamabda.initial}{a vector containing the initial value for each object}
 }
 \value{
 A data frame containing samples from the posterior distribution
