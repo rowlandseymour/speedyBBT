@@ -11,7 +11,7 @@
 ## Installation
 You can install `BSBT` by calling the following commands:
 ```{r}
-devtools::install_github("rowlandseymour/BSBT", dependencies = TRUE) 
+devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) 
 
 ```
 
