@@ -22,7 +22,7 @@ library(speedyBBT)
 library(BSBT)
 #Read in comparative judgement data set
 data("dar.comparisons")
-
+data("dar.adj.matrix")
 #Prepare data
 N <- 452
 win.matrix <- comparisons_to_matrix(N, dar.comparisons[, 1:2])
@@ -31,12 +31,25 @@ y <- win.matrix[lower.tri(win.matrix)]
 n <- (win.matrix + t(win.matrix))[lower.tri(win.matrix)]
 
 #Construct covariance matrix
-k <- constrained_adjacency_covariance_function(dar.adj.matrix, "matrix", 1, linear.combination = rep(1, N))
+k <- exp(dar.adj.matrix)
+k <- diag(diag(k)^-0.5)%*%k%*%diag(diag(k)^-0.5)
+k.inv <- solve(k)
+
+#Deal with precision errors in covariance matrix
+spectral.decomp           <- eigen(k)
+spectral.decomp$values[spectral.decomp$values < 0] <- 1e-10 
+k.inv        <- spectral.decomp$vectors%*%diag(1/(spectral.decomp$values))%*%t(spectral.decomp$vectors)
+
+
 
 #Run MCMC
-mcmc.samples <- gibbs.bt(N, y, n, X, k$inv, rep(0, N), hyperparameter = TRUE)
+mcmc.samples <- gibbs.bt(N, y, n, X, k, runif(N, -2, 2), 2000, hyperparameter = TRUE, k.inv)
+posterior.samples <- mcmc.samples$lambda -mcmc.samples$Lambda #translate samples
+
 
 #Compute posterior medians
-lambda <- apply(mcmc.samples$lambda[-c(1:50), ], 2, median)
+lambda <- apply(posterior.samples[-c(1:50), ], 2, median)
+```
+
 ```
 
