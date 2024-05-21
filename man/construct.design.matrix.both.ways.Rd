@@ -3,19 +3,21 @@
 \name{construct.design.matrix.both.ways}
 \alias{construct.design.matrix.both.ways}
 \title{Construct the Bradley--Terry design matrix for ties
-This is the design matrix for tied comparisons. Each permutation (rather than combination) is featured, i.e. both (i, j) and (j, i).}
+This is the design matrix for tied comparisons. Each permutation
+(rather than combination) is featured, i.e. both (i, j) and (j, i).}
 \usage{
-construct.design.matrix.both.ways(N)
+construct.design.matrix.both.ways(n.objects)
 }
 \arguments{
-\item{N}{the number of objects}
+\item{n.objects}{the number of objects}
 }
 \value{
 design matrix X
 }
 \description{
 Construct the Bradley--Terry design matrix for ties
-This is the design matrix for tied comparisons. Each permutation (rather than combination) is featured, i.e. both (i, j) and (j, i).
+This is the design matrix for tied comparisons. Each permutation
+(rather than combination) is featured, i.e. both (i, j) and (j, i).
 }
 \examples{
 
