@@ -4,10 +4,10 @@
 \alias{construct.design.matrix}
 \title{Construct the Bradley--Terry design matrix}
 \usage{
-construct.design.matrix(N)
+construct.design.matrix(n.objects)
 }
 \arguments{
-\item{N}{the number of objects}
+\item{n.objects}{the number of objects}
 }
 \value{
 design matrix X
