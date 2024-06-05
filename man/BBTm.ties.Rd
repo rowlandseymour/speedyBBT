@@ -5,6 +5,7 @@
 \title{Bayesian inference for the Bradley--Terry model with ties}
 \usage{
 BBTm.ties(
+  n.objects,
   outcome,
   player1,
   player2,
@@ -20,6 +21,8 @@ BBTm.ties(
 )
 }
 \arguments{
+\item{n.objects}{number of objects in the study}
+
 \item{outcome}{vector of outcomes. 0 if player 1 is the winner,
 1 if player 2 is the winner, and 2 if it is a tie.}
 
@@ -50,6 +53,9 @@ hyperparameter}
 
 \item{rw.sd}{number describing the standard deviation of normal distribution
 proposal distribution for theta}
+
+\item{theta.rate}{(optional) The rate parameter of the exponential prior
+distribution placed on theta}
 }
 \value{
 A data frame containing samples from the posterior distribution
@@ -78,19 +84,22 @@ If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
 sigma <- diag(diag(sigma)^-0.5)\%*\% sigma \%*\%diag(diag(sigma)^-0.5)
 
+##Not Run
+
 #Fit BT model with ties
-darTiedModel <- BBTm.ties(outcome = darEsSalaam$comparisons$outcome,
-                         player1 = darEsSalaam$comparisons$subward1,
-                         player2 = darEsSalaam$comparisons$subward2,
-                         player.prior.var = sigma,
-                         hyperparameter = TRUE, rw.sd = 0.005)
+#darTiedModel <- BBTm.ties(n.objects = 452,
+#                          outcome = darEsSalaam$comparisons$outcome,
+#                          player1 = darEsSalaam$comparisons$subward1,
+#                          player2 = darEsSalaam$comparisons$subward2,
+#                          player.prior.var = sigma,
+#                          hyperparameter = TRUE, rw.sd = 0.005)
 
 #Get posterior means
-darTiedModel$lambda <- darTiedModel $lambda - colMeans(darTiedModel$lambda)
-lambda.mean <- rowMeans(darTiedModel$lambda)
+#darTiedModel$lambda <- darTiedModel $lambda - colMeans(darTiedModel$lambda)
+#lambda.mean <- rowMeans(darTiedModel$lambda)
 
 #Generate trace plots
-plot(lambda.mean)
-plot(pg.mcmc$theta[-c(1:100)], type = 'l')
+#plot(lambda.mean)
+#plot(darTiedModel$theta[-c(1:100)], type = 'l')
 
 }

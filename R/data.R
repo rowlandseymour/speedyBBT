@@ -9,7 +9,7 @@
 #'
 #'
 #' @format A list with three elements.
-#' The first is a dataframe containing the comaprisosn. Each row corresponds
+#' The first is a dataframe containing the comparison. Each row corresponds
 #' to a judgement made by a single judge. Columns 2 and 3 contain the pair of s
 #' ubwards being compared. The first column shows the outcome
 #' of the comparison: 1 if player 2 won, 2 if it was a tie and 0 if player 1 won
@@ -81,7 +81,7 @@
 #'  @keywords datasets
 #'
 #'  @source The data was collected using support from the Engineering and Physical Sciences Research
-#'  Council [grant reference EP/R513283/1], the Economic and Social Sciences Research Council [ES/V015370/1]
+#'  Council (grant reference EP/R513283/1), the Economic and Social Sciences Research Council (ES/V015370/1)
 #'  and the Research England Policy Support Fund. The data was collected following ethical approval
 #'  from the University of Nottingham School of Politics and International Relations ethics committee.
 #'

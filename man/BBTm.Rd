@@ -44,8 +44,17 @@ player specific  parameters for the first MCMC iteration}
 \item{formula}{formula with no left-hand-side specifying the player specific
 effects}
 
+\item{data}{data.frame with a row corresponding to each player and  column corresponding
+to each covariate.}
+
 \item{advantage}{(optional) a vector with the value of the comparisons specific
 effect for each comparison}
+
+\item{kappa.initial}{(optional) an initial value for the comparison specific
+value kappa}
+
+\item{kappa.var}{(optional) the prior variance of the he comparison specific
+value kappa}
 
 \item{hyperparameter}{boolean indicating if inference should be performed
 for the prior variance hyperparameter. If TRUE the prior variance
@@ -64,10 +73,10 @@ A data frame containing samples from the posterior distribution
 This function fits the Bradley-Terry model with comparison  and player
 specific effects. Each comparison can be assigned a real value to allow for a
 specific effect for the comparison, such as bias, ordering or home/away effect.
-The value of this effect is denoted $\kappa$. The player specific effects are
+The value of this effect is denoted kappa. The player specific effects are
 described through a formula and data.frame containing the value. The function
 places a normal prior distribution on both kappa and the player specific
-parameters $\beta$.
+parameters beta.
 }
 \details{
 If \code{player.prior.var} is omitted, independent and identical
@@ -84,21 +93,21 @@ it is set to 0.5.
 ## Wimbledon 2019 ##
 ####################
 
-#Fit model where the wuality of each player depends on their rank
-and the number of points they had immediately before the tournament.
-Allow an effect for a match being in the first or second week.
-wimbledonModel <- BBTm(outcome  = wimbledon$matches$outcome,
-                      player1  = wimbledon$matches$winner,
-                     player2   = wimbledon$matches$loser,
-                     advantage = wimbledon$matches$secondWeek,
-                     formula  = ~ rank + points,
-                     data       = wimbledon$players,
-                      n.iter = 4000))
+#Fit model where the quality of each player depends on their rank
+#and the number of points they had immediately before the tournament.
+#Allow an effect for a match being in the first or second week.
+#wimbledonModel <- BBTm(outcome  = wimbledon$matches$outcome,
+#                      player2   = wimbledon$matches$loser,
+#                       player1  = wimbledon$matches$winner,
+#                      advantage = wimbledon$matches$secondWeek,
+#                      formula  = ~ rank + points,
+#                      data       = wimbledon$players,
+#                       n.iter = 4000)
 
 #Plot posterior distributions
- hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq  = FALSE)
- hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq  = FALSE)
- hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq  = FALSE)
+ #hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq  = FALSE)
+ #hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq  = FALSE)
+ #hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq  = FALSE)
 
 
 }

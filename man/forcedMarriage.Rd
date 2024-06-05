@@ -18,7 +18,7 @@ adjacent wards.
 @keywords datasets
 
 @source The data was collected using support from the Engineering and Physical Sciences Research
-Council \link{grant reference EP/R513283/1}, the Economic and Social Sciences Research Council \link{ES/V015370/1}
+Council (grant reference EP/R513283/1), the Economic and Social Sciences Research Council (ES/V015370/1)
 and the Research England Policy Support Fund. The data was collected following ethical approval
 from the University of Nottingham School of Politics and International Relations ethics committee.
 }

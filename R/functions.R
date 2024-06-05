@@ -1,3 +1,32 @@
+#' Construct Win Matrix from Comparisons
+#'
+#' This function constructs a win matrix from a data frame of comparisons. It is needed for the MCMC functions.
+#'
+#' @param n.objects The number of areas in the study.
+#' @param comparisons An N x 2 data frame, where N is the number of comparisons. Each row should correspond to a judgment. The first column is the winning object, the second column is the more losing object. The areas should be labeled from 1 to n.objects.
+#' @return A matrix where the {i, j}^th element is the number of times object i beat object j.
+#'
+#' @examples
+#'
+#' #Generate some sample comparisons
+#' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
+#'
+#' #Create matrix from comparisons
+#' win.matrix <- comparisons_to_matrix(3, comparisons)
+#'
+#' @export
+comparisons_to_matrix <- function(n.objects, comparisons){
+
+  win.matrix <- matrix(0, n.objects, n.objects) #construct empty matrix
+
+  for(j in 1:dim(comparisons)[1]) #for each comparisons, enter outcome into win matrix
+    win.matrix[comparisons[j, 2], comparisons[j, 1]] <- win.matrix[comparisons[j, 2], comparisons[j, 1]] + 1
+
+
+  return(win.matrix)
+}
+
+
 #' Construct the Bradley--Terry design matrix
 #'
 #'
@@ -43,8 +72,8 @@ construct.design.matrix <- function(n.objects){
 #' @examples
 #'
 #' #Generate data.frame
-#' example.df <- data.frame("a" = runif(100, 0, 3),
-#'                     "b" = sample(1:2, 100, TRUE)
+#' example.df <- data.frame("a" = stats::runif(100, 0, 3),
+#'                     "b" = sample(1:2, 100, TRUE))
 #'
 #' #Generate formula
 #' example.formula <- ~  a + b + I(a^2)
@@ -52,7 +81,7 @@ construct.design.matrix <- function(n.objects){
 #' #Generate comparisons of three players
 #' player1 <- c(1, 3, 2, 1)
 #' player2 <- c(3, 1, 1, 2)
-#' X <- construct.design.matrix(player1, player2, example.formula, example.df)
+#' X <- construct.generalised.design.matrix(player1, player2, example.formula, example.df)
 #'
 #' @keywords internal
 #'
@@ -60,7 +89,7 @@ construct.design.matrix <- function(n.objects){
 construct.generalised.design.matrix <- function(player1, player2, formula, data){
 
   #Get data frame from formula
-  formula.model <- model.frame(formula, data)
+  formula.model <- stats::model.frame(formula, data)
 
   n.objects <- dim(data)[1]
   K <- length(player1)
@@ -75,8 +104,8 @@ construct.generalised.design.matrix <- function(player1, player2, formula, data)
 #' Construct the comparison specific Bradley--Terry design matrix
 #'
 #'
-#' @param player1 vector containing the labels of player1
-#' @param player2 vector containing the labels of player2
+#' @param object1 vector containing the labels of object1
+#' @param object2 vector containing the labels of object2
 #' @return design matrix X
 #'
 #' @keywords internal
@@ -85,17 +114,17 @@ construct.generalised.design.matrix <- function(player1, player2, formula, data)
 #'
 #'
 #' #Generate comparisons of three players
-#' player1 <- c(1, 3, 2, 1)
-#' player2 <- c(3, 1, 1, 2)
-#' X <- construct.design.matrix(player1, player2)
+#' object1 <- c(1, 3, 2, 1)
+#' object2 <- c(3, 1, 1, 2)
+#' X <- construct.design.matrix.by.comparison(object1, object2)
 #'
 #' @keywords internal
 #'
 #' @export
 construct.design.matrix.by.comparison <- function (object1, object2) {
   K <- length(object1)
-  n.objects <- max(c(player1, player2))
-  term1 <- Matrix::sparseMatrix(i = 1:K, j = object1, x = 1, dims = c(K, n.objetcs))
+  n.objects <- max(c(object1, object2))
+  term1 <- Matrix::sparseMatrix(i = 1:K, j = object1, x = 1, dims = c(K, n.objects))
   term2 <- Matrix::sparseMatrix(i = 1:K, j = object2, x = -1, dims = c(K, n.objects))
   X <- term1 + term2
   return(X)
@@ -143,8 +172,10 @@ construct.design.matrix.both.ways <- function (n.objects) {
 #'
 #' @param outcome vector of outcomes. 1 if player 2 is the winner,
 #'  0 if player 1 is the winner
-#' @param player1 vector of first players.
-#' @param player2 vector of second players.
+#' @param player1 vector of first players
+#' @param player2 vector of second players
+#' @param win.matrix a win-loss matrix where the {i,j}th element is the number of
+#' times object i beat object j
 #' @param player.prior.var (optional) matrix specifying the prior covariance of
 #'  the player correlation parameters
 #' @param lambda.initial (optional) vector containing the values of the
@@ -177,15 +208,17 @@ construct.design.matrix.both.ways <- function (n.objects) {
 #' sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
 #' sigma <- diag(diag(sigma)^-0.5)%*% sigma %*%diag(diag(sigma)^-0.5)
 #'
-#'#Fit model
-#'forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
-#'                                  player1 = forcedMarriage$comparisons$win,
-#'                                  player2 = forcedMarriage$comparisons$lost,
-#'                                  player.prior.var = sigma)
+#'
+#' ##Not Run
+#' #Fit model
+#' #forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
+#' #                                  player1 = forcedMarriage$comparisons$win,
+#' #                                  player2 = forcedMarriage$comparisons$lost,
+#' #                                 player.prior.var = sigma)
 #'
 #' #Normalise results and plot
-#' forcedMarriageQualitySamples <- forcedMarriageModel$lambda - forcedMarriageModel$Lambda
-#' plot(sort(forcedMarriageQualitySamples))
+#' #forcedMarriageQualitySamples <- forcedMarriageModel$lambda - forcedMarriageModel$Lambda
+#' #plot(sort(forcedMarriageQualitySamples))
 #'
 #' @export
 #'
@@ -204,7 +237,7 @@ speedyBBTm <- function(outcome = NULL, player1 = NULL, player2 = NULL,
 
 
   #Turn each comparison (except ties) into a win/loss matrix
-  win.matrix <- BSBT::comparisons_to_matrix(n.objects, data.frame(winner, loser))
+  win.matrix <- comparisons_to_matrix(n.objects, data.frame(winner, loser))
   } else {
     n.objects <- dim(win.matrix)[1]
   }
@@ -271,7 +304,7 @@ speedyBBTm <- function(outcome = NULL, player1 = NULL, player2 = NULL,
     lambda       <- as.numeric(t(V.chol)%*%stats::rnorm(n.objects, 0, 1) + mu)
 
     #Translate quality parameters
-    Lambda       <- rnorm(1, 0, sqrt(grand.covariance))
+    Lambda       <- stats::rnorm(1, 0, sqrt(grand.covariance))
     lambda       <- lambda - mean(lambda) + Lambda
 
     lambda.matrix[i, ] <- lambda
@@ -307,6 +340,8 @@ speedyBBTm <- function(outcome = NULL, player1 = NULL, player2 = NULL,
 #'  player parameters for the first MCMC iteration
 #' @param theta.initial (optional) value of the tied parameter there for
 #' the first MCMC iteration
+#' @param theta.rate (optional) The rate parameter of the exponential prior
+#' distribution placed on theta
 #' @param n.iter number of MCMC samples to be drawn
 #' @param hyperparameter boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
@@ -338,21 +373,23 @@ speedyBBTm <- function(outcome = NULL, player1 = NULL, player2 = NULL,
 #' sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
 #' sigma <- diag(diag(sigma)^-0.5)%*% sigma %*%diag(diag(sigma)^-0.5)
 #'
+#'##Not Run
+#'
 #' #Fit BT model with ties
-#'darTiedModel <- BBTm.ties(n.objects = 452,
-#'                          outcome = darEsSalaam$comparisons$outcome,
-#'                          player1 = darEsSalaam$comparisons$subward1,
-#'                          player2 = darEsSalaam$comparisons$subward2,
-#'                          player.prior.var = sigma,
-#'                          hyperparameter = TRUE, rw.sd = 0.005)
+#'#darTiedModel <- BBTm.ties(n.objects = 452,
+#'#                          outcome = darEsSalaam$comparisons$outcome,
+#'#                          player1 = darEsSalaam$comparisons$subward1,
+#'#                          player2 = darEsSalaam$comparisons$subward2,
+#'#                          player.prior.var = sigma,
+#'#                          hyperparameter = TRUE, rw.sd = 0.005)
 #'
 #'#Get posterior means
-#'darTiedModel$lambda <- darTiedModel $lambda - colMeans(darTiedModel$lambda)
-#'lambda.mean <- rowMeans(darTiedModel$lambda)
+#'#darTiedModel$lambda <- darTiedModel $lambda - colMeans(darTiedModel$lambda)
+#'#lambda.mean <- rowMeans(darTiedModel$lambda)
 #'
 #'#Generate trace plots
-#'plot(lambda.mean)
-#'plot(pg.mcmc$theta[-c(1:100)], type = 'l')
+#'#plot(lambda.mean)
+#'#plot(darTiedModel$theta[-c(1:100)], type = 'l')
 #'
 #' @export
 #'
@@ -371,7 +408,7 @@ BBTm.ties <- function(n.objects, outcome, player1, player2, player.prior.var = N
 
 
   #Turn each comparison (except ties) into a win/loss matrix
-  win.matrix <- BSBT::comparisons_to_matrix(n.objects, data.frame(winner, loser))
+  win.matrix <- comparisons_to_matrix(n.objects, data.frame(winner, loser))
 
   tie.matrix <- matrix(0, n.objects, n.objects)
   for(j in which(outcome == 2)){
@@ -444,17 +481,17 @@ BBTm.ties <- function(n.objects, outcome, player1, player2, player.prior.var = N
 
 
     #Translate quality parameters
-    Lambda       <- rnorm(1, 0, sqrt(grand.covariance)/n.objects)
+    Lambda       <- stats::rnorm(1, 0, sqrt(grand.covariance)/n.objects)
     lambda       <- lambda - mean(lambda) + Lambda
 
 
     #Update theta
-    theta.prop   <- theta + rnorm (1, 0, rw.sd)
+    theta.prop   <- theta + stats::rnorm (1, 0, rw.sd)
     if(theta.prop > 0){
       loglike      <- sum(t)/2*log(exp(2*theta) - 1)  - sum((y+t)*(theta + log(1 + exp((X%*%lambda) - theta))))
       loglike.prop <- sum(t)/2*log(exp(2*theta.prop) - 1) - sum((y+t)*(theta.prop + log(1 + exp((X%*%lambda) - theta.prop))))
-      log.p.acc    <- loglike.prop - loglike + dexp(theta.prop, theta.rate, log = TRUE) - dexp(theta, theta.rate, log = TRUE)
-      if(log(runif(1)) < log.p.acc)
+      log.p.acc    <- loglike.prop - loglike + stats::dexp(theta.prop, theta.rate, log = TRUE) - stats::dexp(theta, theta.rate, log = TRUE)
+      if(log(stats::runif(1)) < log.p.acc)
         theta      <- theta.prop
     }
 
@@ -553,7 +590,7 @@ BBTm.no.formula <- function(outcome, player1, player2, player.prior.var,
   player.prior.var.inverse <- solve(player.prior.var)
 
   #Set initial values for lambda
-  if(is.nul(lambda.initial))
+  if(is.null(lambda.initial))
     lambda.initial <- numeric(n.objects)
   if(n.objects != length(lambda.initial))
     stop("Mismatch between number of objects in study and length of
@@ -615,14 +652,14 @@ BBTm.no.formula <- function(outcome, player1, player2, player.prior.var,
     if(advantage.inf){
       S             <- (t(advantage)%*%Z%*%advantage + kappa.precision)^-1
       mu.kappa      <- S*t(advantage)%*%(k - Z%*%X%*%lambda)
-      kappa         <- rnorm(1, as.numeric(mu.kappa), as.numeric(S))
+      kappa         <- stats::rnorm(1, as.numeric(mu.kappa), as.numeric(S))
       kappa.vector[i] <- kappa
     }
 
 
 
     #Translate quality parameters
-    Lambda       <- rnorm(1, 0, sqrt(grand.covariance))
+    Lambda       <- stats::rnorm(1, 0, sqrt(grand.covariance))
     lambda       <- lambda - mean(lambda) + Lambda
 
     lambda.matrix[i, ] <- lambda
@@ -654,10 +691,10 @@ BBTm.no.formula <- function(outcome, player1, player2, player.prior.var,
 #'This function fits the Bradley-Terry model with comparison  and player
 #'specific effects. Each comparison can be assigned a real value to allow for a
 #'specific effect for the comparison, such as bias, ordering or home/away effect.
-#'The value of this effect is denoted $\kappa$. The player specific effects are
+#'The value of this effect is denoted kappa. The player specific effects are
 #'described through a formula and data.frame containing the value. The function
 #'places a normal prior distribution on both kappa and the player specific
-#'parameters $\beta$.
+#'parameters beta.
 #'
 #'
 #'
@@ -667,7 +704,7 @@ BBTm.no.formula <- function(outcome, player1, player2, player.prior.var,
 #' @param player2 vector of second players.
 #' @param formula formula with no left-hand-side specifying the player specific
 #' effects
-#' @data data from with a row corresponding to each player and  column corresponding
+#' @param data data.frame with a row corresponding to each player and  column corresponding
 #' to each covariate.
 #' @param player.prior.var (optional) matrix specifying the prior covariance of
 #'  the player correlation parameters
@@ -676,9 +713,9 @@ BBTm.no.formula <- function(outcome, player1, player2, player.prior.var,
 #' @param n.iter number of MCMC samples to be drawn
 #' @param advantage (optional) a vector with the value of the comparisons specific
 #'  effect for each comparison
-#' @param kappa.intial (optional) an initial value for the comparison specific
+#' @param kappa.initial (optional) an initial value for the comparison specific
 #'  value kappa
-#'  @param kappa.var (optional) the prior variance of the he comparison specific
+#' @param kappa.var (optional) the prior variance of the he comparison specific
 #'  value kappa
 #' @param hyperparameter boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
@@ -693,7 +730,7 @@ BBTm.no.formula <- function(outcome, player1, player2, player.prior.var,
 #'
 #' If `beta.initial`is omitted, it is set to a vector of zeroes.
 #'
-#' If `kappa.var` is omitted, it is set to N(0, 5^2), if `kappa.intial` is omitted
+#' If `kappa.var` is omitted, it is set to N(0, 5^2), if `kappa.initial` is omitted
 #' it is set to 0.5.
 #'
 #'
@@ -721,7 +758,7 @@ BBTm.with.formula <- function(outcome, player1, player2,
 
   #Construct the design matrix
   X <- construct.generalised.design.matrix(player1, player2, formula, data)
-  formula.model <- model.frame(formula, data)
+  formula.model <- stats::model.frame(formula, data)
 
 
 
@@ -791,7 +828,7 @@ BBTm.with.formula <- function(outcome, player1, player2,
     if(advantage.inf){
       S             <- (t(advantage)%*%Z%*%advantage + kappa.precision)^-1
       mu.kappa      <- S*t(advantage)%*%(k - Z%*%X%*%beta)
-      kappa         <- rnorm(1, as.numeric(mu.kappa), as.numeric(S))
+      kappa         <- stats::rnorm(1, as.numeric(mu.kappa), as.numeric(S))
       kappa.vector[i] <- kappa
     }
 
@@ -824,13 +861,14 @@ BBTm.with.formula <- function(outcome, player1, player2,
 #'This function fits the Bradley-Terry model with comparison  and player
 #'specific effects. Each comparison can be assigned a real value to allow for a
 #'specific effect for the comparison, such as bias, ordering or home/away effect.
-#'The value of this effect is denoted $\kappa$. The player specific effects are
+#'The value of this effect is denoted kappa. The player specific effects are
 #'described through a formula and data.frame containing the value. The function
 #'places a normal prior distribution on both kappa and the player specific
-#'parameters $\beta$.
+#'parameters beta.
 #'
 #'
 #' @inheritParams BBTm.with.formula
+#'
 #' @param lambda.initial (optional) vector containing the values of the
 #'  player parameters for the first MCMC iteration
 #'
@@ -855,21 +893,21 @@ BBTm.with.formula <- function(outcome, player1, player2,
 #' ## Wimbledon 2019 ##
 #' ####################
 #'
-#'#Fit model where the wuality of each player depends on their rank
-#'and the number of points they had immediately before the tournament.
-#'Allow an effect for a match being in the first or second week.
-#'wimbledonModel <- BBTm(outcome  = wimbledon$matches$outcome,
-#'                       player1  = wimbledon$matches$winner,
-#'                      player2   = wimbledon$matches$loser,
-#'                      advantage = wimbledon$matches$secondWeek,
-#'                      formula  = ~ rank + points,
-#'                      data       = wimbledon$players,
-#'                       n.iter = 4000))
+#'#Fit model where the quality of each player depends on their rank
+#'#and the number of points they had immediately before the tournament.
+#'#Allow an effect for a match being in the first or second week.
+#'#wimbledonModel <- BBTm(outcome  = wimbledon$matches$outcome,
+#'#                      player2   = wimbledon$matches$loser,
+#'#                       player1  = wimbledon$matches$winner,
+#'#                      advantage = wimbledon$matches$secondWeek,
+#'#                      formula  = ~ rank + points,
+#'#                      data       = wimbledon$players,
+#'#                       n.iter = 4000)
 #'
 #' #Plot posterior distributions
-#'  hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq  = FALSE)
-#'  hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq  = FALSE)
-#'  hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq  = FALSE)
+#'  #hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq  = FALSE)
+#'  #hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq  = FALSE)
+#'  #hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq  = FALSE)
 #'
 #'
 #' @export

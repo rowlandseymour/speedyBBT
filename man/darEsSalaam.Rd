@@ -6,7 +6,7 @@
 \title{Comparative Judgment on Deprivation in Dar es Salaam, Tanzania}
 \format{
 A list with three elements.
-The first is a dataframe containing the comaprisosn. Each row corresponds
+The first is a dataframe containing the comparison. Each row corresponds
 to a judgement made by a single judge. Columns 2 and 3 contain the pair of s
 ubwards being compared. The first column shows the outcome
 of the comparison: 1 if player 2 won, 2 if it was a tie and 0 if player 1 won

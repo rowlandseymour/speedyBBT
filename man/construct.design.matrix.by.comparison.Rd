@@ -7,9 +7,9 @@
 construct.design.matrix.by.comparison(object1, object2)
 }
 \arguments{
-\item{player1}{vector containing the labels of player1}
+\item{object1}{vector containing the labels of object1}
 
-\item{player2}{vector containing the labels of player2}
+\item{object2}{vector containing the labels of object2}
 }
 \value{
 design matrix X
@@ -21,9 +21,9 @@ Construct the comparison specific Bradley--Terry design matrix
 
 
 #Generate comparisons of three players
-player1 <- c(1, 3, 2, 1)
-player2 <- c(3, 1, 1, 2)
-X <- construct.design.matrix(player1, player2)
+object1 <- c(1, 3, 2, 1)
+object2 <- c(3, 1, 1, 2)
+X <- construct.design.matrix.by.comparison(object1, object2)
 
 }
 \keyword{internal}
