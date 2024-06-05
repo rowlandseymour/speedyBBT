@@ -21,9 +21,12 @@ speedyBBTm(
 \item{outcome}{vector of outcomes. 1 if player 2 is the winner,
 0 if player 1 is the winner}
 
-\item{player1}{vector of first players.}
+\item{player1}{vector of first players}
 
-\item{player2}{vector of second players.}
+\item{player2}{vector of second players}
+
+\item{win.matrix}{a win-loss matrix where the {i,j}th element is the number of
+times object i beat object j}
 
 \item{player.prior.var}{(optional) matrix specifying the prior covariance of
 the player correlation parameters}
@@ -69,14 +72,16 @@ If \code{lambda.initial} is ommitted, it is set to a vector of zeroes.
 sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
 sigma <- diag(diag(sigma)^-0.5)\%*\% sigma \%*\%diag(diag(sigma)^-0.5)
 
+
+##Not Run
 #Fit model
-forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
-                                 player1 = forcedMarriage$comparisons$win,
-                                 player2 = forcedMarriage$comparisons$lost,
-                                 player.prior.var = sigma)
+#forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
+#                                  player1 = forcedMarriage$comparisons$win,
+#                                  player2 = forcedMarriage$comparisons$lost,
+#                                 player.prior.var = sigma)
 
 #Normalise results and plot
-forcedMarriageQualitySamples <- forcedMarriageModel$lambda - forcedMarriageModel$Lambda
-plot(sort(forcedMarriageQualitySamples))
+#forcedMarriageQualitySamples <- forcedMarriageModel$lambda - forcedMarriageModel$Lambda
+#plot(sort(forcedMarriageQualitySamples))
 
 }

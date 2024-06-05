@@ -32,8 +32,17 @@ BBTm.with.formula(
 \item{formula}{formula with no left-hand-side specifying the player specific
 effects}
 
+\item{data}{data.frame with a row corresponding to each player and  column corresponding
+to each covariate.}
+
 \item{advantage}{(optional) a vector with the value of the comparisons specific
 effect for each comparison}
+
+\item{kappa.initial}{(optional) an initial value for the comparison specific
+value kappa}
+
+\item{kappa.var}{(optional) the prior variance of the he comparison specific
+value kappa}
 
 \item{player.prior.var}{(optional) matrix specifying the prior covariance of
 the player correlation parameters}
@@ -52,11 +61,6 @@ hyperparameter}
 
 \item{psi}{shape parameter for the inverse-gamma prior distribution on the
 hyperparameter}
-
-\item{kappa.intial}{(optional) an initial value for the comparison specific
-value kappa
-@param kappa.var (optional) the prior variance of the he comparison specific
-value kappa}
 }
 \value{
 A data frame containing samples from the posterior distribution
@@ -65,10 +69,10 @@ A data frame containing samples from the posterior distribution
 This function fits the Bradley-Terry model with comparison  and player
 specific effects. Each comparison can be assigned a real value to allow for a
 specific effect for the comparison, such as bias, ordering or home/away effect.
-The value of this effect is denoted $\kappa$. The player specific effects are
+The value of this effect is denoted kappa. The player specific effects are
 described through a formula and data.frame containing the value. The function
 places a normal prior distribution on both kappa and the player specific
-parameters $\beta$.
+parameters beta.
 }
 \details{
 If \code{player.prior.var} is omitted, independent and identical
@@ -76,7 +80,7 @@ N(0, 5^2) prior distributions are placed on each object quality parameter.
 
 If \code{beta.initial}is omitted, it is set to a vector of zeroes.
 
-If \code{kappa.var} is omitted, it is set to N(0, 5^2), if \code{kappa.intial} is omitted
+If \code{kappa.var} is omitted, it is set to N(0, 5^2), if \code{kappa.initial} is omitted
 it is set to 0.5.
 }
 \keyword{internal}
