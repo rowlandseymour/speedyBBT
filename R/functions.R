@@ -95,7 +95,8 @@ construct.generalised.design.matrix <- function(player1, player2, formula, data)
   K <- length(player1)
   all.pairs  <- t(utils::combn(n.objects, 2))
 
-  X <- as.matrix(formula.model[player1, ] - formula.model[player2, ])
+  X <- as.matrix(formula.model[player1, ] - formula.model[player2, ]) #Computer lambda_i - lambda_j
+  dimnames(X) <- c(NULL, NULL) #Remove dimension names
 
   return(X)
 }
