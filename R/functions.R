@@ -217,8 +217,7 @@ construct.design.matrix.both.ways <- function (n.objects) {
 #' #                                  player2 = forcedMarriage$comparisons$lost,
 #' #                                 player.prior.var = sigma)
 #'
-#' #Normalise results and plot
-#' #forcedMarriageQualitySamples <- forcedMarriageModel$lambda - forcedMarriageModel$Lambda
+#' #Plot results
 #' #plot(sort(forcedMarriageQualitySamples))
 #'
 #' @export
@@ -253,9 +252,9 @@ speedyBBTm <- function(outcome = NULL, player1 = NULL, player2 = NULL,
   X <- construct.design.matrix(n.objects)
 
   #Get inverse of prior covariance matrix
-  #If not set, the prior is iid N(0, 1^2)
+  #If not set, the prior is iid N(0,1^2)
   if(is.null(player.prior.var))
-    player.prior.var <- 5^2*diag(n.objects)
+    player.prior.var <- diag(n.objects)
   player.prior.var.inverse <- solve(player.prior.var)
 
   #Set initial values for lambda
@@ -279,7 +278,7 @@ speedyBBTm <- function(outcome = NULL, player1 = NULL, player2 = NULL,
   #Set up empty storage spaces
   lambda.matrix    <- matrix(0, n.iter, n.objects)
   alpha.sq.vector  <- numeric(n.iter)
-  Lambda.vector    <- numeric(n.iter)
+
 
   #Set commonly required constants
   unnormalised.mu  <- Matrix::t(X)%*%(y - n/2)
@@ -305,19 +304,16 @@ speedyBBTm <- function(outcome = NULL, player1 = NULL, player2 = NULL,
     lambda       <- as.numeric(t(V.chol)%*%stats::rnorm(n.objects, 0, 1) + mu)
 
     #Translate quality parameters
-    Lambda       <- stats::rnorm(1, 0, sqrt(grand.covariance))
-    lambda       <- lambda - mean(lambda) + Lambda
+    lambda       <- lambda - mean(lambda)
 
     lambda.matrix[i, ] <- lambda
     alpha.sq.vector[i] <- alpha.sq
-    Lambda.vector[i]   <- Lambda
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
   if(hyperparameter == TRUE)
-    return(list("lambda" = lambda.matrix, "alpha.sq" = alpha.sq.vector,
-                "Lambda" = Lambda.vector))
+    return(list("lambda" = lambda.matrix, "alpha.sq" = alpha.sq.vector))
   else
-    return(list("lambda" = lambda.matrix, "Lambda" = Lambda.vector))
+    return(list("lambda" = lambda.matrix))
 }
 
 
@@ -458,7 +454,6 @@ BBTm.ties <- function(n.objects, outcome, player1, player2, player.prior.var = N
   #Create empty storage vessels
   lambda.matrix      <- matrix(0, n.objects, n.iter)  #store results
   theta.store        <- numeric(n.iter)  #store results
-  Lambda.store       <- numeric(n.iter)  #store results
   alpha.sq.store     <- numeric(n.iter)  #store results
 
   pb                 <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
@@ -479,11 +474,8 @@ BBTm.ties <- function(n.objects, outcome, player1, player2, player.prior.var = N
     mu             <- V%*%(Matrix::t(X)%*%(kappa + theta*Z%*%ones))
     V.chol         <- chol(V)
     lambda         <- as.numeric(t(V.chol)%*%stats::rnorm(n.objects, 0, 1) + mu)
+    lambda         <- lambda - mean(lambda) #translate to have mean 0
 
-
-    #Translate quality parameters
-    Lambda       <- stats::rnorm(1, 0, sqrt(grand.covariance)/n.objects)
-    lambda       <- lambda - mean(lambda) + Lambda
 
 
     #Update theta
@@ -499,15 +491,14 @@ BBTm.ties <- function(n.objects, outcome, player1, player2, player.prior.var = N
 
     theta.store[i]     <- theta
     alpha.sq.store[i]  <- alpha.sq
-    Lambda.store[i]    <- Lambda
     lambda.matrix[, i] <- as.numeric(lambda)
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
 
   if(hyperparameter == TRUE)
-    return(list("lambda" = lambda.matrix, "theta" = theta.store, "alpha.sq" = alpha.sq.store, "Lambda" = Lambda.store))
+    return(list("lambda" = lambda.matrix, "theta" = theta.store, "alpha.sq" = alpha.sq.store))
   else
-    return(list("lambda" = lambda.matrix, "theta" = theta.store, "Lambda" = Lambda.store))
+    return(list("lambda" = lambda.matrix, "theta" = theta.store))
 
 }
 
@@ -621,7 +612,7 @@ BBTm.no.formula <- function(outcome, player1, player2, player.prior.var,
   #Set up empty storage spaces
   lambda.matrix    <- matrix(0, n.iter, n.objects)
   alpha.sq.vector  <- numeric(n.iter)
-  Lambda.vector    <- numeric(n.iter)
+
 
 
   #Set commonly required constants
@@ -660,27 +651,24 @@ BBTm.no.formula <- function(outcome, player1, player2, player.prior.var,
 
 
     #Translate quality parameters
-    Lambda       <- stats::rnorm(1, 0, sqrt(grand.covariance))
-    lambda       <- lambda - mean(lambda) + Lambda
+    lambda       <- lambda - mean(lambda)
 
     lambda.matrix[i, ] <- lambda
     alpha.sq.vector[i] <- alpha.sq
-    Lambda.vector[i]   <- Lambda
+
 
 
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
   if(hyperparameter == TRUE & advantage.inf == TRUE){ #Output alpha.sq and kappa
     return(list("lambda" = lambda.matrix, "alpha.sq" = alpha.sq.vector,
-                "Lambda" = Lambda.vector, "kappa" = kappa.vector))
+                "kappa" = kappa.vector))
   } else if(hyperparameter == FALSE & advantage.inf == TRUE){ #Output only kappa
-    return(list("lambda" = lambda.matrix,
-                "Lambda" = Lambda.vector, "kappa" = kappa.vector))
+    return(list("lambda" = lambda.matrix, "kappa" = kappa.vector))
   } else if(hyperparameter == FALSE & advantage.inf == FALSE){ #Output only alpha.sq
-    return(list("lambda" = lambda.matrix, "alpha.sq" = alpha.sq.vector,
-                "Lambda" = Lambda.vector))
+    return(list("lambda" = lambda.matrix, "alpha.sq" = alpha.sq.vector))
   } else
-    return(list("lambda" = lambda.matrix, "Lambda" = Lambda.vector))
+    return(list("lambda" = lambda.matrix))
 }
 
 
