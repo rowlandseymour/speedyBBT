@@ -80,8 +80,7 @@ sigma <- diag(diag(sigma)^-0.5)\%*\% sigma \%*\%diag(diag(sigma)^-0.5)
 #                                  player2 = forcedMarriage$comparisons$lost,
 #                                 player.prior.var = sigma)
 
-#Normalise results and plot
-#forcedMarriageQualitySamples <- forcedMarriageModel$lambda - forcedMarriageModel$Lambda
+#Plot results
 #plot(sort(forcedMarriageQualitySamples))
 
 }
