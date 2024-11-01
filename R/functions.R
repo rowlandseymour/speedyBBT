@@ -4,7 +4,7 @@
 #'
 #' @param n.objects The number of areas in the study.
 #' @param comparisons An N x 2 data frame, where N is the number of comparisons. Each row should correspond to a judgment. The first column is the winning object, the second column is the more losing object. The areas should be labeled from 1 to n.objects.
-#' @return A matrix where the {i, j}^th element is the number of times object i beat object j.
+#' @return A matrix where the {i, j}th element is the number of times object i beat object j.
 #'
 #' @examples
 #'
@@ -526,7 +526,7 @@ BBTm.ties <- function(n.objects, outcome, player1, player2, player.prior.var = N
 #' @param n.iter number of MCMC samples to be drawn
 #' @param advantage (optional) a vector with the value of the comparisons specific
 #'  effect for each comparison
-#' @param kappa.intial (optional) an initial value for the comparison specific
+#' @param kappa.initial (optional) an initial value for the comparison specific
 #'  value kappa
 #'  @param kappa.var (optional) the prior variance of the he comparison specific
 #'  value kappa
