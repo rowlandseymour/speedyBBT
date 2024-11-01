@@ -25,7 +25,7 @@ speedyBBTm(
 
 \item{player2}{vector of second players}
 
-\item{win.matrix}{a win-loss matrix where the {i,j}th element is the number of
+\item{win.matrix}{a win-loss matrix where the i,j th element is the number of
 times object i beat object j}
 
 \item{player.prior.var}{(optional) matrix specifying the prior covariance of
