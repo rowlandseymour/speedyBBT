@@ -9,7 +9,7 @@ Authors@R:
            comment = c(ORCID = "0000-0002-8739-3921")))
 Description: A suite of functions that allow a full, fast, and efficient Bayesian treatment of the Bradley--Terry model. 
              Prior assumptions about the model parameters can be encoded through a multivariate normal prior distribution. 
-             Inference is performed using a Polya-Gamma latent variable representation of the model. 
+             Inference is performed using a latent variable representation of the model. 
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
