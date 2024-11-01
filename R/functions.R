@@ -4,7 +4,7 @@
 #'
 #' @param n.objects The number of areas in the study.
 #' @param comparisons An N x 2 data frame, where N is the number of comparisons. Each row should correspond to a judgment. The first column is the winning object, the second column is the more losing object. The areas should be labeled from 1 to n.objects.
-#' @return A matrix where the {i, j}th element is the number of times object i beat object j.
+#' @return A matrix where the i, j th element is the number of times object i beat object j.
 #'
 #' @examples
 #'
@@ -175,7 +175,7 @@ construct.design.matrix.both.ways <- function (n.objects) {
 #'  0 if player 1 is the winner
 #' @param player1 vector of first players
 #' @param player2 vector of second players
-#' @param win.matrix a win-loss matrix where the {i,j}th element is the number of
+#' @param win.matrix a win-loss matrix where the i,j th element is the number of
 #' times object i beat object j
 #' @param player.prior.var (optional) matrix specifying the prior covariance of
 #'  the player correlation parameters
@@ -868,7 +868,7 @@ BBTm.with.formula <- function(outcome, player1, player2,
 #'
 #' If `beta.initial`is omitted, it is set to a vector of zeroes.
 #'
-#' If `kappa.var` is omitted, it is set to N(0, 5^2), if `kappa.intial` is omitted
+#' If `kappa.var` is omitted, it is set to N(0, 5^2), if `kappa.initial` is omitted
 #' it is set to 0.5.
 #'
 #'
