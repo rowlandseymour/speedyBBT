@@ -36,6 +36,11 @@ player parameters for the first MCMC iteration}
 \item{advantage}{(optional) a vector with the value of the comparisons specific
 effect for each comparison}
 
+\item{kappa.initial}{(optional) an initial value for the comparison specific
+value kappa
+@param kappa.var (optional) the prior variance of the he comparison specific
+value kappa}
+
 \item{n.iter}{number of MCMC samples to be drawn}
 
 \item{hyperparameter}{boolean indicating if inference should be performed
@@ -47,11 +52,6 @@ hyperparameter}
 
 \item{psi}{shape parameter for the inverse-gamma prior distribution on the
 hyperparameter}
-
-\item{kappa.intial}{(optional) an initial value for the comparison specific
-value kappa
-@param kappa.var (optional) the prior variance of the he comparison specific
-value kappa}
 }
 \value{
 A data frame containing samples from the posterior distribution
