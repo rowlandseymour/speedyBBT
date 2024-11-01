@@ -2,9 +2,9 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/rowlandseymour/speedyBBT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rowlandseymour/speedyBBT/actions/workflows/R-CMD-check.yaml) 
+[![R-CMD-check](https://github.com/rowlandseymour/speedyBBT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rowlandseymour/speedyBBT/actions/workflows/R-CMD-check.yaml)
 
-<!-- badges: end --> 
+<!-- badges: end -->
 
 ## Efficient Bayesian Inference for the Bradley--Terry Model
 
@@ -20,13 +20,8 @@ install.packages("speedyBBT")
 ```
 
 ## Usage
-The code chunks below show how to use the package to fit the Bradley--Terry model
-to a data set relating to forced marriage. Judges were shown pairs of wards and asked 
-which had a higher rate of forced marriage. We can use the `speedyBBTm` function
-to draw samples for the full conditional distributions for the ward quality parameters.
-We place a multivariate normal prior distribution on the ward quality parameters. 
-The covariance matrix of this prior distribution is contstucted using a network
-representation of the wards in Nottinghamshire. 
+
+The code chunks below show how to use the package to fit the Bradley--Terry model to a data set relating to forced marriage. Judges were shown pairs of wards and asked which had a higher rate of forced marriage. We can use the `speedyBBTm` function to draw samples for the full conditional distributions for the ward quality parameters. We place a multivariate normal prior distribution on the ward quality parameters. The covariance matrix of this prior distribution is constructed using a network representation of the wards in Nottinghamshire.
 
 ```{r}
 #View Data
@@ -80,7 +75,7 @@ segments(x0 = 1:nrow(forcedMarriageResults), y0 = forcedMarriageResults$lowerCI,
 
 ## Acknowledgements
 
-This work is supported by the a UKRI Future Leaders Fellowship [MR/X034992/1], the Engineering and Physical Sciences Research Council [grant numbers EP/T003928/1, EP/R513283/1], the Economic and Social Sciences Research Council [ES/V015370/1], the Research England Policy Support Fund.
+This work is supported by the a UKRI Future Leaders Fellowship [MR/X034992/1], the Engineering and Physical Sciences Research Council [grant numbers EP/T003928/1, EP/R513283/1], the Economic and Social Sciences Research Council [ES/V015370/1] and the Research England Policy Support Fund.
 
 The Dar es Salaam comparative judgement dataset was collected by Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor Engelmann. We gratefully acknowledge the Rights Lab at the University of Nottingham for supporting funding for the comprehensive ground truth survey. We also acknowledge Humanitarian Street Mapping Team (HOT) for providing a team of experts in data collection to facilitate the surveys. This fieldwork was also supported by the EPSRC Horizon Centre for Doctoral Training - My Life in Data (EP/L015463/1) and by EPSRC grant Neodemographics (EP/L021080/1).
 
