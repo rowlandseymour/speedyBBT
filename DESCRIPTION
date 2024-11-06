@@ -1,6 +1,6 @@
 Package: speedyBBT
 Title: Efficient Bayesian Inference for the Bradley--Terry Model
-Version: 1.0
+Version: 1.0.0.9000
 Authors@R: 
     c(person(given = "Rowland",
            family = "Seymour",
