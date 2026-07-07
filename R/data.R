@@ -60,7 +60,6 @@
 "wimbledon"
 
 
-
 #' Forced Marriage in Nottinghamshire
 #'
 #'A comparative judgment data set for risk of forced marriage at ward level in Nottinghamshire.
@@ -112,7 +111,6 @@
 "sy.comparisons"
 
 
-
 #' Honour Based Abuse in Oxfordshire
 #'
 #'A comparative judgment data set for risk of honour based abuse in Oxford and Banbury
@@ -133,6 +131,3 @@
 #'
 #'
 "oxon.comparisons"
-
-
-
