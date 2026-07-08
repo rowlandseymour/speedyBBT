@@ -766,7 +766,6 @@ BBTm.with.formula <- function(
       "beta" = beta.matrix,
       "lambda" = lambda.matrix,
       "alpha.sq" = alpha.sq.vector,
-      "lambda" = lambda.matrix,
       "kappa" = kappa.vector
     ))
   } else if (hyperparameter == FALSE & advantage.inf == TRUE) {
