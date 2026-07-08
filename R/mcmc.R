@@ -41,21 +41,21 @@
 #' ########################################
 #' ## Forced Marriage in Nottinghamshire ##
 #' ########################################
-#'
+#' data("forcedMarriage", package = "speedyBBT")
 #' #Construct covariance matrix based on spatial information
 #' sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
 #' sigma <- diag(diag(sigma)^-0.5)%*% sigma %*%diag(diag(sigma)^-0.5)
 #'
 #'
 #' ##Not Run
-#' #Fit model
-#' #forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
-#' #                                  player1 = forcedMarriage$comparisons$win,
-#' #                                  player2 = forcedMarriage$comparisons$lost,
-#' #                                 player.prior.var = sigma)
+#' # Fit model
+#' forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
+#'                                   player1 = forcedMarriage$comparisons$win,
+#'                                   player2 = forcedMarriage$comparisons$lost,
+#'                                  player.prior.var = sigma)
 #'
 #' #Plot results
-#' #plot(sort(forcedMarriageQualitySamples))
+#' plot(sort(forcedMarriageQualitySamples))
 #'
 #' @export
 #'
@@ -216,28 +216,28 @@ speedyBBTm <- function(
 #' ## Deprivation in Dar es Salaam, Tanzania ##
 #' ## Seymour et al (2022)                   ##
 #' ############################################
-#'
+#' data("darEsSalaam", package = "speedyBBT")
 #'#Construct covariance matrix based on spatial informartion
 #' sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
 #' sigma <- diag(diag(sigma)^-0.5)%*% sigma %*%diag(diag(sigma)^-0.5)
 #'
-#'##Not Run
 #'
-#' #Fit BT model with ties
-#'#darTiedModel <- BBTm.ties(n.objects = 452,
-#'#                          outcome = darEsSalaam$comparisons$outcome,
-#'#                          player1 = darEsSalaam$comparisons$subward1,
-#'#                          player2 = darEsSalaam$comparisons$subward2,
-#'#                          player.prior.var = sigma,
-#'#                          hyperparameter = TRUE, rw.sd = 0.005)
+#'
+#' # Fit BT model with ties
+#'darTiedModel <- BBTm.ties(n.objects = 452,
+#'                          outcome = darEsSalaam$comparisons$outcome,
+#'                          player1 = darEsSalaam$comparisons$subward1,
+#'                          player2 = darEsSalaam$comparisons$subward2,
+#'                          player.prior.var = sigma,
+#'                          hyperparameter = TRUE, rw.sd = 0.005)
 #'
 #'#Get posterior means
-#'#darTiedModel$lambda <- darTiedModel $lambda - colMeans(darTiedModel$lambda)
-#'#lambda.mean <- rowMeans(darTiedModel$lambda)
+#'darTiedModel$lambda <- darTiedModel $lambda - colMeans(darTiedModel$lambda)
+#'lambda.mean <- rowMeans(darTiedModel$lambda)
 #'
 #'#Generate trace plots
-#'#plot(lambda.mean)
-#'#plot(darTiedModel$theta[-c(1:100)], type = 'l')
+#'plot(lambda.mean)
+#'plot(darTiedModel$theta[-c(1:100)], type = 'l')
 #'
 #' @export
 #'
@@ -824,22 +824,22 @@ BBTm.with.formula <- function(
 #' #####################
 #' ## Wimbledon 2019 ##
 #' ####################
-#'
+#' data("wimbledon", package = "speedyBBT")
 #'#Fit model where the quality of each player depends on their rank
 #'#and the number of points they had immediately before the tournament.
-#'#Allow an effect for a match being in the first or second week.
-#'#wimbledonModel <- BBTm(outcome  = wimbledon$matches$outcome,
-#'#                      player2   = wimbledon$matches$loser,
-#'#                       player1  = wimbledon$matches$winner,
-#'#                      advantage = wimbledon$matches$secondWeek,
-#'#                      formula  = ~ rank + points,
-#'#                      data       = wimbledon$players,
-#'#                       n.iter = 4000)
+#'Allow an effect for a match being in the first or second week.
+#'wimbledonModel <- BBTm(outcome  = wimbledon$matches$outcome,
+#'                      player2   = wimbledon$matches$loser,
+#'                       player1  = wimbledon$matches$winner,
+#'                      advantage = wimbledon$matches$secondWeek,
+#'                      formula  = ~ rank + points,
+#'                      data       = wimbledon$players,
+#'                       n.iter = 4000)
 #'
 #' #Plot posterior distributions
-#'  #hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq  = FALSE)
-#'  #hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq  = FALSE)
-#'  #hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq  = FALSE)
+#' hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq  = FALSE)
+#' hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq  = FALSE)
+#' hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq  = FALSE)
 #'
 #'
 #' @export
