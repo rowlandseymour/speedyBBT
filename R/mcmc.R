@@ -55,7 +55,31 @@
 #'                                  player.prior.var = sigma)
 #'
 #' #Plot results
-#' plot(sort(forcedMarriageQualitySamples))
+#' par(mfrow = c(2, 2))
+#' plot(
+#'   forcedMarriageModel$lambda[, 10],
+#'   type = 'l',
+#'   xlab = "Iteration",
+#'   ylab = expression(lambda[10])
+#' )
+#' plot(
+#'   forcedMarriageModel$lambda[, 20],
+#'   type = 'l',
+#'   xlab = "Iteration",
+#'   ylab = expression(lambda[20])
+#' )
+#' plot(
+#'   forcedMarriageModel$lambda[, 30],
+#'   type = 'l',
+#'   xlab = "Iteration",
+#'   ylab = expression(lambda[30])
+#' )
+#' plot(
+#'   forcedMarriageModel$lambda[, 40],
+#'   type = 'l',
+#'   xlab = "Iteration",
+#'   ylab = expression(lambda[40])
+#' )
 #'
 #' @export
 #'
@@ -232,8 +256,8 @@ speedyBBTm <- function(
 #'                          hyperparameter = TRUE, rw.sd = 0.005)
 #'
 #'#Get posterior means
-#'darTiedModel$lambda <- darTiedModel $lambda - colMeans(darTiedModel$lambda)
-#'lambda.mean <- rowMeans(darTiedModel$lambda)
+#'lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
+#'lambda.mean <- rowMeans(lambda)
 #'
 #'#Generate trace plots
 #'plot(lambda.mean)
