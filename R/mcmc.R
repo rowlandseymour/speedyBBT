@@ -96,7 +96,8 @@ speedyBBTm <- function(
   n.iter = 1000,
   hyperparameter = TRUE,
   chi = 0.01,
-  psi = 0.01
+  psi = 0.01,
+  burn.in = 100
 ) {
   if (is.null(win.matrix)) {
     # Create win matrix
@@ -186,13 +187,17 @@ speedyBBTm <- function(
 
     lambda.matrix[i, ] <- lambda
     alpha.sq.vector[i] <- alpha.sq
+    pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
   if (hyperparameter == TRUE) {
-    return(list("lambda" = lambda.matrix, "alpha.sq" = alpha.sq.vector))
+    mcmc_out <- coda::mcmc(data = pars.matrix[burn.in:n.iter,], start = burn.in, end = n.iter, thin = 1)
+    coda::varnames(mcmc_out) <- c(paste("lambda[", 1:n.objects, "]", sep = ""), "alpha.sq")
   } else {
-    return(list("lambda" = lambda.matrix))
+    mcmc_out <- coda::mcmc(data = pars.matrix[burn.in:n.iter, 1:n.objects], start = burn.in, end = n.iter, thin = 1)
+    coda::varnames(mcmc_out) <- c(paste("lambda[", 1:n.objects, "]", sep = ""))
   }
+  return(mcmc_out)
 }
 
 
