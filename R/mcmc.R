@@ -233,7 +233,7 @@ speedyBBTm <- function(
 #'
 #'
 #' @examples
-#' \donttest{
+#'
 #' ############################################
 #' ## Deprivation in Dar es Salaam, Tanzania ##
 #' ## Seymour et al (2022)                   ##
@@ -251,7 +251,7 @@ speedyBBTm <- function(
 #'                          player1 = darEsSalaam$comparisons$subward1,
 #'                          player2 = darEsSalaam$comparisons$subward2,
 #'                          player.prior.var = sigma,
-#'                          hyperparameter = TRUE, rw.sd = 0.005, n.iter = 1)
+#'                          hyperparameter = TRUE, rw.sd = 0.005, n.iter = 2)
 #'
 #'#Get posterior means
 #'darTiedModel$lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
@@ -259,8 +259,8 @@ speedyBBTm <- function(
 #'
 #'#Generate trace plots
 #'plot(lambda.mean)
-#'plot(darTiedModel$theta[-c(1:100)], type = 'l')
-#'}
+#'plot(darTiedModel$theta, type = 'l')
+#'
 #' @export
 #'
 BBTm.ties <- function(
