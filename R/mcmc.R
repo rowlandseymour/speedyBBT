@@ -22,10 +22,11 @@
 #' @param hyperparameter boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
 #'  (main diagonal of the covariance matrix) must be set to 1.
-#' @param psi shape parameter for the inverse-gamma prior distribution on the
-#' hyperparameter
-#' @param chi rate parameter for the inverse-gamma prior distribution on the
-#'  hyperparameter
+#' @param psi (Optional) shape parameter for the inverse-gamma prior distribution on the
+#' hyperparameter. Default is 0.01.
+#' @param chi (Optional) rate parameter for the inverse-gamma prior distribution on the
+#'  hyperparameter. Default is 0.01.
+#' @param burn.in (optional) the number of iterations to discard as burn-in. Default is 100.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 1^2) prior distributions are placed on each object quality parameter.

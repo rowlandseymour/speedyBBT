@@ -33,10 +33,6 @@ test_that("comparisons_to_matrix constructs correct win matrix", {
   expect_equal(result_matrix_single, expected_matrix_single)
 })
 
-
-library(testthat)
-library(Matrix)
-
 # Unit tests for construct.design.matrix function
 test_that("construct.design.matrix constructs correct design matrix", {
   # Test case 1: Design matrix with 2 objects

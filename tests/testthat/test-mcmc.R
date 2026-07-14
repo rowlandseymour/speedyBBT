@@ -13,7 +13,7 @@ test_that("speedyBBTm produces results within tolerance", {
     n.iter = 2000
   )
 
-  forcedMarriageModelMeans <- colMeans(forcedMarriageModel$lambda[-c(1:100), ])
+  forcedMarriageModelMeans <- colMeans(forcedMarriageModel[,grep("lambda",varnames(forcedMarriageModel))])
 
   # Read in means
   testMeansPath <- test_path("forcedMarriageModelMeans.csv")
