@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(speedyBBT)
+library(coda)
 ```
 
 `speedyBBT` is a package for Bayesian Bradley-Terry modeling. It provides functions for fitting the Bradley-Terry model using Markov Chain Monte Carlo (MCMC) methods, allowing for inference on player abilities and hyperparameters. It uses latent Polya-Gamma variables to facilitate efficient sampling.
