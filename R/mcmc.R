@@ -9,15 +9,15 @@
 #'
 #'
 #' @param outcome vector of outcomes. 1 if player 2 is the winner,
-#'  0 if player 1 is the winner
-#' @param player1 vector of first players
-#' @param player2 vector of second players
+#'  0 if player 1 is the winner.
+#' @param player1 vector of first players.
+#' @param player2 vector of second players.
 #' @param win.matrix (optional) a win-loss matrix where the i,j th element is the number of
-#' times object i beat object j
+#' times object i beat object j.
 #' @param player.prior.var (optional) matrix specifying the prior covariance of
-#'  the player correlation parameters
+#'  the player correlation parameters.
 #' @param lambda.initial (optional) vector containing the values of the
-#'  player correlation parameters for the first MCMC iteration
+#'  player correlation parameters for the first MCMC iteration.
 #' @param n.iter number of MCMC samples to be drawn.
 #' @param hyperparameter boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
