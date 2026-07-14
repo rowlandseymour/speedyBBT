@@ -69,7 +69,33 @@ To view some preliminary information about the results, you can calculate the me
 
 ```{r view_output}
 forcedMarriageModelMeans <- colMeans(forcedMarriageModel[,grep("lambda",varnames(forcedMarriageModel))])
-summary(forcedMarriageModelMeans)
+forcedMarriageModelMeans
+summary(forcedMarriageModel)
 ```
 
 You can run some MCMC diagnostics to check convergence. The `speedyBBTm` function returns an MCMC object that can be used with the `coda` package for diagnostics. You can use the `plot()` function to visualize the trace plots and density plots of the MCMC samples, and the `gelman.diag()` function to calculate the Gelman-Rubin diagnostic for convergence. For more information about available plots and diagnostics, you can refer to the [`coda` ](https://github.com/cran/coda) package [documentation](https://cran.r-project.org/web/packages/coda/index.html).
+
+```{r mcmc_diagnostics}
+#Trace plots
+plot(forcedMarriageModel[,paste("lambda[", c(10,20,30,40), "]", sep = "")], main = "Trace plots for player quality parameters")
+
+```
+
+```{r gelman_diag}
+#Gelman-Rubin diagnostic
+gelman.diag(forcedMarriageModel)
+``` 
+
+You can get additional, colourful plots by installing `ggplot2` and `bayesplot` and calling the functions from `bayesplot` on the MCMC object returned by `speedyBBTm`. For example, you can use the `mcmc_trace()` function to create trace plots and the `mcmc_dens_overlay()` function to create density plots of the MCMC samples. For more information, see the `bayesplot` package [documentation](https://mc-stan.org/bayesplot/).
+
+```{r bayesplot_diagnostics}
+#Install bayesplot if not already installed
+# install.packages("bayesplot")
+# install.packages("ggplot2")
+library(bayesplot)
+library(ggplot2)
+#Trace plots
+mcmc_trace(forcedMarriageModel)
+#Density plots
+mcmc_dens_overlay(forcedMarriageModel)
+```
