@@ -74,7 +74,7 @@ N(0, 5^2) prior distributions are placed on each object quality parameter.
 If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 }
 \examples{
-\donttest{
+
 ############################################
 ## Deprivation in Dar es Salaam, Tanzania ##
 ## Seymour et al (2022)                   ##
@@ -92,7 +92,7 @@ darTiedModel <- BBTm.ties(n.objects = 452,
                          player1 = darEsSalaam$comparisons$subward1,
                          player2 = darEsSalaam$comparisons$subward2,
                          player.prior.var = sigma,
-                         hyperparameter = TRUE, rw.sd = 0.005, n.iter = 1)
+                         hyperparameter = TRUE, rw.sd = 0.005, n.iter = 2)
 
 #Get posterior means
 darTiedModel$lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
@@ -100,6 +100,6 @@ lambda.mean <- rowMeans(darTiedModel$lambda)
 
 #Generate trace plots
 plot(lambda.mean)
-plot(darTiedModel$theta[-c(1:100)], type = 'l')
-}
+plot(darTiedModel$theta, type = 'l')
+
 }
