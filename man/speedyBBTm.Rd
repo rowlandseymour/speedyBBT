@@ -84,6 +84,6 @@ forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$compari
                                  player.prior.var = sigma, n.iter = 1)
 
 #Plot results
-plot(sort(forcedMarriageQualitySamples))
+plot(forcedMarriageModel[,paste("lambda[", c(10,20,30,40), "]", sep = "")], xlab = "Iteration", ylab = expression(lambda[i]))
 
 }

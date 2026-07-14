@@ -95,7 +95,7 @@ it is set to 0.5.
 data("wimbledon", package = "speedyBBT")
 #Fit model where the quality of each player depends on their rank
 #and the number of points they had immediately before the tournament.
-Allow an effect for a match being in the first or second week.
+#Allow an effect for a match being in the first or second week.
 wimbledonModel <- BBTm(outcome  = wimbledon$matches$outcome,
                      player2   = wimbledon$matches$loser,
                       player1  = wimbledon$matches$winner,

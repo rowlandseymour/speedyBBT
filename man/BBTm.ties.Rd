@@ -52,8 +52,9 @@ hyperparameter}
 hyperparameter}
 
 \item{rw.sd}{(optional) number describing the standard deviation of normal distribution
-proposal distribution for theta
-#' @param theta.rate (optional) The rate parameter of the exponential prior
+proposal distribution for theta}
+
+\item{theta.rate}{(optional) The rate parameter of the exponential prior
 distribution placed on theta}
 }
 \value{
