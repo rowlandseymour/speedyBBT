@@ -26,7 +26,7 @@ To fit a Bradley-Terry model using `speedyBBT`, you can first install the packag
 # Install from CRAN
 # install.packages("speedyBBT")
 # Install the development version from GitHub
-remotes::install_github("rowlandseymour/speedyBBT")
+# remotes::install_github("rowlandseymour/speedyBBT")
 ```
 
 You can learn more about the package functions and how to use them from the documentation which can be accessed using `?function_name` in R. For example, to learn about the `speedyBBTm` function, you can run:
