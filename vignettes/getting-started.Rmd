@@ -75,27 +75,30 @@ summary(forcedMarriageModel)
 
 You can run some MCMC diagnostics to check convergence. The `speedyBBTm` function returns an MCMC object that can be used with the `coda` package for diagnostics. You can use the `plot()` function to visualize the trace plots and density plots of the MCMC samples, and the `gelman.diag()` function to calculate the Gelman-Rubin diagnostic for convergence. For more information about available plots and diagnostics, you can refer to the [`coda` ](https://github.com/cran/coda) package [documentation](https://cran.r-project.org/web/packages/coda/index.html).
 
-```{r mcmc_diagnostics}
+```{r mcmc_diagnostics, fig.width=8, fig.height=6}
 #Trace plots
 plot(forcedMarriageModel[,paste("lambda[", c(10,20,30,40), "]", sep = "")], main = "Trace plots for player quality parameters")
 
 ```
 
-```{r gelman_diag}
-#Gelman-Rubin diagnostic
-gelman.diag(forcedMarriageModel)
+```{r some_diags}
+effectiveSize(forcedMarriageModel)
+geweke.diag(forcedMarriageModel)
 ``` 
 
 You can get additional, colourful plots by installing `ggplot2` and `bayesplot` and calling the functions from `bayesplot` on the MCMC object returned by `speedyBBTm`. For example, you can use the `mcmc_trace()` function to create trace plots and the `mcmc_dens_overlay()` function to create density plots of the MCMC samples. For more information, see the `bayesplot` package [documentation](https://mc-stan.org/bayesplot/).
 
-```{r bayesplot_diagnostics}
+```{r bayesplot_diagnostics, fig.width=8, fig.height=6}
 #Install bayesplot if not already installed
 # install.packages("bayesplot")
 # install.packages("ggplot2")
 library(bayesplot)
 library(ggplot2)
 #Trace plots
-mcmc_trace(forcedMarriageModel)
+bayesplot::mcmc_intervals(forcedMarriageModel, pars = c("lambda[10]", "lambda[20]", "lambda[30]", "lambda[40]")) +
+  ggtitle("Posterior distributions with 95% credible intervals") +
+  ylab(expression(lambda[i])) +
+  xlab("Density")
 #Density plots
-mcmc_dens_overlay(forcedMarriageModel)
+bayesplot::mcmc_dens(forcedMarriageModel, pars = c("lambda[10]", "lambda[20]", "lambda[30]", "lambda[40]", "alpha.sq"))
 ```
