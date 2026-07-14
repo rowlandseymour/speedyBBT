@@ -6,3 +6,5 @@ renv/
 renv.*
 .rproj
 inst/doc
+Rplots.ps
+*.db
