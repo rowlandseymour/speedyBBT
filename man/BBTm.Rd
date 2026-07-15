@@ -105,7 +105,7 @@ wimbledonModel <- BBTm(outcome  = wimbledon$matches$outcome,
                      n.iter = 1)
 
 #Plot posterior distributions
-hist(wimbledonModel$lambda, main = "", xlab = expression(beta[1]), freq  = FALSE)
+hist(wimbledonModel$beta, main = "", xlab = expression(lambda[1]), freq  = FALSE)
 
 
 }

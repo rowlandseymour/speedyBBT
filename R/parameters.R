@@ -33,6 +33,7 @@ lambda <- function(model_output, indices_to_extract = NULL) {
 #' fit using a Bayesian Bradley-Terry model.
 #'
 #' @param model_output The mcmc object that contains the draws output from the BBT model
+#' @param parameter_name The name of the parameter to extract draws for
 #' @return the draws of the parameter
 #' @export
 parameter <- function(model_output, parameter_name) {

@@ -9,6 +9,8 @@ parameter(model_output, parameter_name)
 }
 \arguments{
 \item{model_output}{The mcmc object that contains the draws output from the BBT model}
+
+\item{parameter_name}{The name of the parameter to extract draws for}
 }
 \value{
 the draws of the parameter
