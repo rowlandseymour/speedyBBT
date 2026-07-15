@@ -44,7 +44,7 @@ parameter <- function(model_output, parameter_name) {
 #' internal helper
 #' @importFrom rlang abort
 check_model <- function(model_output, parameter_name) {
-  if (class(model_output) != "mcmc") {
+  if (inherits(model_output) != "mcmc") {
     rlang::abort(
       "model_output must be an object of class mcmc for this function to work correctly."
     )
