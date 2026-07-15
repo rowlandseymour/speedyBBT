@@ -42,6 +42,7 @@ parameter <- function(model_output, parameter_name) {
 }
 
 #' internal helper
+#' @noRd
 check_model <- function(model_output, parameter_name) {
   if (!inherits(model_output, "mcmc")) {
     stop(
