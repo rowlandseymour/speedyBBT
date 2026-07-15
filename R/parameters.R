@@ -43,7 +43,7 @@ parameter <- function(model_output, parameter_name) {
 
 #' internal helper
 check_model <- function(model_output, parameter_name) {
-  if (inherits(model_output) != "mcmc") {
+  if (!inherits(model_output, "mcmc")) {
     stop(
       "model_output must be an object of class mcmc for this function to work correctly."
     )
