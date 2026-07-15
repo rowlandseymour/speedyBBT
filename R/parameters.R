@@ -42,16 +42,15 @@ parameter <- function(model_output, parameter_name) {
 }
 
 #' internal helper
-#' @importFrom rlang abort
 check_model <- function(model_output, parameter_name) {
   if (inherits(model_output) != "mcmc") {
-    rlang::abort(
+    stop(
       "model_output must be an object of class mcmc for this function to work correctly."
     )
   }
 
   if (length(grep(parameter_name, varnames(model_output))) == 0) {
-    rlang::abort(
+    stop(
       paste(
         "This model object does not contain estimates of the ",
         parameter_name,
