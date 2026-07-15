@@ -19,9 +19,9 @@ lambda <- function(model_output, indices_to_extract = NULL) {
   }
   lambda_obj <- coda::as.mcmc(
     model_output[, var_string],
-    start = mcpar[1],
-    end = mcpar[2],
-    thin = mcpar[3]
+    start = coda::mcpar(model_output)[1],
+    end = coda::mcpar(model_output)[2],
+    thin = coda::mcpar(model_output)[3]
   )
   coda::varnames(lambda_obj) <- var_string
   attr(lambda_obj, 'mcpar') <- coda::mcpar(model_output)
