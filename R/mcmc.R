@@ -37,7 +37,7 @@
 #'
 #'
 #' @examples
-#'
+#' \donttest{
 #' ########################################
 #' ## Forced Marriage in Nottinghamshire ##
 #' ########################################
@@ -80,6 +80,7 @@
 #'   ylab = expression(lambda[40])
 #' )
 #' par(oldpar)
+#' }
 #'
 #' @export
 #'
