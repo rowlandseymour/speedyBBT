@@ -61,7 +61,7 @@ test_that("BBTm.ties produces results within tolerance", {
 
   sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
   sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
-  n.objects <- 452
+  n.objects <- nrow(darEsSalaam$adjacencyMatrix)
   darTiedModel <- BBTm.ties(
     n.objects = n.objects,
     outcome = darEsSalaam$comparisons$outcome,
