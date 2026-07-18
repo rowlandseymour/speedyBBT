@@ -8,18 +8,18 @@
 #'
 #' @examples
 #'
-#' #Generate some sample comparisons
+#' # Generate some sample comparisons
 #' comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 #'
-#' #Create matrix from comparisons
+#' # Create matrix from comparisons
 #' win.matrix <- comparisons_to_matrix(3, comparisons)
 #'
 #' @export
 comparisons_to_matrix <- function(n.objects, comparisons) {
-  win.matrix <- matrix(0, n.objects, n.objects) #construct empty matrix
+  win.matrix <- matrix(0, n.objects, n.objects) # construct empty matrix
 
   for (j in 1:dim(comparisons)[1]) {
-    #for each comparisons, enter outcome into win matrix
+    # for each comparisons, enter outcome into win matrix
     win.matrix[comparisons[j, 2], comparisons[j, 1]] <- win.matrix[
       comparisons[j, 2],
       comparisons[j, 1]
@@ -41,7 +41,7 @@ comparisons_to_matrix <- function(n.objects, comparisons) {
 #'
 #' @examples
 #'
-#' #design matrix with 3 objects
+#' # design matrix with 3 objects
 #'
 #' X <- construct.design.matrix(3)
 #'
@@ -80,14 +80,16 @@ construct.design.matrix <- function(n.objects) {
 #'
 #' @examples
 #'
-#' #Generate data.frame
-#' example.df <- data.frame("a" = stats::runif(100, 0, 3),
-#'                     "b" = sample(1:2, 100, TRUE))
+#' # Generate data.frame
+#' example.df <- data.frame(
+#'   "a" = stats::runif(100, 0, 3),
+#'   "b" = sample(1:2, 100, TRUE)
+#' )
 #'
-#' #Generate formula
-#' example.formula <- ~  a + b + I(a^2)
+#' # Generate formula
+#' example.formula <- ~ a + b + I(a^2)
 #'
-#' #Generate comparisons of three players
+#' # Generate comparisons of three players
 #' player1 <- c(1, 3, 2, 1)
 #' player2 <- c(3, 1, 1, 2)
 #' X <- construct.generalised.design.matrix(player1, player2, example.formula, example.df)
@@ -101,15 +103,15 @@ construct.generalised.design.matrix <- function(
   formula,
   data
 ) {
-  #Get data frame from formula
+  # Get data frame from formula
   formula.model <- stats::model.frame(formula, data)
 
   n.objects <- dim(data)[1]
   K <- length(player1)
   all.pairs <- t(utils::combn(n.objects, 2))
 
-  X <- as.matrix(formula.model[player1, ] - formula.model[player2, ]) #Computer lambda_i - lambda_j
-  dimnames(X) <- c(NULL, NULL) #Remove dimension names
+  X <- as.matrix(formula.model[player1, ] - formula.model[player2, ]) # Computer lambda_i - lambda_j
+  dimnames(X) <- c(NULL, NULL) # Remove dimension names
 
   return(X)
 }
@@ -127,7 +129,7 @@ construct.generalised.design.matrix <- function(
 #' @examples
 #'
 #'
-#' #Generate comparisons of three players
+#' # Generate comparisons of three players
 #' object1 <- c(1, 3, 2, 1)
 #' object2 <- c(3, 1, 1, 2)
 #' X <- construct.design.matrix.by.comparison(object1, object2)
@@ -166,7 +168,7 @@ construct.design.matrix.by.comparison <- function(object1, object2) {
 #'
 #' @examples
 #'
-#' #design matrix with 3 objects
+#' # design matrix with 3 objects
 #'
 #' X <- construct.design.matrix.both.ways(3)
 #'

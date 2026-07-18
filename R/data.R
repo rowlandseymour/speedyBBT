@@ -40,8 +40,8 @@
 #' Wimbledon Men's Singles Championship 2019
 #'
 #'
-#'The outcomes of all 127 men's singles matches in the 2019
-#'Wimbledon champtionship.
+#' The outcomes of all 127 men's singles matches in the 2019
+#' Wimbledon champtionship.
 #'
 #'
 #' @docType data
@@ -62,8 +62,8 @@
 
 #' Forced Marriage in Nottinghamshire
 #'
-#'A comparative judgment data set for risk of forced marriage at ward level in Nottinghamshire.
-#'There are 12 judges and 76 wards.
+#' A comparative judgment data set for risk of forced marriage at ward level in Nottinghamshire.
+#' There are 12 judges and 76 wards.
 #'
 #' @docType data
 #'
@@ -92,7 +92,7 @@
 
 #' FGM in South Yorkshire
 #'
-#'A comparative judgment data set for risk of female genital mutilation at ward level in South Yorkshire.
+#' A comparative judgment data set for risk of female genital mutilation at ward level in South Yorkshire.
 #'
 #' @docType data
 #'
@@ -113,7 +113,7 @@
 
 #' Honour Based Abuse in Oxfordshire
 #'
-#'A comparative judgment data set for risk of honour based abuse in Oxford and Banbury
+#' A comparative judgment data set for risk of honour based abuse in Oxford and Banbury
 #'
 #' @docType data
 #'

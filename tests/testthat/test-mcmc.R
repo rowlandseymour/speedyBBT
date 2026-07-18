@@ -1,10 +1,10 @@
 test_that("speedyBBTm produces results within tolerance", {
-  #Construct covariance matrix
+  # Construct covariance matrix
   data("forcedMarriage")
   expA <- expm::expm(forcedMarriage$adjacencyMatrix)
   sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
-  #Fit model
+  # Fit model
   forcedMarriageModel <- speedyBBTm(
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
     player1 = forcedMarriage$comparisons$win,
@@ -15,7 +15,7 @@ test_that("speedyBBTm produces results within tolerance", {
 
   forcedMarriageModelMeans <- colMeans(forcedMarriageModel$lambda[-c(1:100), ])
 
-  #Read in means
+  # Read in means
   testMeansPath <- test_path("forcedMarriageModelMeans.csv")
   testMeans <- read.csv(testMeansPath)
 
@@ -28,8 +28,8 @@ test_that("speedyBBTm produces results within tolerance", {
 
 
 test_that("BBTm produces results within tolerance", {
-  #Construct covariance matrix
-  #Fit model
+  # Construct covariance matrix
+  # Fit model
   wimbledonModel <- BBTm(
     outcome = wimbledon$matches$outcome,
     player1 = wimbledon$matches$winner,
@@ -42,11 +42,11 @@ test_that("BBTm produces results within tolerance", {
 
   wimbledonModelMeans <- colMeans(wimbledonModel$lambda[-c(1:50), ])
 
-  #Read in means
+  # Read in means
   testMeansPath <- test_path("wimbledonModelMeans.csv")
   testMeans <- read.csv(testMeansPath)
 
-  #Compare within tolerance
+  # Compare within tolerance
   expect_equal(
     sum(abs(testMeans - wimbledonModelMeans)) / 128,
     0,
@@ -55,8 +55,8 @@ test_that("BBTm produces results within tolerance", {
 })
 
 test_that("BBTm.ties produces results within tolerance", {
-  #Construct covariance matrix
-  #Fit model
+  # Construct covariance matrix
+  # Fit model
   data("darEsSalaam")
 
   sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
@@ -75,11 +75,11 @@ test_that("BBTm.ties produces results within tolerance", {
   centered_lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
   lambda.mean <- rowMeans(centered_lambda)
 
-  #Read in means
+  # Read in means
   testMeansPath <- test_path("darTiedModelMeans.csv")
   testMeans <- read.csv(testMeansPath)
 
-  #Compare within tolerance
+  # Compare within tolerance
   expect_equal(
     sum(abs(testMeans - lambda.mean)) / n.objects,
     0,
