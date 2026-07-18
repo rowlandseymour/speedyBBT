@@ -55,7 +55,7 @@
 #'                                  player.prior.var = sigma)
 #'
 #' #Plot results
-#' par(mfrow = c(2, 2))
+#' oldpar = par(mfrow = c(2, 2))
 #' plot(
 #'   forcedMarriageModel$lambda[, 10],
 #'   type = 'l',
@@ -80,6 +80,7 @@
 #'   xlab = "Iteration",
 #'   ylab = expression(lambda[40])
 #' )
+#' par(oldpar)
 #'
 #' @export
 #'
