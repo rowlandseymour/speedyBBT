@@ -41,7 +41,6 @@
 #' ########################################
 #' ## Forced Marriage in Nottinghamshire ##
 #' ########################################
-#' data("forcedMarriage", package = "speedyBBT")
 #' #Construct covariance matrix based on spatial information
 #' sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
 #' sigma <- diag(diag(sigma)^-0.5)%*% sigma %*%diag(diag(sigma)^-0.5)
