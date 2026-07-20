@@ -47,8 +47,6 @@
 #' sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
 #' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
 #'
-#'
-#' ## Not Run
 #' # Fit model
 #' forcedMarriageModel <- speedyBBTm(
 #'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
@@ -235,7 +233,7 @@ speedyBBTm <- function(
 #'
 #'
 #' @examples
-#'
+#' \donttest{
 #' ############################################
 #' ## Deprivation in Dar es Salaam, Tanzania ##
 #' ## Seymour et al (2022)                   ##
@@ -248,7 +246,7 @@ speedyBBTm <- function(
 #'
 #' # Fit BT model with ties
 #' darTiedModel <- BBTm.ties(
-#'   n.objects = 452,
+#'   n.objects = nrow(darEsSalaam$adjacencyMatrix),
 #'   outcome = darEsSalaam$comparisons$outcome,
 #'   player1 = darEsSalaam$comparisons$subward1,
 #'   player2 = darEsSalaam$comparisons$subward2,
@@ -263,7 +261,7 @@ speedyBBTm <- function(
 #' # Generate trace plots
 #' plot(lambda.mean)
 #' plot(darTiedModel$theta, type = "l")
-#'
+#' }
 #' @export
 #'
 BBTm.ties <- function(
@@ -845,7 +843,7 @@ BBTm.with.formula <- function(
 #'
 #'
 #' @examples
-#'
+#' \donttest{
 #' #####################
 #' ## Wimbledon 2019 ##
 #' ####################
@@ -866,7 +864,7 @@ BBTm.with.formula <- function(
 #' hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq = FALSE)
 #' hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq = FALSE)
 #' hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq = FALSE)
-#'
+#' }
 #' @export
 #'
 BBTm <- function(
