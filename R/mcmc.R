@@ -245,7 +245,7 @@ speedyBBTm <- function(
 #'  hyperparameter
 #' @param rw.sd (optional) number describing the standard deviation of normal distribution
 #' proposal distribution for theta
-#' #' @param theta.rate (optional) The rate parameter of the exponential prior
+#' @param theta.rate (optional) The rate parameter of the exponential prior
 #' distribution placed on theta
 #'
 #' @details If `player.prior.var` is omitted, independent and identical

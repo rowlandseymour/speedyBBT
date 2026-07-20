@@ -1,0 +1,74 @@
+---
+title: "Getting started with `speedyBBT`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(speedyBBT)
+```
+
+`speedyBBT` is a package for Bayesian Bradley-Terry modeling. It provides functions for fitting the Bradley-Terry model using Markov Chain Monte Carlo (MCMC) methods, allowing for inference on player abilities and hyperparameters. It uses latent Polya-Gamma variables to facilitate efficient sampling.
+
+To fit a Bradley-Terry model using `speedyBBT`, you can first install the package from CRAN or install the development version from GitHub. 
+
+```{r install_pkg}
+# Install from CRAN
+# install.packages("speedyBBT")
+# Install the development version from GitHub
+remotes::install_github("rowlandseymour/speedyBBT")
+```
+
+You can learn more about the package functions and how to use them from the documentation which can be accessed using `?function_name` in R. For example, to learn about the `speedyBBTm` function, you can run:
+
+```{r help_function}
+?speedyBBTm
+```
+
+The package includes some example datasets that you can use to practice fitting models. You can load these datasets using the `data()` function. For example, to load the `forcedMarriage` dataset, you can run:
+````{r load_data}
+data("forcedMarriage")
+````
+
+This dataset was collected from 12 judges in Nottinghamshire who were asked to judge which of a pair of 76 wards had a higher risk of forced marriage. The dataset contains the results of the 1,846 pairwise comparisons made by the judges. An adjacency matrix is constructed based on proximity, assuming that geographically close wards are highly correlated. This serves as a covariance matrix for the multivariate normal prior distribution of the item qualities.
+
+The `speedyBBTm` function can be used to fit a Bradley-Terry model to the data. You can specify the outcome variable, the items involved in each comparison, and any prior information you have about the items' rating. The function will return an MCMC object containing samples from the posterior distribution of the item qualities. For this example, you first need to construct an adjacency matrix and then use it to create a covariance matrix for the prior distribution of the item qualities.
+
+```{r covariance}
+ #Construct covariance matrix
+expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+```
+
+Next, you can fit the model using the `speedyBBTm` function. You will need to specify the outcome variable, the items involved in each comparison, and the prior covariance matrix for the item qualities. You can also specify the number of MCMC iterations to run. This example uses the default values for the hyperparameters of the prior distribution, but you can also specify your own values if you have prior knowledge about the items' rating using the `hyperparameter` argument.
+
+```{r fit_model}
+#Fit model
+forcedMarriageModel <- speedyBBTm(
+    outcome = rep(1, length(forcedMarriage$comparisons$win)),
+    player1 = forcedMarriage$comparisons$win,
+    player2 = forcedMarriage$comparisons$lost,
+    player.prior.var = sigma,
+    n.iter = 10000,
+    burn.in = 100
+)
+```
+
+To view some preliminary information about the results, you can calculate the means of the player quality parameters from the MCMC samples and summarize them. This will give you an idea of the estimated abilities of the items based on the comparisons in the dataset.
+
+```{r view_output}
+forcedMarriageModelMeans <- colMeans(forcedMarriageModel[,grep("lambda",varnames(forcedMarriageModel))])
+summary(forcedMarriageModelMeans)
+```
+
+You can run some MCMC diagnostics to check convergence. The `speedyBBTm` function returns an MCMC object that can be used with the `coda` package for diagnostics. You can use the `plot()` function to visualize the trace plots and density plots of the MCMC samples, and the `gelman.diag()` function to calculate the Gelman-Rubin diagnostic for convergence. For more information about available plots and diagnostics, you can refer to the [`coda` ](https://github.com/cran/coda) package [documentation](https://cran.r-project.org/web/packages/coda/index.html).
