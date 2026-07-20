@@ -59,33 +59,10 @@
 #'
 #' # Plot results
 #' oldpar <- par(mfrow = c(2, 2))
-#' plot(
-#'   forcedMarriageModel$lambda[, 10],
-#'   type = "l",
-#'   xlab = "Iteration",
-#'   ylab = expression(lambda[10])
-#' )
-#' plot(
-#'   forcedMarriageModel$lambda[, 20],
-#'   type = "l",
-#'   xlab = "Iteration",
-#'   ylab = expression(lambda[20])
-#' )
-#' plot(
-#'   forcedMarriageModel$lambda[, 30],
-#'   type = "l",
-#'   xlab = "Iteration",
-#'   ylab = expression(lambda[30])
-#' )
-#' plot(
-#'   forcedMarriageModel$lambda[, 40],
-#'   type = "l",
-#'   xlab = "Iteration",
-#'   ylab = expression(lambda[40])
-#' )
+#'
+#' plot(forcedMarriageModel[, paste("lambda[", c(10, 20, 30, 40), "]", sep = "")], xlab = "Iteration", ylab = expression(lambda[i]))
 #' par(oldpar)
 #' }
-#'
 #' @export
 #'
 speedyBBTm <- function(
