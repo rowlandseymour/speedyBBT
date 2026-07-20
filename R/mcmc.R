@@ -18,7 +18,7 @@
 #'  the player correlation parameters
 #' @param lambda.initial (optional) vector containing the values of the
 #'  player correlation parameters for the first MCMC iteration
-#' @param n.iter number of MCMC samples to be drawn
+#' @param n.iter number of MCMC samples to be drawn.
 #' @param hyperparameter boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
 #'  (main diagonal of the covariance matrix) must be set to 1.
@@ -37,7 +37,7 @@
 #' @return  A `mcmc` object containing samples from the posterior distribution
 #'
 #' @importFrom coda mcmc varnames
-#' 
+#'
 #' @examples
 #' \donttest{
 #' ########################################
@@ -204,8 +204,8 @@ speedyBBTm <- function(
       "alpha.sq"
     )
   } else {
-    mcmc_out <- coda::mcmc(
-      data = pars.matrix[burn.in:n.iter, 1:n.objects],
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[burn.in:n.iter, 1:n.objects],
       start = burn.in,
       end = n.iter,
       thin = 1
