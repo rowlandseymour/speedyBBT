@@ -1,5 +1,5 @@
 #' Generates a plot of the posterior mean and 95% credible interval
-#' of the ability estimate.
+#' of the quality estimate.
 #'
 #' @param item_names The names of the different items (or players or wards) being compared
 #' @param model_output The model output object containing the draws
@@ -10,17 +10,19 @@
 #' data("wimbledon")
 #' items <- wimbledon$players$name
 #'
-#' wimbledonModel <- BBTm(outcome  = wimbledon$matches$outcome,
-#'                      player2   = wimbledon$matches$loser,
-#'                       player1  = wimbledon$matches$winner,
-#'                      advantage = wimbledon$matches$secondWeek,
-#'                      formula  = ~ rank + points,
-#'                      data       = wimbledon$players,
-#'                       n.iter = 200)
+#' wimbledonModel <- BBTm(
+#'   outcome = wimbledon$matches$outcome,
+#'   player2 = wimbledon$matches$loser,
+#'   player1 = wimbledon$matches$winner,
+#'   advantage = wimbledon$matches$secondWeek,
+#'   formula = ~ rank + points,
+#'   data = wimbledon$players,
+#'   n.iter = 200
+#' )
 #'
-#' plot_abilities(item_names = items, model_output = wimbledonModel)
+#' plot_qualities(item_names = items, model_output = wimbledonModel)
 #'
-plot_abilities <- function(item_names, model_output, burn.in = 100) {
+plot_qualities <- function(item_names, model_output, burn.in = 100) {
   # Posterior mean and 95% credible intervals (burn-in = 100)
   param_draws <- model_output$lambda[-c(1:burn.in), ]
   model_means <- colMeans(param_draws)
@@ -50,7 +52,7 @@ plot_abilities <- function(item_names, model_output, burn.in = 100) {
   plot(
     modelResults$mean,
     xaxt = "n",
-    ylab = "Posterior Mean Ability",
+    ylab = "Posterior Mean Quality",
     ylim = c(-7.5, 7.5)
   )
   segments(
