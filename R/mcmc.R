@@ -52,7 +52,7 @@
 #'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
 #'   player1 = forcedMarriage$comparisons$win,
 #'   player2 = forcedMarriage$comparisons$lost,
-#'   player.prior.var = sigma
+#'   player.prior.var = sigma, n.iter = 1
 #' )
 #'
 #' # Plot results
@@ -191,10 +191,23 @@ speedyBBTm <- function(
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
   if (hyperparameter == TRUE) {
-    mcmc_out <- coda::mcmc(data = pars.matrix[burn.in:n.iter,], start = burn.in, end = n.iter, thin = 1)
-    coda::varnames(mcmc_out) <- c(paste("lambda[", 1:n.objects, "]", sep = ""), "alpha.sq")
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[burn.in:n.iter, ],
+      start = burn.in,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "alpha.sq"
+    )
   } else {
-    mcmc_out <- coda::mcmc(data = pars.matrix[burn.in:n.iter, 1:n.objects], start = burn.in, end = n.iter, thin = 1)
+    mcmc_out <- coda::mcmc(
+      data = pars.matrix[burn.in:n.iter, 1:n.objects],
+      start = burn.in,
+      end = n.iter,
+      thin = 1
+    )
     coda::varnames(mcmc_out) <- c(paste("lambda[", 1:n.objects, "]", sep = ""))
   }
   return(mcmc_out)
@@ -243,34 +256,6 @@ speedyBBTm <- function(
 #'
 #'
 #' @examples
-#'
-#' ############################################
-#' ## Deprivation in Dar es Salaam, Tanzania ##
-#' ## Seymour et al (2022)                   ##
-#' ############################################
-#' # Construct covariance matrix based on spatial informartion
-#' sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
-#' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
-#'
-#'
-#' # Fit BT model with ties
-#' darTiedModel <- BBTm.ties(
-#'   n.objects = 452,
-#'   outcome = darEsSalaam$comparisons$outcome,
-#'   player1 = darEsSalaam$comparisons$subward1,
-#'   player2 = darEsSalaam$comparisons$subward2,
-#'   player.prior.var = sigma,
-#'   hyperparameter = TRUE, rw.sd = 0.005
-#' )
-#'
-#' # Get posterior means
-#' lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
-#' lambda.mean <- rowMeans(lambda)
-#'
-#' # Generate trace plots
-#' plot(lambda.mean)
-#' plot(darTiedModel$theta[-c(1:100)], type = "l")
-#'
 #' @export
 #'
 BBTm.ties <- function(
@@ -866,7 +851,7 @@ BBTm.with.formula <- function(
 #'   advantage = wimbledon$matches$secondWeek,
 #'   formula = ~ rank + points,
 #'   data = wimbledon$players,
-#'   n.iter = 4000
+#'   n.iter = 1
 #' )
 #'
 #' # Plot posterior distributions
