@@ -33,9 +33,10 @@
 #' If `lambda.initial` is ommitted, it is set to a vector of zeroes.
 #'
 #'
-#' @return  A data frame containing samples from the posterior distribution
+#' @return  A `mcmc` object containing samples from the posterior distribution
 #'
-#'
+#' @importFrom coda mcmc varnames
+#' 
 #' @examples
 #' \donttest{
 #' ########################################

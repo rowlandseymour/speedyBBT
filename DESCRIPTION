@@ -14,12 +14,12 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
 Imports: 
     base,
     BayesLogit,
+    coda,
     Matrix,
-    stats, 
+    stats,
     utils
 Suggests:
     expm,
@@ -29,3 +29,4 @@ Depends:
 Config/testthat/edition: 3
 URL: https://github.com/rowlandseymour/speedyBBT
 BugReports: https://github.com/rowlandseymour/speedyBBT/issues
+Config/roxygen2/version: 8.0.0
