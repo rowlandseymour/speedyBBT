@@ -41,7 +41,7 @@ The package includes some example datasets that you can use to practice fitting 
 data("forcedMarriage")
 ````
 
-This dataset was collected from 12 judges in Nottinghamshire who were asked to judge which of a pair of 76 wards had a higher risk of forced marriage. The dataset contains the results of the 1,846 pairwise comparisons made by the judges. An adjacency matrix is constructed based on proximity, assuming that geographically close wards are highly correlated. This serves as a covariance matrix for the multivariate normal prior distribution of the item qualities.
+This dataset was collected from 12 judges in Nottinghamshire who were asked to judge which of a pair of 76 wards had a higher risk of forced marriage. The dataset contains the results of the 1,846 pairwise comparisons made by the judges. An adjacency matrix is constructed based on proximity, assuming that geographically close wards are more highly correlated. This serves as a covariance matrix for the multivariate normal prior distribution of the item qualities. In this case, the "items" are wards in Nottinghamshire and their "quality" is the risk of forced marriage in that ward. 
 
 The `speedyBBTm` function can be used to fit a Bradley-Terry model to the data. You can specify the outcome variable, the items involved in each comparison, and any prior information you have about the items' rating. The function will return an MCMC object containing samples from the posterior distribution of the item qualities. For this example, you first need to construct an adjacency matrix and then use it to create a covariance matrix for the prior distribution of the item qualities.
 
@@ -65,7 +65,7 @@ forcedMarriageModel <- speedyBBTm(
 )
 ```
 
-To view some preliminary information about the results, you can calculate the means of the player quality parameters from the MCMC samples and summarize them. This will give you an idea of the estimated abilities of the items based on the comparisons in the dataset.
+To view some preliminary information about the results, you can calculate the means of the item quality parameters from the MCMC samples and summarise them. This will give you an idea of the estimated qualities of the items based on the comparisons in the dataset.
 
 ```{r view_output}
 forcedMarriageModelMeans <- colMeans(forcedMarriageModel[, grep("lambda", varnames(forcedMarriageModel))])
@@ -73,19 +73,22 @@ forcedMarriageModelMeans
 summary(forcedMarriageModel)
 ```
 
-You can run some MCMC diagnostics to check convergence. The `speedyBBTm` function returns an MCMC object that can be used with the `coda` package for diagnostics. You can use the `plot()` function to visualize the trace plots and density plots of the MCMC samples, and the `gelman.diag()` function to calculate the Gelman-Rubin diagnostic for convergence. For more information about available plots and diagnostics, you can refer to the [`coda` ](https://github.com/cran/coda) package [documentation](https://cran.r-project.org/web/packages/coda/index.html).
+You can run some MCMC diagnostics to check convergence. The `speedyBBTm` function returns an MCMC object that can be used with the `coda` package for diagnostics. You can use the `plot()` function to visualize the trace plots and density plots of the MCMC samples. 
 
 ```{r mcmc_diagnostics, fig.width=8, fig.height=6}
-# Trace plots
-plot(forcedMarriageModel[, paste("lambda[", c(10, 20, 30, 40), "]", sep = "")], main = "Trace plots for player quality parameters")
+#Trace plots
+plot(forcedMarriageModel[,paste("lambda[", c(10,20,30,40), "]", sep = "")], main = "Trace plots for item quality parameters")
+
 ```
+
+You can use the `effectiveSize()` function to calculate the estimated effective sample size for convergence. Another example diagnostic illustrated here is the Geweke diagnostic, calculated using the `gewecke.diag()` function from `coda`. This diagnostic compares the different between the two sample means in the first 10% and the last 50% of iterations in the Markov chain to asses convergence. For more information about available plots and diagnostics, you can refer to the [`coda` ](https://github.com/cran/coda) package [documentation](https://cran.r-project.org/web/packages/coda/index.html).
 
 ```{r some_diags}
 effectiveSize(forcedMarriageModel)
 geweke.diag(forcedMarriageModel)
 ``` 
 
-You can get additional, colourful plots by installing `ggplot2` and `bayesplot` and calling the functions from `bayesplot` on the MCMC object returned by `speedyBBTm`. For example, you can use the `mcmc_trace()` function to create trace plots and the `mcmc_dens_overlay()` function to create density plots of the MCMC samples. For more information, see the `bayesplot` package [documentation](https://mc-stan.org/bayesplot/).
+You can get additional, colourful plots by installing `ggplot2` and `bayesplot` and calling the functions from `bayesplot` on the `mcmc` object returned by `speedyBBTm`. For example, you can use the `mcmc_trace()` function to create trace plots and the `mcmc_dens_overlay()` function to create density plots of the MCMC samples. For more information, see the `bayesplot` package [documentation](https://mc-stan.org/bayesplot/).
 
 ```{r bayesplot_diagnostics, fig.width=8, fig.height=6}
 # Install bayesplot if not already installed
