@@ -172,7 +172,7 @@ speedyBBTm <- function(
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[burn.in:n.iter, ],
-      start = burn.in,
+      start = burn.in + 1,
       end = n.iter,
       thin = 1
     )
@@ -183,7 +183,7 @@ speedyBBTm <- function(
   } else {
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[burn.in:n.iter, 1:n.objects],
-      start = burn.in,
+      start = burn.in + 1,
       end = n.iter,
       thin = 1
     )
@@ -235,6 +235,34 @@ speedyBBTm <- function(
 #'
 #'
 #' @examples
+#' \donttest{
+#' ############################################
+#' ## Deprivation in Dar es Salaam, Tanzania ##
+#' ## Seymour et al (2022)                   ##
+#' ############################################
+#' data("darEsSalaam", package = "speedyBBT")
+#'#Construct covariance matrix based on spatial informartion
+#' sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
+#' sigma <- diag(diag(sigma)^-0.5)%*% sigma %*%diag(diag(sigma)^-0.5)
+#'
+#'
+#'
+#' # Fit BT model with ties
+#'darTiedModel <- BBTm.ties(n.objects = 452,
+#'                          outcome = darEsSalaam$comparisons$outcome,
+#'                          player1 = darEsSalaam$comparisons$subward1,
+#'                          player2 = darEsSalaam$comparisons$subward2,
+#'                          player.prior.var = sigma,
+#'                          hyperparameter = TRUE, rw.sd = 0.005, n.iter = 1)
+#'
+#'#Get posterior means
+#'darTiedModel$lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
+#'lambda.mean <- rowMeans(darTiedModel$lambda)
+#'
+#'#Generate trace plots
+#'plot(lambda.mean)
+#'plot(darTiedModel$theta[-c(1:100)], type = 'l')
+#'}
 #' @export
 #'
 BBTm.ties <- function(
