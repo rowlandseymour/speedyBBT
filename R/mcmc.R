@@ -169,7 +169,7 @@ speedyBBTm <- function(
   }
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[burn.in:n.iter, ],
+      x = pars.matrix[(burn.in + 1):n.iter, ],
       start = burn.in + 1,
       end = n.iter,
       thin = 1
