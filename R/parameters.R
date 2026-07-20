@@ -8,15 +8,24 @@ lambda <- function(model_output, indices_to_extract = NULL) {
   check_model(model_output, "lambda")
 
   if (is.null(indices_to_extract)) {
-    return(model_output[, grep("lambda", varnames(model_output))])
+    var_string <- grep("lambda", varnames(model_output), value = TRUE)
   } else {
-    return(model_output[, paste(
+    var_string <- paste(
       "lambda[",
       indices_to_extract,
       "]",
       sep = ""
-    )])
+    )
   }
+  lambda_obj <- coda::as.mcmc(
+    model_output[, var_string],
+    start = mcpar[1],
+    end = mcpar[2],
+    thin = mcpar[3]
+  )
+  coda::varnames(lambda_obj) <- var_string
+  attr(lambda_obj, 'mcpar') <- coda::mcpar(model_output)
+  return(lambda_obj)
 }
 
 
@@ -41,7 +50,7 @@ check_model <- function(model_output, parameter_name) {
     )
   }
 
-  if (length(grep(parameter_name, varnames(model_output)))) {
+  if (length(grep(parameter_name, varnames(model_output))) == 0) {
     rlang::abort(
       paste(
         "This model object does not contain estimates of the ",
