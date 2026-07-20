@@ -98,16 +98,14 @@ data("wimbledon", package = "speedyBBT")
 #Allow an effect for a match being in the first or second week.
 wimbledonModel <- BBTm(outcome  = wimbledon$matches$outcome,
                      player2   = wimbledon$matches$loser,
-                      player1  = wimbledon$matches$winner,
+                     player1  = wimbledon$matches$winner,
                      advantage = wimbledon$matches$secondWeek,
                      formula  = ~ rank + points,
-                     data       = wimbledon$players,
-                      n.iter = 1)
+                     data = wimbledon$players,
+                     n.iter = 1)
 
 #Plot posterior distributions
-hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq  = FALSE)
-hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq  = FALSE)
-hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq  = FALSE)
+hist(wimbledonModel$lambda, main = "", xlab = expression(beta[1]), freq  = FALSE)
 
 
 }
