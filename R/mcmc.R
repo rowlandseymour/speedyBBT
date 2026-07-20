@@ -180,7 +180,7 @@ speedyBBTm <- function(
     )
   } else {
     mcmc_out <- coda::as.mcmc(
-      data = pars.matrix[(burn.in + 1):n.iter, 1:n.objects],
+      x = pars.matrix[(burn.in + 1):n.iter, 1:n.objects],
       start = burn.in + 1,
       end = n.iter,
       thin = 1
