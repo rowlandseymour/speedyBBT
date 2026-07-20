@@ -20,8 +20,7 @@ test_that("BBTm.ties produces results within tolerance", {
   lambda.mean <- rowMeans(centered_lambda)
 
   # Read in means
-  testMeansPath <- test_path("darTiedModelMeansFullRun.csv")
-  testMeans <- read.csv(testMeansPath)
+  testMeans <- read.csv("darTiedModelMeansFullRun.csv")
 
   # Compare within tolerance
   expect_equal(
