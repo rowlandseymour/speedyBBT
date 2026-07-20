@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 ^speedyBBT\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
