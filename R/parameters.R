@@ -24,7 +24,7 @@ lambda <- function(model_output, indices_to_extract = NULL) {
     thin = coda::mcpar(model_output)[3]
   )
   coda::varnames(lambda_obj) <- var_string
-  attr(lambda_obj, 'mcpar') <- coda::mcpar(model_output)
+  attr(lambda_obj, "mcpar") <- coda::mcpar(model_output)
   return(lambda_obj)
 }
 

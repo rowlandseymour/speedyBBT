@@ -50,10 +50,12 @@
 #'
 #' ## Not Run
 #' # Fit model
-#' forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
-#'                                   player1 = forcedMarriage$comparisons$win,
-#'                                   player2 = forcedMarriage$comparisons$lost,
-#'                                  player.prior.var = sigma, n.iter = 3, burn.in = 1)
+#' forcedMarriageModel <- speedyBBTm(
+#'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
+#'   player1 = forcedMarriage$comparisons$win,
+#'   player2 = forcedMarriage$comparisons$lost,
+#'   player.prior.var = sigma, n.iter = 3, burn.in = 1
+#' )
 #'
 #' # Plot results
 #' oldpar <- par(mfrow = c(2, 2))
@@ -239,27 +241,28 @@ speedyBBTm <- function(
 #' ## Seymour et al (2022)                   ##
 #' ############################################
 #' data("darEsSalaam", package = "speedyBBT")
-#'#Construct covariance matrix based on spatial informartion
+#' # Construct covariance matrix based on spatial informartion
 #' sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
-#' sigma <- diag(diag(sigma)^-0.5)%*% sigma %*%diag(diag(sigma)^-0.5)
-#'
+#' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
 #'
 #'
 #' # Fit BT model with ties
-#'darTiedModel <- BBTm.ties(n.objects = 452,
-#'                          outcome = darEsSalaam$comparisons$outcome,
-#'                          player1 = darEsSalaam$comparisons$subward1,
-#'                          player2 = darEsSalaam$comparisons$subward2,
-#'                          player.prior.var = sigma,
-#'                          hyperparameter = TRUE, rw.sd = 0.005, n.iter = 2)
+#' darTiedModel <- BBTm.ties(
+#'   n.objects = 452,
+#'   outcome = darEsSalaam$comparisons$outcome,
+#'   player1 = darEsSalaam$comparisons$subward1,
+#'   player2 = darEsSalaam$comparisons$subward2,
+#'   player.prior.var = sigma,
+#'   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 2
+#' )
 #'
-#'#Get posterior means
-#'darTiedModel$lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
-#'lambda.mean <- rowMeans(darTiedModel$lambda)
+#' # Get posterior means
+#' darTiedModel$lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
+#' lambda.mean <- rowMeans(darTiedModel$lambda)
 #'
-#'#Generate trace plots
-#'plot(lambda.mean)
-#'plot(darTiedModel$theta, type = 'l')
+#' # Generate trace plots
+#' plot(lambda.mean)
+#' plot(darTiedModel$theta, type = "l")
 #'
 #' @export
 #'

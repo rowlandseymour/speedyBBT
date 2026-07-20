@@ -76,9 +76,8 @@ summary(forcedMarriageModel)
 You can run some MCMC diagnostics to check convergence. The `speedyBBTm` function returns an MCMC object that can be used with the `coda` package for diagnostics. You can use the `plot()` function to visualize the trace plots and density plots of the MCMC samples. 
 
 ```{r mcmc_diagnostics, fig.width=8, fig.height=6}
-#Trace plots
-plot(forcedMarriageModel[,paste("lambda[", c(10,20,30,40), "]", sep = "")], main = "Trace plots for item quality parameters")
-
+# Trace plots
+plot(forcedMarriageModel[, paste("lambda[", c(10, 20, 30, 40), "]", sep = "")], main = "Trace plots for item quality parameters")
 ```
 
 You can use the `effectiveSize()` function to calculate the estimated effective sample size for convergence. Another example diagnostic illustrated here is the Geweke diagnostic, calculated using the `gewecke.diag()` function from `coda`. This diagnostic compares the different between the two sample means in the first 10% and the last 50% of iterations in the Markov chain to asses convergence. For more information about available plots and diagnostics, you can refer to the [`coda` ](https://github.com/cran/coda) package [documentation](https://cran.r-project.org/web/packages/coda/index.html).
