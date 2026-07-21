@@ -278,10 +278,12 @@ BBTm.ties <- function(
   chi = 0.01,
   psi = 0.01,
   rw.sd = 0.1,
-  theta.rate = 0.01
+  theta.rate = 0.01,
+  burn.in = 100
 ) {
   # get number of objects in study
   n.objects <- max(c(player1, player2))
+  total.iter <- n.iter + burn.in
 
   # Order pairs into winner/loser
   winner <- ifelse(
@@ -351,14 +353,14 @@ BBTm.ties <- function(
   grand.covariance <- sum(player.prior.var)
 
   # Create empty storage vessels
-  lambda.matrix <- matrix(0, n.objects, n.iter) # store results
-  theta.store <- numeric(n.iter) # store results
-  alpha.sq.store <- numeric(n.iter) # store results
+  lambda.matrix <- matrix(0, n.objects, total.iter) # store results
+  theta.store <- numeric(total.iter) # store results
+  alpha.sq.store <- numeric(total.iter) # store results
 
-  pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = total.iter, style = 3)
 
   # MCMC
-  for (i in 1:n.iter) {
+  for (i in 1:total.iter) {
     # Update alpha^2
     if (hyperparameter == TRUE) {
       alpha.sq <- 1 /
@@ -411,16 +413,34 @@ BBTm.ties <- function(
     lambda.matrix[, i] <- as.numeric(lambda)
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
+  browser()
+  pars.matrix <- cbind(t(lambda.matrix), theta.store, alpha.sq.store)
 
   if (hyperparameter == TRUE) {
-    return(list(
-      "lambda" = lambda.matrix,
-      "theta" = theta.store,
-      "alpha.sq" = alpha.sq.store
-    ))
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):total.iter, 1:(n.objects + 2)],
+      start = burn.in + 1,
+      end = total.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:(n.objects), "]", sep = ""),
+      "theta",
+      "alpha.sq"
+    )
   } else {
-    return(list("lambda" = lambda.matrix, "theta" = theta.store))
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):total.iter, 1:(n.objects + 1)],
+      start = burn.in + 1,
+      end = total.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "theta"
+    )
   }
+  return(mcmc_out)
 }
 
 
