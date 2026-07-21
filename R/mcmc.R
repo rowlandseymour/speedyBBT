@@ -238,7 +238,6 @@ speedyBBTm <- function(
 #' ## Deprivation in Dar es Salaam, Tanzania ##
 #' ## Seymour et al (2022)                   ##
 #' ############################################
-#' data("darEsSalaam", package = "speedyBBT")
 #' # Construct covariance matrix based on spatial informartion
 #' sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
 #' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
