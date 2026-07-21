@@ -16,7 +16,7 @@ test_that("BBTm.ties produces results within tolerance", {
     rw.sd = 0.005,
     n.iter = 4000
   )
-  browser()
+
   # Get posterior means
   centered_lambda <- lambda(darTiedModel) - colMeans(lambda(darTiedModel))
   lambda.mean <- rowMeans(centered_lambda)
