@@ -17,7 +17,8 @@ BBTm.ties(
   chi = 0.01,
   psi = 0.01,
   rw.sd = 0.1,
-  theta.rate = 0.01
+  theta.rate = 0.01,
+  burn.in = 100
 )
 }
 \arguments{
@@ -74,6 +75,7 @@ N(0, 5^2) prior distributions are placed on each object quality parameter.
 If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 }
 \examples{
+
 ############################################
 ## Deprivation in Dar es Salaam, Tanzania ##
 ## Seymour et al (2022)                   ##
@@ -84,22 +86,19 @@ sigma <- diag(diag(sigma)^-0.5) \%*\% sigma \%*\% diag(diag(sigma)^-0.5)
 
 
 # Fit BT model with ties
-# Using `n.iter = 3` here to reduce model runtime, you will need
-# a larger number of iterations for valid inference.
-darTiedModel <- BBTm.ties(
-  n.objects = nrow(darEsSalaam$adjacencyMatrix),
-  outcome = darEsSalaam$comparisons$outcome,
-  player1 = darEsSalaam$comparisons$subward1,
-  player2 = darEsSalaam$comparisons$subward2,
-  player.prior.var = sigma,
-  hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3
-)
+darTiedModel <- BBTm.ties(n.objects = 452,
+                         outcome = darEsSalaam$comparisons$outcome,
+                         player1 = darEsSalaam$comparisons$subward1,
+                         player2 = darEsSalaam$comparisons$subward2,
+                         player.prior.var = sigma,
+                         hyperparameter = TRUE, rw.sd = 0.005, n.iter = 2)
 
-# Get posterior means
+#Get posterior means
 darTiedModel$lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
 lambda.mean <- rowMeans(darTiedModel$lambda)
 
 # Generate trace plots
 plot(lambda.mean)
-plot(darTiedModel$theta, type = "l")
+plot(darTiedModel$theta, type = 'l')
+
 }

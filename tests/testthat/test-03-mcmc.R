@@ -13,7 +13,10 @@ test_that("speedyBBTm produces results within tolerance", {
     n.iter = 2000
   )
 
-  forcedMarriageModelMeans <- colMeans(forcedMarriageModel[, grep("lambda", varnames(forcedMarriageModel))])
+  forcedMarriageModelMeans <- colMeans(forcedMarriageModel[, grep(
+    "lambda",
+    varnames(forcedMarriageModel)
+  )])
 
   # Read in means
   testMeansPath <- test_path("forcedMarriageModelMeans.csv")
@@ -71,10 +74,11 @@ test_that("BBTm.ties produces expected output from a single iteration", {
     player.prior.var = sigma,
     hyperparameter = TRUE,
     rw.sd = 0.005,
-    n.iter = 1
+    burn.in = 0,
+    n.iter = 2
   )
   # Get posterior means
-  centered_lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
+  centered_lambda <- lambda(darTiedModel) - colMeans(lambda(darTiedModel))
   lambda.mean <- rowMeans(centered_lambda)
 
   # Read in means
