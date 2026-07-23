@@ -2,7 +2,7 @@
 % Please edit documentation in R/parameters.R
 \name{parameter.matrix}
 \alias{parameter.matrix}
-\title{This function helps the user extract relevant estimates from the quality parameters
+\title{This function helps the user extract relevant estimates from multidimensional parameters
 fit using a Bayesian Bradley-Terry model.}
 \usage{
 parameter.matrix(model_output, parameter_name, indices_to_extract = NULL)
@@ -16,6 +16,6 @@ parameter.matrix(model_output, parameter_name, indices_to_extract = NULL)
 A matrix with the selected indices, or the full matrix of draws.
 }
 \description{
-This function helps the user extract relevant estimates from the quality parameters
+This function helps the user extract relevant estimates from multidimensional parameters
 fit using a Bayesian Bradley-Terry model.
 }
