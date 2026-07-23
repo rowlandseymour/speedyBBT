@@ -19,7 +19,8 @@ BBTm(
   kappa.var = NULL,
   hyperparameter = TRUE,
   chi = 0.01,
-  psi = 0.01
+  psi = 0.01,
+  burn.in = 100
 )
 }
 \arguments{
@@ -65,6 +66,8 @@ hyperparameter}
 
 \item{psi}{shape parameter for the inverse-gamma prior distribution on the
 hyperparameter}
+
+\item{burn.in}{the number of iterations to use for a burn.in, default is 100}
 }
 \value{
 A data frame containing samples from the posterior distribution
@@ -106,8 +109,8 @@ wimbledonModel <- BBTm(
 )
 
 # Plot posterior distributions
-hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq = FALSE)
-hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq = FALSE)
-hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq = FALSE)
+hist(parameter(wimbledonModel, "kappa"), main = "", xlab = expression(kappa), freq = FALSE)
+hist(parameter.matrix(wimbledonModel, "beta",1), main = "", xlab = expression(beta[1]), freq = FALSE)
+hist(parameter.matrix(wimbledonModel, "beta",2), main = "", xlab = expression(beta[2]), freq = FALSE)
 }
 }
