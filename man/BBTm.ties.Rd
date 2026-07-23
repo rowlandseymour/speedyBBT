@@ -59,7 +59,7 @@ proposal distribution for theta.}
 distribution placed on theta.}
 }
 \value{
-A data frame containing samples from the posterior distribution.
+A `coda::mcmc`` object containing samples from the posterior distribution
 }
 \description{
 This function uses MCMC to sample from the posterior distribution of the
@@ -86,12 +86,14 @@ sigma <- diag(diag(sigma)^-0.5) \%*\% sigma \%*\% diag(diag(sigma)^-0.5)
 
 
 # Fit BT model with ties
-darTiedModel <- BBTm.ties(n.objects = 452,
-                         outcome = darEsSalaam$comparisons$outcome,
-                         player1 = darEsSalaam$comparisons$subward1,
-                         player2 = darEsSalaam$comparisons$subward2,
-                         player.prior.var = sigma,
-                         hyperparameter = TRUE, rw.sd = 0.005, n.iter = 2)
+darTiedModel <- BBTm.ties(
+  n.objects = nrow(darEsSalaam$adjacencyMatrix),
+  outcome = darEsSalaam$comparisons$outcome,
+  player1 = darEsSalaam$comparisons$subward1,
+  player2 = darEsSalaam$comparisons$subward2,
+  player.prior.var = sigma,
+  hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0
+)
 
 # Get posterior means
 darTiedModelLambda <- parameter.matrix(darTiedModel, "lambda") - colMeans(parameter.matrix(darTiedModel, "lambda"))

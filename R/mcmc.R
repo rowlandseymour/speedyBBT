@@ -231,7 +231,7 @@ speedyBBTm <- function(
 #' If `lambda.initial` is omitted, it is set to a vector of zeroes.
 #'
 #'
-#' @return  A data frame containing samples from the posterior distribution.
+#' @return  A `coda::mcmc`` object containing samples from the posterior distribution
 #'
 #'
 #' @examples
@@ -253,7 +253,7 @@ speedyBBTm <- function(
 #'   player1 = darEsSalaam$comparisons$subward1,
 #'   player2 = darEsSalaam$comparisons$subward2,
 #'   player.prior.var = sigma,
-#'   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3
+#'   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0
 #' )
 #'
 #' # Get posterior means
@@ -491,7 +491,7 @@ BBTm.ties <- function(
 #' If `lambda.var` is omitted, it is set to N(0, 5^2).
 #'
 #'
-#' @return  A data frame containing samples from the posterior distribution
+#' @return  A `coda::mcmc` object containing samples from the posterior distribution
 #'
 #' @keywords internal
 #'
@@ -660,7 +660,7 @@ BBTm.no.formula <- function(
       "alpha.sq"
     )
   } else {
-    pars.matrix <- cbind(lambda.matrix)
+    pars.matrix <- lambda.matrix
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[(burn.in + 1):n.iter, ],
       start = burn.in + 1,
@@ -722,7 +722,7 @@ BBTm.no.formula <- function(
 #' it is set to 0.5.
 #'
 #'
-#' @return  A data frame containing samples from the posterior distribution
+#' @return  A `coda::mcmc` object containing samples from the posterior distribution
 #'
 #' @keywords internal
 #'
@@ -943,7 +943,7 @@ BBTm.with.formula <- function(
 #' it is set to 0.5.
 #'
 #'
-#' @return  A data frame containing samples from the posterior distribution
+#' @return  A `coda::mcmc` object containing samples from the posterior distribution
 #'
 #'
 #'
