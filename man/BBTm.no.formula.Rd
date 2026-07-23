@@ -57,7 +57,7 @@ hyperparameter}
 \item{burn.in}{number of iterations to use as a burn-in period. Default is 100.}
 }
 \value{
-A data frame containing samples from the posterior distribution
+A \code{coda::mcmc} object containing samples from the posterior distribution
 }
 \description{
 This function fits the Bradley-Terry model with a comparison specific effect.

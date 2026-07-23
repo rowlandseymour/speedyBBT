@@ -5,6 +5,7 @@
 #'
 #' @param model_output The mcmc object that contains the draws output from the BBT model
 #' @param indices_to_extract a single column or a vector of column indices to extract from the draws matrix
+#' @param parameter_name The name of the parameter matrix to extract
 #' @return a matrix with the selected indices, or the full matrix of draws
 parameter.matrix <- function(
   model_output,
