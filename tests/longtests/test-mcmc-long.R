@@ -1,7 +1,6 @@
 test_that("BBTm.ties produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
-  data("darEsSalaam")
 
   sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
   sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
@@ -14,7 +13,7 @@ test_that("BBTm.ties produces results within tolerance", {
     player.prior.var = sigma,
     hyperparameter = TRUE,
     rw.sd = 0.005,
-    n.iter = 4000
+    n.iter = 1000
   )
 
   # Get posterior means

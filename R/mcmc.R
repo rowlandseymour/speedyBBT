@@ -481,6 +481,7 @@ BBTm.ties <- function(
 #' hyperparameter
 #' @param chi rate parameter for the inverse-gamma prior distribution on the
 #'  hyperparameter
+#' @param burn.in number of iterations to use as a burn-in period. Default is 100.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -508,7 +509,8 @@ BBTm.no.formula <- function(
   n.iter = 1000,
   hyperparameter = TRUE,
   chi = 0.01,
-  psi = 0.01
+  psi = 0.01,
+  burn.in = 100
 ) {
   # get number of objects in study
   n.objects <- max(c(player1, player2))
@@ -619,20 +621,55 @@ BBTm.no.formula <- function(
   }
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
-    return(list(
-      "lambda" = lambda.matrix,
-      "alpha.sq" = alpha.sq.vector,
-      "kappa" = kappa.vector
-    ))
+    pars.matrix <- cbind(lambda.matrix, alpha.sq.vector, kappa.vector)
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "alpha.sq",
+      "kappa"
+    )
   } else if (hyperparameter == FALSE & advantage.inf == TRUE) {
+    pars.matrix <- cbind(lambda.matrix, kappa.vector)
     # Output only kappa
-    return(list("lambda" = lambda.matrix, "kappa" = kappa.vector))
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "kappa"
+    )
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
+    pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     # Output only alpha.sq
-    return(list("lambda" = lambda.matrix, "alpha.sq" = alpha.sq.vector))
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "alpha.sq"
+    )
   } else {
-    return(list("lambda" = lambda.matrix))
+    pars.matrix <- cbind(lambda.matrix)
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames <- c(paste("lambda[", 1:n.objects, "]", sep = ""))
   }
+  return(mcmc_out)
 }
 
 
@@ -810,28 +847,66 @@ BBTm.with.formula <- function(
   }
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
-    return(list(
-      "beta" = beta.matrix,
-      "lambda" = lambda.matrix,
-      "alpha.sq" = alpha.sq.vector,
-      "kappa" = kappa.vector
-    ))
+    pars.matrix <- cbind(
+      beta.matrix,
+      lambda.matrix,
+      kappa.vector,
+      alpha.sq.vector
+    )
+    # Output only kappa
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("beta", "lambda[", 1:n.objects, "]", sep = ""),
+      "kappa",
+      "alpha.sq"
+    )
   } else if (hyperparameter == FALSE & advantage.inf == TRUE) {
     # Output only kappa
-    return(list(
-      "beta" = beta.matrix,
-      "lambda" = lambda.matrix,
-      "kappa" = kappa.vector
-    ))
+    pars.matrix <- cbind(beta.matrix, lambda.matrix, kappa.vector)
+    # Output only kappa
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("beta", "lambda[", 1:n.objects, "]", sep = ""),
+      "kappa"
+    )
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
     # Output only alpha.sq
-    return(list(
-      "beta" = beta.matrix,
-      "lambda" = lambda.matrix,
-      "alpha.sq" = alpha.sq.vector
-    ))
+
+    pars.matrix <- cbind(beta.matrix, lambda.matrix, alpha.sq.vector)
+    # Output only kappa
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "alpha.sq"
+    )
   } else {
-    return(list("beta" = beta.matrix, "lambda" = lambda.matrix))
+    pars.matrix <- cbind(beta.matrix, lambda.matrix)
+    # Output only kappa
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      "beta",
+      paste("lambda[", 1:n.objects, "]", sep = "")
+    )
   }
 }
 
