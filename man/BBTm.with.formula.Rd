@@ -18,7 +18,8 @@ BBTm.with.formula(
   n.iter = 1000,
   hyperparameter = TRUE,
   chi = 0.01,
-  psi = 0.01
+  psi = 0.01,
+  burn.in = 100
 )
 }
 \arguments{
@@ -61,6 +62,8 @@ hyperparameter}
 
 \item{psi}{shape parameter for the inverse-gamma prior distribution on the
 hyperparameter}
+
+\item{burn.in}{the number of iterations to use for a burn.in, default is 100}
 }
 \value{
 A data frame containing samples from the posterior distribution

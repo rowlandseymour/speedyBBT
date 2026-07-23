@@ -257,7 +257,7 @@ speedyBBTm <- function(
 #' )
 #'
 #' # Get posterior means
-#' darTiedModelLambda <- lambda(darTiedModel) - colMeans(lambda(darTiedModel))
+#' darTiedModelLambda <- parameter.matrix(darTiedModel, "lambda") - colMeans(parameter.matrix(darTiedModel, "lambda"))
 #' lambda.mean <- rowMeans(darTiedModelLambda)
 #'
 #' # Generate trace plots
@@ -711,6 +711,7 @@ BBTm.no.formula <- function(
 #' hyperparameter
 #' @param chi rate parameter for the inverse-gamma prior distribution on the
 #'  hyperparameter
+#' @param burn.in the number of iterations to use for a burn.in, default is 100
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -741,7 +742,8 @@ BBTm.with.formula <- function(
   n.iter = 1000,
   hyperparameter = TRUE,
   chi = 0.01,
-  psi = 0.01
+  psi = 0.01,
+  burn.in = 100
 ) {
   # get number of objects in study
   n.objects <- max(c(player1, player2))
@@ -783,12 +785,12 @@ BBTm.with.formula <- function(
     kappa.vector <- numeric(n.iter)
     advantage.inf <- TRUE
   }
-
+  n.betas <- dim(X)[2]
   # Set initial values for beta
   if (is.null(beta.initial)) {
-    beta.initial <- numeric(dim(X)[2])
+    beta.initial <- numeric(n.betas)
   }
-  if (dim(X)[2] != length(beta.initial)) {
+  if (n.betas != length(beta.initial)) {
     stop(
       "Mismatch between number of covariates in study and length of vector for initial estimates."
     )
@@ -798,7 +800,7 @@ BBTm.with.formula <- function(
   beta <- beta.initial
   alpha.sq <- 1
 
-  beta.matrix <- matrix(0, n.iter, dim(X)[2])
+  beta.matrix <- matrix(0, n.iter, n.betas)
   lambda.matrix <- matrix(0, n.iter, n.objects)
   alpha.sq.vector <- numeric(n.iter)
   grand.covariance <- sum(player.prior.var)
@@ -861,7 +863,8 @@ BBTm.with.formula <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      paste("beta", "lambda[", 1:n.objects, "]", sep = ""),
+      paste("beta[", 1:n.betas, "]", sep = ""),
+      paste("lambda[", 1:n.objects, "]", sep = ""),
       "kappa",
       "alpha.sq"
     )
@@ -876,7 +879,8 @@ BBTm.with.formula <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      paste("beta", "lambda[", 1:n.objects, "]", sep = ""),
+      paste("beta[", 1:n.betas, "]", sep = ""),
+      paste("lambda[", 1:n.objects, "]", sep = ""),
       "kappa"
     )
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
@@ -904,10 +908,11 @@ BBTm.with.formula <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      "beta",
+      paste("beta[", 1:n.betas, "]", sep = ""),
       paste("lambda[", 1:n.objects, "]", sep = "")
     )
   }
+  return(mcmc_out)
 }
 
 
@@ -961,9 +966,9 @@ BBTm.with.formula <- function(
 #' )
 #'
 #' # Plot posterior distributions
-#' hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq = FALSE)
-#' hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq = FALSE)
-#' hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq = FALSE)
+#' hist(parameter(wimbledonModel, "kappa"), main = "", xlab = expression(kappa), freq = FALSE)
+#' hist(parameter.matrix(wimbledonModel, "beta",1), main = "", xlab = expression(beta[1]), freq = FALSE)
+#' hist(parameter.matrix(wimbledonModel, "beta",2), main = "", xlab = expression(beta[2]), freq = FALSE)
 #' }
 #' @export
 #'
@@ -982,7 +987,8 @@ BBTm <- function(
   kappa.var = NULL,
   hyperparameter = TRUE,
   chi = 0.01,
-  psi = 0.01
+  psi = 0.01,
+  burn.in = 100
 ) {
   if (!is.null(lambda.initial) & !is.null(beta.initial)) {
     stop("Cannot set initial values for both lambda and beta")
@@ -1003,7 +1009,8 @@ BBTm <- function(
       n.iter,
       hyperparameter,
       chi,
-      psi
+      psi,
+      burn.in
     )
   } else {
     output <- BBTm.no.formula(
@@ -1018,7 +1025,8 @@ BBTm <- function(
       n.iter,
       hyperparameter,
       chi,
-      psi
+      psi,
+      burn.in
     )
   }
   return(output)
