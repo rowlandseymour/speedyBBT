@@ -3,6 +3,15 @@
 #' This function helps the user extract relevant estimates from the quality parameters
 #' fit using a Bayesian Bradley-Terry model.
 #'
+#' @param model_output The mcmc object that contains the draws output from the BBT model
+#' @param indices_to_extract a single column or a vector of column indices to extract from the draws matrix
+#' @return a matrix with the selected indices, or the full matrix of draws
+parameter.matrix <- function(
+  model_output,
+  parameter_name,
+  indices_to_extract = NULL
+) {
+  check_model(model_output, parameter_name)
 #' @param model_output The mcmc object that contains the draws output from the BBT model.
 #' @param indices_to_extract A single column or a vector of column indices to extract from the draws matrix.
 #' @return A matrix with the selected indices, or the full matrix of draws.
@@ -10,7 +19,7 @@ lambda <- function(model_output, indices_to_extract = NULL) {
   check_model(model_output, "lambda")
 
   if (is.null(indices_to_extract)) {
-    var_string <- grep("lambda", varnames(model_output), value = TRUE)
+    var_string <- grep(parameter_name, varnames(model_output), value = TRUE)
   } else {
     var_string <- paste0(
       "lambda[",
@@ -18,15 +27,15 @@ lambda <- function(model_output, indices_to_extract = NULL) {
       "]"
     )
   }
-  lambda_obj <- coda::as.mcmc(
+  par_obj <- coda::as.mcmc(
     model_output[, var_string],
     start = coda::mcpar(model_output)[1],
     end = coda::mcpar(model_output)[2],
     thin = coda::mcpar(model_output)[3]
   )
-  coda::varnames(lambda_obj) <- var_string
-  attr(lambda_obj, "mcpar") <- coda::mcpar(model_output)
-  return(lambda_obj)
+  coda::varnames(par_obj) <- var_string
+  attr(par_obj, "mcpar") <- coda::mcpar(model_output)
+  return(par_obj)
 }
 
 

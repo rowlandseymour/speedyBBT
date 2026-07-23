@@ -43,7 +43,9 @@ test_that("BBTm produces results within tolerance", {
     n.iter = 4000
   )
 
-  wimbledonModelMeans <- colMeans(wimbledonModel$lambda[-c(1:50), ])
+  wimbledonModelMeans <- colMeans(parameter.matrix(wimbledonModel, "lambda")[
+    -c(1:50),
+  ])
 
   # Read in means
   testMeansPath <- test_path("wimbledonModelMeans.csv")
@@ -76,7 +78,8 @@ test_that("BBTm.ties produces expected output from a single iteration", {
     n.iter = 2
   )
   # Get posterior means
-  centered_lambda <- lambda(darTiedModel) - colMeans(lambda(darTiedModel))
+  centered_lambda <- parameter.matrix(darTiedModel, "lambda") -
+    colMeans(parameter.matrix(darTiedModel, "lambda"))
   lambda.mean <- rowMeans(centered_lambda)
 
   # Read in means
