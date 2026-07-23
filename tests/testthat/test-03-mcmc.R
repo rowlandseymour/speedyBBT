@@ -1,6 +1,5 @@
 test_that("speedyBBTm produces results within tolerance", {
   # Construct covariance matrix
-  data("forcedMarriage")
   expA <- expm::expm(forcedMarriage$adjacencyMatrix)
   sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
@@ -61,7 +60,6 @@ test_that("BBTm produces results within tolerance", {
 test_that("BBTm.ties produces expected output from a single iteration", {
   # Construct covariance matrix
   # Fit model
-  data("darEsSalaam")
   set.seed(123)
   sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
   sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
