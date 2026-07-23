@@ -110,7 +110,5 @@ wimbledonModel <- BBTm(
 
 # Plot posterior distributions
 hist(parameter(wimbledonModel, "kappa"), main = "", xlab = expression(kappa), freq = FALSE)
-hist(parameter.matrix(wimbledonModel, "beta",1), main = "", xlab = expression(beta[1]), freq = FALSE)
-hist(parameter.matrix(wimbledonModel, "beta",2), main = "", xlab = expression(beta[2]), freq = FALSE)
 }
 }
