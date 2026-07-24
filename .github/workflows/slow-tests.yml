@@ -43,8 +43,10 @@ jobs:
           needs: check
 
       - name: Run Slow Tests Only
-        shell: Rscript {0}
+        shell: Rscript -e 
         run: |
-          # The filter looks for files with 'slow' in the name
+          # The filter runs all tests in the longtests directory
           pkgload::load_all(".")
-          testthat::test_file("./tests/longtests/test-mcmc-long.R")
+                results <- testthat::test_dir("./tests/longtests/")
+          if (any(as.data.frame(results)$failed > 0)) {
+            quit(status = 1)}
