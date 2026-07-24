@@ -57,6 +57,8 @@ proposal distribution for theta.}
 
 \item{theta.rate}{(optional) The rate parameter of the exponential prior
 distribution placed on theta.}
+
+\item{burn.in}{(optional) The number of iterations to use as a burn-in period. Default is 100.}
 }
 \value{
 A `coda::mcmc`` object containing samples from the posterior distribution
