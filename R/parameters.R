@@ -10,11 +10,10 @@ lambda <- function(model_output, indices_to_extract = NULL) {
   if (is.null(indices_to_extract)) {
     var_string <- grep("lambda", varnames(model_output), value = TRUE)
   } else {
-    var_string <- paste(
+    var_string <- paste0(
       "lambda[",
       indices_to_extract,
       "]",
-      sep = ""
     )
   }
   lambda_obj <- coda::as.mcmc(
