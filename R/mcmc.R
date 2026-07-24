@@ -244,6 +244,8 @@ speedyBBTm <- function(
 #'
 #'
 #' # Fit BT model with ties
+#' # Using `n.iter = 2` here to reduce runtime, you will need
+#' # a larger number of iterations for valid inference.
 #' darTiedModel <- BBTm.ties(
 #'   n.objects = nrow(darEsSalaam$adjacencyMatrix),
 #'   outcome = darEsSalaam$comparisons$outcome,
