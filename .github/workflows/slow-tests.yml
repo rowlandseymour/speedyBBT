@@ -43,7 +43,7 @@ jobs:
           needs: check
 
       - name: Run Slow Tests Only
-        shell: Rscript -e 
+        shell: Rscript {0} 
         run: |
           # The filter runs all tests in the longtests directory
           pkgload::load_all(".")
