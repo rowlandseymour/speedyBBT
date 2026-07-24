@@ -5,9 +5,26 @@
 #'
 #' @param model_output The mcmc object that contains the draws output from the BBT model.
 #' @param parameter_name The name of the parameter to extract draws for.
-#' @param indices_to_extract A single column or a vector of column indices to extract from the draws matrix.
+#' @param indices_to_extract A single column index or a vector of column indices to extract from the draws matrix.
 #' @return A vector containing the draws of the parameter.
 #' @export
+#' @examples
+#'
+#' sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
+#' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
+#'
+#' # Fit model
+#' # Using `n.iter = 3` here to reduce runtime, you will need more
+#' # iterations for inference.
+#' forcedMarriageModel <- speedyBBTm(
+#'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
+#'   player1 = forcedMarriage$comparisons$win,
+#'   player2 = forcedMarriage$comparisons$lost,
+#'   player.prior.var = sigma, n.iter = 3, burn.in = 1
+#' )
+#'
+#' parameter(forcedMarriageModel, "lambda", c(10, 20, 30, 40))
+#' parameter(forcedMarriageModel, "alpha.sq")
 parameter <- function(model_output, parameter_name, indices_to_extract = NULL) {
   check_model(model_output, parameter_name)
   if (is.null(indices_to_extract)) {
