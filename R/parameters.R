@@ -1,3 +1,5 @@
+#' Extract Quality Parameter Draws from a Model Object
+#'
 #' This function helps the user extract relevant estimates from the quality parameters
 #' fit using a Bayesian Bradley-Terry model.
 #'
@@ -28,7 +30,9 @@ lambda <- function(model_output, indices_to_extract = NULL) {
 }
 
 
-#' This function helps the user extract relevant estimates from the variance parameter
+#' Extract Parameter Draws from a Model Object
+#'
+#' This function helps the user extract relevant estimates from parameters
 #' fit using a Bayesian Bradley-Terry model.
 #'
 #' @param model_output The mcmc object that contains the draws output from the BBT model
@@ -52,9 +56,9 @@ check_model <- function(model_output, parameter_name) {
 
   if (length(grep(parameter_name, varnames(model_output))) == 0) {
     stop(
-        "This model object does not contain estimates of the ",
-        parameter_name,
-        " parameter. Please run a model using the `speedyBBTm` function."
+      "This model object does not contain estimates of the ",
+      parameter_name,
+      " parameter. Please run a model using the `speedyBBTm` function."
     )
   }
 }

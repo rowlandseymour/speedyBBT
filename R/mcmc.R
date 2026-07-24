@@ -233,7 +233,6 @@ speedyBBTm <- function(
 #'
 #'
 #' @examples
-#' \donttest{
 #' ############################################
 #' ## Deprivation in Dar es Salaam, Tanzania ##
 #' ## Seymour et al (2022)                   ##
@@ -262,7 +261,6 @@ speedyBBTm <- function(
 #' # Generate trace plots
 #' plot(lambda.mean)
 #' plot(darTiedModel$theta, type = "l")
-#' }
 #' @export
 #'
 BBTm.ties <- function(
@@ -858,7 +856,7 @@ BBTm.with.formula <- function(
 #'   advantage = wimbledon$matches$secondWeek,
 #'   formula = ~ rank + points,
 #'   data = wimbledon$players,
-#'   n.iter = 1
+#'   n.iter = 1000
 #' )
 #'
 #' # Plot posterior distributions
