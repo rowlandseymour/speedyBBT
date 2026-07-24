@@ -224,6 +224,7 @@ speedyBBTm <- function(
 #' proposal distribution for theta.
 #' @param theta.rate (optional) The rate parameter of the exponential prior
 #' distribution placed on theta.
+#' @param burn.in (optional) The number of iterations to use as a burn-in period. Default is 100.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
