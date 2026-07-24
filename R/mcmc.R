@@ -185,7 +185,7 @@ speedyBBTm <- function(
       end = n.iter,
       thin = 1
     )
-    coda::varnames(mcmc_out) <- c(paste("lambda[", 1:n.objects, "]", sep = ""))
+    coda::varnames(mcmc_out) <- paste0("lambda[", 1:n.objects, "]")
   }
   return(mcmc_out)
 }
