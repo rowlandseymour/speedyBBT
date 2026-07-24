@@ -88,24 +88,26 @@ If \code{kappa.var} is omitted, it is set to N(0, 5^2), if \code{kappa.initial} 
 it is set to 0.5.
 }
 \examples{
-
+\donttest{
 #####################
 ## Wimbledon 2019 ##
 ####################
-data("wimbledon", package = "speedyBBT")
-#Fit model where the quality of each player depends on their rank
-#and the number of points they had immediately before the tournament.
-#Allow an effect for a match being in the first or second week.
-wimbledonModel <- BBTm(outcome  = wimbledon$matches$outcome,
-                     player2   = wimbledon$matches$loser,
-                     player1  = wimbledon$matches$winner,
-                     advantage = wimbledon$matches$secondWeek,
-                     formula  = ~ rank + points,
-                     data = wimbledon$players,
-                     n.iter = 1)
+# Fit model where the quality of each player depends on their rank
+# and the number of points they had immediately before the tournament.
+# Allow an effect for a match being in the first or second week.
+wimbledonModel <- BBTm(
+  outcome = wimbledon$matches$outcome,
+  player2 = wimbledon$matches$loser,
+  player1 = wimbledon$matches$winner,
+  advantage = wimbledon$matches$secondWeek,
+  formula = ~ rank + points,
+  data = wimbledon$players,
+  n.iter = 1000
+)
 
-#Plot posterior distributions
-hist(wimbledonModel$beta, main = "", xlab = expression(lambda[1]), freq  = FALSE)
-
-
+# Plot posterior distributions
+hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq = FALSE)
+hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq = FALSE)
+hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq = FALSE)
+}
 }

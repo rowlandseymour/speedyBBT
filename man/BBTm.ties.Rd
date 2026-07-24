@@ -74,32 +74,32 @@ N(0, 5^2) prior distributions are placed on each object quality parameter.
 If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 }
 \examples{
-
 ############################################
 ## Deprivation in Dar es Salaam, Tanzania ##
 ## Seymour et al (2022)                   ##
 ############################################
-data("darEsSalaam", package = "speedyBBT")
-#Construct covariance matrix based on spatial informartion
+# Construct covariance matrix based on spatial informartion
 sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
-sigma <- diag(diag(sigma)^-0.5)\%*\% sigma \%*\%diag(diag(sigma)^-0.5)
-
+sigma <- diag(diag(sigma)^-0.5) \%*\% sigma \%*\% diag(diag(sigma)^-0.5)
 
 
 # Fit BT model with ties
-darTiedModel <- BBTm.ties(n.objects = 452,
-                         outcome = darEsSalaam$comparisons$outcome,
-                         player1 = darEsSalaam$comparisons$subward1,
-                         player2 = darEsSalaam$comparisons$subward2,
-                         player.prior.var = sigma,
-                         hyperparameter = TRUE, rw.sd = 0.005, n.iter = 2)
+# Using `n.iter = 2` here to reduce runtime, you will need
+# a larger number of iterations for valid inference.
+darTiedModel <- BBTm.ties(
+  n.objects = nrow(darEsSalaam$adjacencyMatrix),
+  outcome = darEsSalaam$comparisons$outcome,
+  player1 = darEsSalaam$comparisons$subward1,
+  player2 = darEsSalaam$comparisons$subward2,
+  player.prior.var = sigma,
+  hyperparameter = TRUE, rw.sd = 0.005, n.iter = 2
+)
 
-#Get posterior means
+# Get posterior means
 darTiedModel$lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
 lambda.mean <- rowMeans(darTiedModel$lambda)
 
-#Generate trace plots
+# Generate trace plots
 plot(lambda.mean)
-plot(darTiedModel$theta, type = 'l')
-
+plot(darTiedModel$theta, type = "l")
 }

@@ -17,7 +17,7 @@ Construct the Bradley--Terry design matrix
 }
 \examples{
 
-#design matrix with 3 objects
+# design matrix with 3 objects
 
 X <- construct.design.matrix(3)
 

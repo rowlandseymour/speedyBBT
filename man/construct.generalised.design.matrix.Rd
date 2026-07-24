@@ -23,14 +23,16 @@ Construct the generalised Bradley--Terry design matrix
 }
 \examples{
 
-#Generate data.frame
-example.df <- data.frame("a" = stats::runif(100, 0, 3),
-                    "b" = sample(1:2, 100, TRUE))
+# Generate data.frame
+example.df <- data.frame(
+  "a" = stats::runif(100, 0, 3),
+  "b" = sample(1:2, 100, TRUE)
+)
 
-#Generate formula
-example.formula <- ~  a + b + I(a^2)
+# Generate formula
+example.formula <- ~ a + b + I(a^2)
 
-#Generate comparisons of three players
+# Generate comparisons of three players
 player1 <- c(1, 3, 2, 1)
 player2 <- c(3, 1, 1, 2)
 X <- construct.generalised.design.matrix(player1, player2, example.formula, example.df)

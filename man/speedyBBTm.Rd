@@ -66,24 +66,26 @@ N(0, 1^2) prior distributions are placed on each object quality parameter.
 If \code{lambda.initial} is ommitted, it is set to a vector of zeroes.
 }
 \examples{
-
+\donttest{
 ########################################
 ## Forced Marriage in Nottinghamshire ##
 ########################################
-data("forcedMarriage", package = "speedyBBT")
-#Construct covariance matrix based on spatial information
+# Construct covariance matrix based on spatial information
 sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
-sigma <- diag(diag(sigma)^-0.5)\%*\% sigma \%*\%diag(diag(sigma)^-0.5)
+sigma <- diag(diag(sigma)^-0.5) \%*\% sigma \%*\% diag(diag(sigma)^-0.5)
 
-
-##Not Run
 # Fit model
-forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
-                                  player1 = forcedMarriage$comparisons$win,
-                                  player2 = forcedMarriage$comparisons$lost,
-                                 player.prior.var = sigma, n.iter = 3, burn.in = 1)
+forcedMarriageModel <- speedyBBTm(
+  outcome = rep(1, length(forcedMarriage$comparisons$win)),
+  player1 = forcedMarriage$comparisons$win,
+  player2 = forcedMarriage$comparisons$lost,
+  player.prior.var = sigma, n.iter = 3, burn.in = 1
+)
 
-#Plot results
-plot(forcedMarriageModel[,paste("lambda[", c(10,20,30,40), "]", sep = "")], xlab = "Iteration", ylab = expression(lambda[i]))
+# Plot results
+oldpar <- par(mfrow = c(2, 2))
 
+plot(forcedMarriageModel[, paste0("lambda[", c(10, 20, 30, 40), "]")], xlab = "Iteration", ylab = expression(lambda[i]))
+par(oldpar)
+}
 }

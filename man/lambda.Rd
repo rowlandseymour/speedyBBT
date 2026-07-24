@@ -2,8 +2,7 @@
 % Please edit documentation in R/parameters.R
 \name{lambda}
 \alias{lambda}
-\title{This function helps the user extract relevant estimates from the quality parameters
-fit using a Bayesian Bradley-Terry model.}
+\title{Extract Quality Parameter Draws from a Model Object}
 \usage{
 lambda(model_output, indices_to_extract = NULL)
 }
@@ -13,7 +12,7 @@ lambda(model_output, indices_to_extract = NULL)
 \item{indices_to_extract}{a single column or a vector of column indices to extract from the draws matrix}
 }
 \value{
-a matrix with the selected indices, or the full matrix of draws
+A matrix with the selected indices, or the full matrix of draws.
 }
 \description{
 This function helps the user extract relevant estimates from the quality parameters

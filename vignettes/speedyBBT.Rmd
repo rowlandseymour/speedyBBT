@@ -36,14 +36,14 @@ You can learn more about the package functions and how to use them from the docu
 ?speedyBBTm
 ```
 
-The package includes some example datasets that you can use to practice fitting models. You can load these datasets using the `data()` function. For example, to load the `forcedMarriage` dataset, you can run:
+The package includes some example datasets that you can use to practice fitting models. These datasets are automatically loaded when you install the package. To laod them  `data()` function. For example, to load the `forcedMarriage` dataset, you can run:
 ````{r load_data}
 data("forcedMarriage")
 ````
 
 This dataset was collected from 12 judges in Nottinghamshire who were asked to judge which of a pair of 76 wards had a higher risk of forced marriage. The dataset contains the results of the 1,846 pairwise comparisons made by the judges. An adjacency matrix is constructed based on proximity, assuming that geographically close wards are more highly correlated. This serves as a covariance matrix for the multivariate normal prior distribution of the item qualities. In this case, the "items" are wards in Nottinghamshire and their "quality" is the risk of forced marriage in that ward. 
 
-The `speedyBBTm` function can be used to fit a Bradley-Terry model to the data. You can specify the outcome variable, the items involved in each comparison, and any prior information you have about the items' rating. The function will return an MCMC object containing samples from the posterior distribution of the item qualities. For this example, you first need to construct an adjacency matrix and then use it to create a covariance matrix for the prior distribution of the item qualities.
+The `speedyBBTm` function can be used to fit a Bradley-Terry model to the data. You can specify the outcome variable, the items involved in each comparison, and any prior information you have about the items' rating. The function will return an MCMC object containing samples from the posterior distribution of the item qualities. For this example, you can use the adjacency matrix provided with the package data and then use it to create a covariance matrix for the prior distribution of the item qualities. For your own data set, you will want to create an adjacency matrix with values that denote the similarity of different items to one another. For this example, the adjacency matrix ranks wards that are closer to one another as more similar.
 
 ```{r covariance}
 # Construct covariance matrix
@@ -51,10 +51,11 @@ expA <- expm::expm(forcedMarriage$adjacencyMatrix)
 sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 ```
 
-Next, you can fit the model using the `speedyBBTm()` function. You will need to specify the outcome variable, the items involved in each comparison, and the prior covariance matrix for the item qualities. You can also specify the number of MCMC iterations to run. This example uses the default values for the hyperparameters of the prior distribution, but you can also specify your own values if you have prior knowledge about the items' rating using the `hyperparameter` argument.
+Next, you can fit the model using the `speedyBBTm()` function. You will need to specify the outcome variable, the items involved in each comparison, and the prior covariance matrix for the item qualities. You can also specify the number of MCMC iterations to run. This example uses the default values for the hyperparameters of the prior distribution, but you can also specify your own values if you have prior knowledge about the items' rating using the `hyperparameter` argument. To match the plots in this vignette, you will need to use the same argument to `set.seed` as the one provided here. 
 
 ```{r fit_model}
 # Fit model
+set.seed(432)
 forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
   player1 = forcedMarriage$comparisons$win,

@@ -1,11 +1,11 @@
-#' Extract Quality Parameter Draws from a Model Object
+#' Extract quality parameter draws from a model object
 #'
 #' This function helps the user extract relevant estimates from the quality parameters
 #' fit using a Bayesian Bradley-Terry model.
 #'
-#' @param model_output The mcmc object that contains the draws output from the BBT model
-#' @param indices_to_extract a single column or a vector of column indices to extract from the draws matrix
-#' @return a matrix with the selected indices, or the full matrix of draws
+#' @param model_output The mcmc object that contains the draws output from the BBT model.
+#' @param indices_to_extract A single column or a vector of column indices to extract from the draws matrix.
+#' @return A matrix with the selected indices, or the full matrix of draws.
 lambda <- function(model_output, indices_to_extract = NULL) {
   check_model(model_output, "lambda")
 
@@ -30,14 +30,14 @@ lambda <- function(model_output, indices_to_extract = NULL) {
 }
 
 
-#' Extract Parameter Draws from a Model Object
+#' Extract parameter draws from a model object
 #'
 #' This function helps the user extract relevant estimates from parameters
 #' fit using a Bayesian Bradley-Terry model.
 #'
-#' @param model_output The mcmc object that contains the draws output from the BBT model
-#' @param parameter_name The name of the parameter to extract draws for
-#' @return the draws of the parameter
+#' @param model_output The mcmc object that contains the draws output from the BBT model.
+#' @param parameter_name The name of the parameter to extract draws for.
+#' @return A vector containing the draws of the parameter.
 #' @export
 parameter <- function(model_output, parameter_name) {
   check_model(model_output, parameter_name)

@@ -19,10 +19,10 @@ This function constructs a win matrix from a data frame of comparisons. It is ne
 }
 \examples{
 
-#Generate some sample comparisons
+# Generate some sample comparisons
 comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 
-#Create matrix from comparisons
+# Create matrix from comparisons
 win.matrix <- comparisons_to_matrix(3, comparisons)
 
 }

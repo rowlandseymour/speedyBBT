@@ -1,4 +1,4 @@
-#' Standard Bayesian Bradley--Terry model
+#' Standard Bayesian Bradley-Terry model
 #'
 #' This function uses MCMC to sample from the posterior distribution of the
 #' standard Bradley--Terry model. Standard model means that there are no tied
@@ -8,25 +8,25 @@
 #'
 #'
 #'
-#' @param outcome vector of outcomes. 1 if player 2 is the winner,
+#' @param outcome Vector of outcomes. 1 if player 2 is the winner,
 #'  0 if player 1 is the winner.
-#' @param player1 vector of first players.
-#' @param player2 vector of second players.
-#' @param win.matrix (optional) a win-loss matrix where the i,j th element is the number of
+#' @param player1 Vector of first players.
+#' @param player2 Vector of second players.
+#' @param win.matrix (optional) A win-loss matrix where the i,j th element is the number of
 #' times object i beat object j.
-#' @param player.prior.var (optional) matrix specifying the prior covariance of
+#' @param player.prior.var (optional) A matrix specifying the prior covariance of
 #'  the player correlation parameters.
-#' @param lambda.initial (optional) vector containing the values of the
+#' @param lambda.initial (optional) A vector containing the values of the
 #'  player correlation parameters for the first MCMC iteration.
-#' @param n.iter number of MCMC samples to be drawn.
-#' @param hyperparameter boolean indicating if inference should be performed
+#' @param n.iter The number of MCMC samples to be drawn.
+#' @param hyperparameter A boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
 #'  (main diagonal of the covariance matrix) must be set to 1.
-#' @param psi (Optional) shape parameter for the inverse-gamma prior distribution on the
+#' @param psi (Optional) The shape parameter for the inverse-gamma prior distribution on the
 #' hyperparameter. Default is 0.01.
-#' @param chi (Optional) rate parameter for the inverse-gamma prior distribution on the
+#' @param chi (Optional) The rate parameter for the inverse-gamma prior distribution on the
 #'  hyperparameter. Default is 0.01.
-#' @param burn.in (optional) the number of iterations to discard as burn-in. Default is 100.
+#' @param burn.in (optional) The number of iterations to discard as burn-in. Default is 100.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 1^2) prior distributions are placed on each object quality parameter.
@@ -34,7 +34,7 @@
 #' If `lambda.initial` is ommitted, it is set to a vector of zeroes.
 #'
 #'
-#' @return  A `mcmc` object containing samples from the posterior distribution
+#' @return  A `mcmc` object containing samples from the posterior distribution.
 #'
 #' @importFrom coda mcmc varnames
 #'
@@ -191,7 +191,7 @@ speedyBBTm <- function(
 }
 
 
-#' Bayesian inference for the Bradley--Terry model with ties
+#' Bayesian inference for the Bradley-Terry model with ties
 #'
 #' This function uses MCMC to sample from the posterior distribution of the
 #' Bradley--Terry model with ties.A multivariate normal prior
@@ -199,29 +199,29 @@ speedyBBTm <- function(
 #' prior distribution is placed on the tie parameter theta, and a Metropolis-
 #' Hasting random walk algorithm is used to update this parameter.
 #'
-#' @param n.objects number of objects in the study
-#' @param outcome vector of outcomes. 0 if player 1 is the winner,
+#' @param n.objects The number of objects in the study.
+#' @param outcome Vector of outcomes. 0 if player 1 is the winner,
 #'  1 if player 2 is the winner, and 2 if it is a tie.
-#' @param player1 vector of first players.
-#' @param player2 vector of second players.
-#' @param player.prior.var (optional) matrix specifying the prior covariance of
-#'  the player correlation parameters
-#' @param theta.initial (optional) value of the tied parameter there for
-#' the first MCMC iteration
-#' @param lambda.initial (optional) vector containing the values of the
-#'  player parameters for the first MCMC iteration
-#' @param n.iter number of MCMC samples to be drawn
-#' @param hyperparameter boolean indicating if inference should be performed
+#' @param player1 Vector of first players.
+#' @param player2 Vector of second players.
+#' @param player.prior.var (optional) Matrix specifying the prior covariance of
+#'  the player correlation parameters.
+#' @param theta.initial (optional) Value of the tied parameter there for
+#' the first MCMC iteration.
+#' @param lambda.initial (optional) Vector containing the values of the
+#'  player parameters for the first MCMC iteration.
+#' @param n.iter Number of MCMC samples to be drawn.
+#' @param hyperparameter Boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
 #'  (main diagonal of the covariance matrix) must be set to 1.
-#' @param psi (optional) shape parameter for the inverse-gamma prior distribution on the
-#' hyperparameter
-#' @param chi (optional) rate parameter for the inverse-gamma prior distribution on the
-#'  hyperparameter
-#' @param rw.sd (optional) number describing the standard deviation of normal distribution
-#' proposal distribution for theta
+#' @param psi (optional) Shape parameter for the inverse-gamma prior distribution on the
+#' hyperparameter.
+#' @param chi (optional) Rate parameter for the inverse-gamma prior distribution on the
+#'  hyperparameter.
+#' @param rw.sd (optional) Number describing the standard deviation of normal distribution
+#' proposal distribution for theta.
 #' @param theta.rate (optional) The rate parameter of the exponential prior
-#' distribution placed on theta
+#' distribution placed on theta.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -229,7 +229,7 @@ speedyBBTm <- function(
 #' If `lambda.initial` is omitted, it is set to a vector of zeroes.
 #'
 #'
-#' @return  A data frame containing samples from the posterior distribution
+#' @return  A data frame containing samples from the posterior distribution.
 #'
 #'
 #' @examples
@@ -422,7 +422,7 @@ BBTm.ties <- function(
 }
 
 
-#' Bayesian Bradley--Terry model with comparison specific effect
+#' Bayesian Bradley--Terry model with comparison-specific effect
 #'
 #' This function fits the Bradley-Terry model with a comparison specific effect.
 #' Each comparison can be assigned a real value to allow for a specific effect
@@ -432,15 +432,15 @@ BBTm.ties <- function(
 #'
 #'
 #'
-#' @param outcome vector of outcomes. 1 if player2 is the winner,
-#'  0 if player1 is the winner
-#' @param player1 vector of first players.
-#' @param player2 vector of second players.
-#' @param player.prior.var (optional) matrix specifying the prior covariance of
-#'  the player correlation parameters
-#' @param lambda.initial (optional) vector containing the values of the
-#'  player parameters for the first MCMC iteration
-#' @param n.iter number of MCMC samples to be drawn
+#' @param outcome Vector of outcomes. 1 if player2 is the winner,
+#'  0 if player1 is the winner.
+#' @param player1 Vector of first players.
+#' @param player2 Vector of second players.
+#' @param player.prior.var (optional) Matrix specifying the prior covariance of
+#'  the player correlation parameters.
+#' @param lambda.initial (optional) Vector containing the values of the
+#'  player parameters for the first MCMC iteration.
+#' @param n.iter Number of MCMC samples to be drawn.
 #' @param advantage (optional) a vector with the value of the comparisons specific
 #'  effect for each comparison
 #' @param kappa.initial (optional) an initial value for the comparison specific
@@ -609,7 +609,7 @@ BBTm.no.formula <- function(
 }
 
 
-#' Bayesian Bradley--Terry model with comparison and player specific effect and formula
+#' Bayesian Bradley--Terry model with comparison- and player-specific effect and formula
 #'
 #' This function fits the Bradley-Terry model with comparison  and player
 #' specific effects. Each comparison can be assigned a real value to allow for a
@@ -663,7 +663,6 @@ BBTm.no.formula <- function(
 #'
 #' @export
 #'
-
 BBTm.with.formula <- function(
   outcome,
   player1,

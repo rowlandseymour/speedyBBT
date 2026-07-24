@@ -2,8 +2,7 @@
 % Please edit documentation in R/parameters.R
 \name{parameter}
 \alias{parameter}
-\title{This function helps the user extract relevant estimates from the variance parameter
-fit using a Bayesian Bradley-Terry model.}
+\title{Extract Parameter Draws from a Model Object}
 \usage{
 parameter(model_output, parameter_name)
 }
@@ -13,9 +12,9 @@ parameter(model_output, parameter_name)
 \item{parameter_name}{The name of the parameter to extract draws for}
 }
 \value{
-the draws of the parameter
+A vector containing the draws of the parameter.
 }
 \description{
-This function helps the user extract relevant estimates from the variance parameter
+This function helps the user extract relevant estimates from parameters
 fit using a Bayesian Bradley-Terry model.
 }
