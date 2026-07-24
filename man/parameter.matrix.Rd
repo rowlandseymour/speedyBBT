@@ -2,20 +2,21 @@
 % Please edit documentation in R/parameters.R
 \name{parameter.matrix}
 \alias{parameter.matrix}
-\title{This function helps the user extract relevant estimates from multidimensional parameters
-fit using a Bayesian Bradley-Terry model.}
+\title{Extract quality parameter draws from a model object}
 \usage{
 parameter.matrix(model_output, parameter_name, indices_to_extract = NULL)
 }
 \arguments{
-\item{model_output}{The mcmc object that contains the draws output from the BBT model.}
+\item{model_output}{The mcmc object that contains the draws output from the BBT model}
 
-\item{indices_to_extract}{A single column or a vector of column indices to extract from the draws matrix.}
+\item{parameter_name}{The name of the parameter matrix to extract}
+
+\item{indices_to_extract}{a single column or a vector of column indices to extract from the draws matrix}
 }
 \value{
-A matrix with the selected indices, or the full matrix of draws.
+a matrix with the selected indices, or the full matrix of draws
 }
 \description{
-This function helps the user extract relevant estimates from multidimensional parameters
+This function helps the user extract relevant estimates from the quality parameters
 fit using a Bayesian Bradley-Terry model.
 }

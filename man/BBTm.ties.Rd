@@ -75,7 +75,6 @@ N(0, 5^2) prior distributions are placed on each object quality parameter.
 If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 }
 \examples{
-
 ############################################
 ## Deprivation in Dar es Salaam, Tanzania ##
 ## Seymour et al (2022)                   ##
@@ -86,6 +85,8 @@ sigma <- diag(diag(sigma)^-0.5) \%*\% sigma \%*\% diag(diag(sigma)^-0.5)
 
 
 # Fit BT model with ties
+# Using `n.iter = 3` here to reduce model runtime, you will need
+# a larger number of iterations for valid inference.
 darTiedModel <- BBTm.ties(
   n.objects = nrow(darEsSalaam$adjacencyMatrix),
   outcome = darEsSalaam$comparisons$outcome,
@@ -101,6 +102,5 @@ lambda.mean <- rowMeans(darTiedModelLambda)
 
 # Generate trace plots
 plot(lambda.mean)
-plot(darTiedModel$theta, type = 'l')
-
+plot(parameter(darTiedModel, "theta"), type = "l")
 }

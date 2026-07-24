@@ -263,7 +263,6 @@ speedyBBTm <- function(
 #' # Generate trace plots
 #' plot(lambda.mean)
 #' plot(parameter(darTiedModel, "theta"), type = "l")
-#' }
 #' @export
 #'
 BBTm.ties <- function(
@@ -468,20 +467,20 @@ BBTm.ties <- function(
 #' @param lambda.initial (optional) Vector containing the values of the
 #'  player parameters for the first MCMC iteration.
 #' @param n.iter Number of MCMC samples to be drawn.
-#' @param advantage (optional) a vector with the value of the comparisons specific
-#'  effect for each comparison
-#' @param kappa.initial (optional) an initial value for the comparison specific
-#'  value kappa
-#'  @param kappa.var (optional) the prior variance of the he comparison specific
-#'  value kappa
-#' @param hyperparameter boolean indicating if inference should be performed
+#' @param advantage (optional) A vector with the value of the comparisons specific
+#'  effect for each comparison.
+#' @param kappa.initial (optional) An initial value for the comparison specific
+#'  value kappa.
+#'  @param kappa.var (optional) The prior variance of the comparison specific
+#'  value kappa.
+#' @param hyperparameter Boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
 #'  (main diagonal of the covariance matrix) must be set to 1.
-#' @param psi shape parameter for the inverse-gamma prior distribution on the
-#' hyperparameter
-#' @param chi rate parameter for the inverse-gamma prior distribution on the
-#'  hyperparameter
-#' @param burn.in number of iterations to use as a burn-in period. Default is 100.
+#' @param psi Shape parameter for the inverse-gamma prior distribution on the
+#' hyperparameter.
+#' @param chi Rate parameter for the inverse-gamma prior distribution on the
+#'  hyperparameter.
+#' @param burn.in Number of iterations to use as a burn-in period. Default is 100.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -685,33 +684,33 @@ BBTm.no.formula <- function(
 #'
 #'
 #'
-#' @param outcome vector of outcomes. 1 if player2 is the winner,
-#'  0 if player1 is the winner
-#' @param player1 vector of first players.
-#' @param player2 vector of second players.
-#' @param formula formula with no left-hand-side specifying the player specific
-#' effects
-#' @param data data.frame with a row corresponding to each player and  column corresponding
+#' @param outcome Vector of outcomes. 1 if player2 is the winner,
+#'  0 if player1 is the winner.
+#' @param player1 Vector of first players.
+#' @param player2 Vector of second players.
+#' @param formula Formula with no left-hand-side specifying the player specific
+#' effects.
+#' @param data Data.frame with a row corresponding to each player and  column corresponding
 #' to each covariate.
-#' @param player.prior.var (optional) matrix specifying the prior covariance of
-#'  the player correlation parameters
-#' @param beta.initial (optional) vector containing the values of the
-#'  player specific  parameters for the first MCMC iteration
-#' @param n.iter number of MCMC samples to be drawn
-#' @param advantage (optional) a vector with the value of the comparisons specific
-#'  effect for each comparison
-#' @param kappa.initial (optional) an initial value for the comparison specific
-#'  value kappa
-#' @param kappa.var (optional) the prior variance of the he comparison specific
-#'  value kappa
-#' @param hyperparameter boolean indicating if inference should be performed
+#' @param player.prior.var (optional) Matrix specifying the prior covariance of
+#'  the player correlation parameters.
+#' @param beta.initial (optional) Vector containing the values of the
+#'  player specific  parameters for the first MCMC iteration.
+#' @param n.iter Number of MCMC samples to be drawn.
+#' @param advantage (optional) A vector with the value of the comparisons specific
+#'  effect for each comparison.
+#' @param kappa.initial (optional) An initial value for the comparison specific
+#'  value kappa.
+#' @param kappa.var (optional) The prior variance of the comparison specific
+#'  value kappa.
+#' @param hyperparameter Boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
 #'  (main diagonal of the covariance matrix) must be set to 1.
-#' @param psi shape parameter for the inverse-gamma prior distribution on the
-#' hyperparameter
-#' @param chi rate parameter for the inverse-gamma prior distribution on the
-#'  hyperparameter
-#' @param burn.in the number of iterations to use for a burn.in, default is 100
+#' @param psi Shape parameter for the inverse-gamma prior distribution on the
+#' hyperparameter.
+#' @param chi Rate parameter for the inverse-gamma prior distribution on the
+#'  hyperparameter.
+#' @param burn.in The number of iterations to use for a burn.in, default is 100.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -722,7 +721,7 @@ BBTm.no.formula <- function(
 #' it is set to 0.5.
 #'
 #'
-#' @return  A `coda::mcmc` object containing samples from the posterior distribution
+#' @return  A `coda::mcmc` object containing samples from the posterior distribution.
 #'
 #' @keywords internal
 #'
@@ -929,8 +928,8 @@ BBTm.with.formula <- function(
 #'
 #' @inheritParams BBTm.with.formula
 #'
-#' @param lambda.initial (optional) vector containing the values of the
-#'  player parameters for the first MCMC iteration
+#' @param lambda.initial (optional) Vector containing the values of the
+#'  player parameters for the first MCMC iteration.
 #'
 #'
 #'
@@ -943,7 +942,7 @@ BBTm.with.formula <- function(
 #' it is set to 0.5.
 #'
 #'
-#' @return  A `coda::mcmc` object containing samples from the posterior distribution
+#' @return  A `coda::mcmc` object containing samples from the posterior distribution.
 #'
 #'
 #'
