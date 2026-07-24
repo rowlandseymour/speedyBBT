@@ -257,7 +257,7 @@ speedyBBTm <- function(
 #' )
 #'
 #' # Get posterior means
-#' darTiedModelLambda <- parameter.matrix(darTiedModel, "lambda") - colMeans(parameter.matrix(darTiedModel, "lambda"))
+#' darTiedModelLambda <- parameter(darTiedModel, "lambda") - colMeans(parameter(darTiedModel, "lambda"))
 #' lambda.mean <- rowMeans(darTiedModelLambda)
 #'
 #' # Generate trace plots
