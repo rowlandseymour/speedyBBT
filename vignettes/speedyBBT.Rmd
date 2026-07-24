@@ -1,5 +1,5 @@
 ---
-title: "Getting started with `speedyBBT`"
+title: "Getting started with speedyBBT"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{my-vignette}
