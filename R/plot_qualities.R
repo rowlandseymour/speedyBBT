@@ -1,9 +1,10 @@
-#' Generates a plot of the posterior mean and 95% credible interval
-#' of the quality estimate.
+#' Plot quality parameter posteriors
 #'
-#' @param item_names The names of the different items (or players or wards) being compared
-#' @param model_output The model output object containing the draws
-#' @param burn.in The number of iterations to remove as a burn.in period.
+#' Generates a plot of the posterior mean and 95% credible interval
+#' of the quality parameter estimate.
+#'
+#' @param item_names The names of the different items (or players or wards) being compared.
+#' @param model_output The model output object containing the draws.
 #'
 #' @examples
 #'
@@ -21,7 +22,7 @@
 #'
 #' plot_qualities(item_names = items, model_output = wimbledonModel)
 #'
-plot_qualities <- function(item_names, model_output, burn.in = 100) {
+plot_qualities <- function(item_names, model_output) {
   # Posterior mean and 95% credible intervals (burn-in = 100)
   param_draws <- parameter(model_output, "lambda")
   model_means <- colMeans(param_draws)
