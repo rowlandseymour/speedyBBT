@@ -34,27 +34,27 @@ the player correlation parameters.}
 \item{lambda.initial}{(optional) Vector containing the values of the
 player parameters for the first MCMC iteration.}
 
-\item{advantage}{(optional) a vector with the value of the comparisons specific
-effect for each comparison}
+\item{advantage}{(optional) A vector with the value of the comparisons specific
+effect for each comparison.}
 
-\item{kappa.initial}{(optional) an initial value for the comparison specific
-value kappa
-@param kappa.var (optional) the prior variance of the he comparison specific
-value kappa}
+\item{kappa.initial}{(optional) An initial value for the comparison specific
+value kappa.
+@param kappa.var (optional) The prior variance of the comparison specific
+value kappa.}
 
 \item{n.iter}{Number of MCMC samples to be drawn.}
 
-\item{hyperparameter}{boolean indicating if inference should be performed
+\item{hyperparameter}{Boolean indicating if inference should be performed
 for the prior variance hyperparameter. If TRUE the prior variance
 (main diagonal of the covariance matrix) must be set to 1.}
 
-\item{chi}{rate parameter for the inverse-gamma prior distribution on the
-hyperparameter}
+\item{chi}{Rate parameter for the inverse-gamma prior distribution on the
+hyperparameter.}
 
-\item{psi}{shape parameter for the inverse-gamma prior distribution on the
-hyperparameter}
+\item{psi}{Shape parameter for the inverse-gamma prior distribution on the
+hyperparameter.}
 
-\item{burn.in}{number of iterations to use as a burn-in period. Default is 100.}
+\item{burn.in}{Number of iterations to use as a burn-in period. Default is 100.}
 }
 \value{
 A \code{coda::mcmc} object containing samples from the posterior distribution
