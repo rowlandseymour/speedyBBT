@@ -4,7 +4,7 @@ test_that("lambda function works for full draws matrix", {
 
 test_that("lambda function works for partial draws matrix", {
   expect_equal(
-    lambda(test.mcmc.obj, indices_to_extract = c(1)),
+    lambda(test.mcmc.obj, indices_to_extract = 1),
     coda::as.mcmc(test.draws[, 1], start = 1, end = 10, thin = 1),
     ignore_attr = TRUE
   )
