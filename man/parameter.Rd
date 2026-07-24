@@ -11,7 +11,7 @@ parameter(model_output, parameter_name, indices_to_extract = NULL)
 
 \item{parameter_name}{The name of the parameter to extract draws for.}
 
-\item{indices_to_extract}{A single column or a vector of column indices to extract from the draws matrix.}
+\item{indices_to_extract}{A single column index or a vector of column indices to extract from the draws matrix.}
 }
 \value{
 A vector containing the draws of the parameter.
