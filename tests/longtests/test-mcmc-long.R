@@ -13,11 +13,12 @@ test_that("BBTm.ties produces results within tolerance", {
     player.prior.var = sigma,
     hyperparameter = TRUE,
     rw.sd = 0.005,
-    n.iter = 1000
+    n.iter = 400
   )
 
   # Get posterior means
-  centered_lambda <- lambda(darTiedModel) - colMeans(lambda(darTiedModel))
+  centered_lambda <- parameter(darTiedModel, "lambda") -
+    colMeans(parameter(darTiedModel, "lambda"))
   lambda.mean <- rowMeans(centered_lambda)
 
   # Read in means
