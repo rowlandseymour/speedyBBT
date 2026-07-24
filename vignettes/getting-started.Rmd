@@ -87,7 +87,7 @@ effectiveSize(forcedMarriageModel)
 geweke.diag(forcedMarriageModel)
 ``` 
 
-You can get additional, colourful plots by installing `ggplot2` and `bayesplot` and calling the functions from `bayesplot` on the `mcmc` object returned by `speedyBBTm`. For example, you can use the `mcmc_trace()` function to create trace plots and the `mcmc_dens_overlay()` function to create density plots of the MCMC samples. For more information, see the `bayesplot` package [documentation](https://mc-stan.org/bayesplot/).
+You can get additional, colourful plots by installing `ggplot2` and `bayesplot` and calling the functions from `bayesplot` on the `mcmc` object returned by `speedyBBTm`. For example, you can use the `mcmc_trace()` function to create trace plots and the `mcmc_dens_overlay()` function to create density plots of the MCMC samples. For more information, see the [**bayesplot** package documentation](https://mc-stan.org/bayesplot/).
 
 ```{r bayesplot_diagnostics, fig.width=8, fig.height=6}
 # Install bayesplot if not already installed
