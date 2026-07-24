@@ -73,7 +73,7 @@ forcedMarriageModelMeans
 summary(forcedMarriageModel)
 ```
 
-You can run some MCMC diagnostics to check convergence. The `speedyBBTm` function returns an MCMC object that can be used with the `coda` package for diagnostics. You can use the `plot()` function to visualize the trace plots and density plots of the MCMC samples. 
+You can run some MCMC diagnostics to check convergence. The `speedyBBTm()` function returns an MCMC object that can be used with the `coda` package for diagnostics. You can use the `plot()` function to visualize the trace plots and density plots of the MCMC samples. 
 
 ```{r mcmc_diagnostics, fig.width=8, fig.height=6}
 # Trace plots
