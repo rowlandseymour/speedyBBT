@@ -17,7 +17,8 @@ BBTm.ties(
   chi = 0.01,
   psi = 0.01,
   rw.sd = 0.1,
-  theta.rate = 0.01
+  theta.rate = 0.01,
+  burn.in = 100
 )
 }
 \arguments{
@@ -56,9 +57,11 @@ proposal distribution for theta.}
 
 \item{theta.rate}{(optional) The rate parameter of the exponential prior
 distribution placed on theta.}
+
+\item{burn.in}{(optional) The number of iterations to use as a burn-in period. Default is 100.}
 }
 \value{
-A data frame containing samples from the posterior distribution.
+A `coda::mcmc`` object containing samples from the posterior distribution
 }
 \description{
 This function uses MCMC to sample from the posterior distribution of the
@@ -92,14 +95,14 @@ darTiedModel <- BBTm.ties(
   player1 = darEsSalaam$comparisons$subward1,
   player2 = darEsSalaam$comparisons$subward2,
   player.prior.var = sigma,
-  hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3
+  hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0
 )
 
 # Get posterior means
-darTiedModel$lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
-lambda.mean <- rowMeans(darTiedModel$lambda)
+darTiedModelLambda <- parameter(darTiedModel, "lambda") - colMeans(parameter(darTiedModel, "lambda"))
+lambda.mean <- rowMeans(darTiedModelLambda)
 
 # Generate trace plots
 plot(lambda.mean)
-plot(darTiedModel$theta, type = "l")
+plot(parameter(darTiedModel, "theta"), type = "l")
 }
