@@ -15,7 +15,7 @@ lambda <- function(model_output, indices_to_extract = NULL) {
     var_string <- paste0(
       "lambda[",
       indices_to_extract,
-      "]",
+      "]"
     )
   }
   lambda_obj <- coda::as.mcmc(
