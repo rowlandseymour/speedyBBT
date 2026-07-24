@@ -51,7 +51,7 @@ expA <- expm::expm(forcedMarriage$adjacencyMatrix)
 sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 ```
 
-Next, you can fit the model using the `speedyBBTm` function. You will need to specify the outcome variable, the items involved in each comparison, and the prior covariance matrix for the item qualities. You can also specify the number of MCMC iterations to run. This example uses the default values for the hyperparameters of the prior distribution, but you can also specify your own values if you have prior knowledge about the items' rating using the `hyperparameter` argument.
+Next, you can fit the model using the `speedyBBTm()` function. You will need to specify the outcome variable, the items involved in each comparison, and the prior covariance matrix for the item qualities. You can also specify the number of MCMC iterations to run. This example uses the default values for the hyperparameters of the prior distribution, but you can also specify your own values if you have prior knowledge about the items' rating using the `hyperparameter` argument.
 
 ```{r fit_model}
 # Fit model
