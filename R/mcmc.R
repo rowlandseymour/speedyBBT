@@ -58,7 +58,7 @@
 #' # Plot results
 #' oldpar <- par(mfrow = c(2, 2))
 #'
-#' plot(forcedMarriageModel[, paste("lambda[", c(10, 20, 30, 40), "]", sep = "")], xlab = "Iteration", ylab = expression(lambda[i]))
+#' plot(forcedMarriageModel[, paste0("lambda[", c(10, 20, 30, 40), "]")], xlab = "Iteration", ylab = expression(lambda[i]))
 #' par(oldpar)
 #' }
 #' @export
