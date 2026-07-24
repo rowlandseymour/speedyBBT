@@ -19,7 +19,7 @@ test_that("BBTm.ties produces results within tolerance", {
   # Get posterior means
   centered_lambda <- parameter(darTiedModel, "lambda") -
     colMeans(parameter(darTiedModel, "lambda"))
-  lambda.mean <- rowMeans(centered_lambda)
+  lambda.mean <- colMeans(centered_lambda)
 
   # Read in means
   testMeans <- read.csv("darTiedModelMeansFullRun.csv")
