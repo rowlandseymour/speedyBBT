@@ -54,7 +54,7 @@
 #'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
 #'   player1 = forcedMarriage$comparisons$win,
 #'   player2 = forcedMarriage$comparisons$lost,
-#'   player.prior.var = sigma, n.iter = 3, burn.in = 1
+#'   player.prior.var = sigma, n.iter = 3, burn.in = 0
 #' )
 #'
 #' # Plot results
@@ -224,6 +224,7 @@ speedyBBTm <- function(
 #' proposal distribution for theta.
 #' @param theta.rate (optional) The rate parameter of the exponential prior
 #' distribution placed on theta.
+#' @param burn.in (optional) The number of iterations to use as a burn-in period. Default is 100.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -231,7 +232,7 @@ speedyBBTm <- function(
 #' If `lambda.initial` is omitted, it is set to a vector of zeroes.
 #'
 #'
-#' @return  A data frame containing samples from the posterior distribution.
+#' @return  A `coda::mcmc` object containing samples from the posterior distribution
 #'
 #'
 #' @examples
@@ -253,16 +254,16 @@ speedyBBTm <- function(
 #'   player1 = darEsSalaam$comparisons$subward1,
 #'   player2 = darEsSalaam$comparisons$subward2,
 #'   player.prior.var = sigma,
-#'   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3
+#'   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0
 #' )
 #'
 #' # Get posterior means
-#' darTiedModel$lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
-#' lambda.mean <- rowMeans(darTiedModel$lambda)
+#' darTiedModelLambda <- parameter(darTiedModel, "lambda") - colMeans(parameter(darTiedModel, "lambda"))
+#' lambda.mean <- rowMeans(darTiedModelLambda)
 #'
 #' # Generate trace plots
 #' plot(lambda.mean)
-#' plot(darTiedModel$theta, type = "l")
+#' plot(parameter(darTiedModel, "theta"), type = "l")
 #' @export
 #'
 BBTm.ties <- function(
@@ -278,10 +279,17 @@ BBTm.ties <- function(
   chi = 0.01,
   psi = 0.01,
   rw.sd = 0.1,
-  theta.rate = 0.01
+  theta.rate = 0.01,
+  burn.in = 100
 ) {
   # get number of objects in study
   n.objects <- max(c(player1, player2))
+
+  if (n.iter <= burn.in) {
+    stop(
+      "Your burn in period is less than the total number of iterations. Please choose a shorter burn-in period or a larger number of total iterations."
+    )
+  }
 
   # Order pairs into winner/loser
   winner <- ifelse(
@@ -411,16 +419,33 @@ BBTm.ties <- function(
     lambda.matrix[, i] <- as.numeric(lambda)
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
+  pars.matrix <- cbind(t(lambda.matrix), theta.store, alpha.sq.store)
 
   if (hyperparameter == TRUE) {
-    return(list(
-      "lambda" = lambda.matrix,
-      "theta" = theta.store,
-      "alpha.sq" = alpha.sq.store
-    ))
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 2)],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:(n.objects), "]", sep = ""),
+      "theta",
+      "alpha.sq"
+    )
   } else {
-    return(list("lambda" = lambda.matrix, "theta" = theta.store))
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 1)],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "theta"
+    )
   }
+  return(mcmc_out)
 }
 
 
@@ -443,19 +468,20 @@ BBTm.ties <- function(
 #' @param lambda.initial (optional) Vector containing the values of the
 #'  player parameters for the first MCMC iteration.
 #' @param n.iter Number of MCMC samples to be drawn.
-#' @param advantage (optional) a vector with the value of the comparisons specific
-#'  effect for each comparison
-#' @param kappa.initial (optional) an initial value for the comparison specific
-#'  value kappa
-#'  @param kappa.var (optional) the prior variance of the he comparison specific
-#'  value kappa
-#' @param hyperparameter boolean indicating if inference should be performed
+#' @param advantage (optional) A vector with the value of the comparisons specific
+#'  effect for each comparison.
+#' @param kappa.initial (optional) An initial value for the comparison specific
+#'  value kappa.
+#'  @param kappa.var (optional) The prior variance of the comparison specific
+#'  value kappa.
+#' @param hyperparameter Boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
 #'  (main diagonal of the covariance matrix) must be set to 1.
-#' @param psi shape parameter for the inverse-gamma prior distribution on the
-#' hyperparameter
-#' @param chi rate parameter for the inverse-gamma prior distribution on the
-#'  hyperparameter
+#' @param psi Shape parameter for the inverse-gamma prior distribution on the
+#' hyperparameter.
+#' @param chi Rate parameter for the inverse-gamma prior distribution on the
+#'  hyperparameter.
+#' @param burn.in Number of iterations to use as a burn-in period. Default is 100.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -465,7 +491,7 @@ BBTm.ties <- function(
 #' If `lambda.var` is omitted, it is set to N(0, 5^2).
 #'
 #'
-#' @return  A data frame containing samples from the posterior distribution
+#' @return  A `coda::mcmc` object containing samples from the posterior distribution
 #'
 #' @keywords internal
 #'
@@ -483,7 +509,8 @@ BBTm.no.formula <- function(
   n.iter = 1000,
   hyperparameter = TRUE,
   chi = 0.01,
-  psi = 0.01
+  psi = 0.01,
+  burn.in = 100
 ) {
   # get number of objects in study
   n.objects <- max(c(player1, player2))
@@ -594,20 +621,55 @@ BBTm.no.formula <- function(
   }
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
-    return(list(
-      "lambda" = lambda.matrix,
-      "alpha.sq" = alpha.sq.vector,
-      "kappa" = kappa.vector
-    ))
+    pars.matrix <- cbind(lambda.matrix, alpha.sq.vector, kappa.vector)
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "alpha.sq",
+      "kappa"
+    )
   } else if (hyperparameter == FALSE & advantage.inf == TRUE) {
+    pars.matrix <- cbind(lambda.matrix, kappa.vector)
     # Output only kappa
-    return(list("lambda" = lambda.matrix, "kappa" = kappa.vector))
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "kappa"
+    )
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
+    pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     # Output only alpha.sq
-    return(list("lambda" = lambda.matrix, "alpha.sq" = alpha.sq.vector))
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "alpha.sq"
+    )
   } else {
-    return(list("lambda" = lambda.matrix))
+    pars.matrix <- lambda.matrix
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames <- c(paste("lambda[", 1:n.objects, "]", sep = ""))
   }
+  return(mcmc_out)
 }
 
 
@@ -623,32 +685,33 @@ BBTm.no.formula <- function(
 #'
 #'
 #'
-#' @param outcome vector of outcomes. 1 if player2 is the winner,
-#'  0 if player1 is the winner
-#' @param player1 vector of first players.
-#' @param player2 vector of second players.
-#' @param formula formula with no left-hand-side specifying the player specific
-#' effects
-#' @param data data.frame with a row corresponding to each player and  column corresponding
+#' @param outcome Vector of outcomes. 1 if player2 is the winner,
+#'  0 if player1 is the winner.
+#' @param player1 Vector of first players.
+#' @param player2 Vector of second players.
+#' @param formula Formula with no left-hand-side specifying the player specific
+#' effects.
+#' @param data Data.frame with a row corresponding to each player and  column corresponding
 #' to each covariate.
-#' @param player.prior.var (optional) matrix specifying the prior covariance of
-#'  the player correlation parameters
-#' @param beta.initial (optional) vector containing the values of the
-#'  player specific  parameters for the first MCMC iteration
-#' @param n.iter number of MCMC samples to be drawn
-#' @param advantage (optional) a vector with the value of the comparisons specific
-#'  effect for each comparison
-#' @param kappa.initial (optional) an initial value for the comparison specific
-#'  value kappa
-#' @param kappa.var (optional) the prior variance of the he comparison specific
-#'  value kappa
-#' @param hyperparameter boolean indicating if inference should be performed
+#' @param player.prior.var (optional) Matrix specifying the prior covariance of
+#'  the player correlation parameters.
+#' @param beta.initial (optional) Vector containing the values of the
+#'  player specific  parameters for the first MCMC iteration.
+#' @param n.iter Number of MCMC samples to be drawn.
+#' @param advantage (optional) A vector with the value of the comparisons specific
+#'  effect for each comparison.
+#' @param kappa.initial (optional) An initial value for the comparison specific
+#'  value kappa.
+#' @param kappa.var (optional) The prior variance of the comparison specific
+#'  value kappa.
+#' @param hyperparameter Boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
 #'  (main diagonal of the covariance matrix) must be set to 1.
-#' @param psi shape parameter for the inverse-gamma prior distribution on the
-#' hyperparameter
-#' @param chi rate parameter for the inverse-gamma prior distribution on the
-#'  hyperparameter
+#' @param psi Shape parameter for the inverse-gamma prior distribution on the
+#' hyperparameter.
+#' @param chi Rate parameter for the inverse-gamma prior distribution on the
+#'  hyperparameter.
+#' @param burn.in The number of iterations to use for a burn.in, default is 100.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -659,7 +722,7 @@ BBTm.no.formula <- function(
 #' it is set to 0.5.
 #'
 #'
-#' @return  A data frame containing samples from the posterior distribution
+#' @return  A `coda::mcmc` object containing samples from the posterior distribution.
 #'
 #' @keywords internal
 #'
@@ -679,7 +742,8 @@ BBTm.with.formula <- function(
   n.iter = 1000,
   hyperparameter = TRUE,
   chi = 0.01,
-  psi = 0.01
+  psi = 0.01,
+  burn.in = 100
 ) {
   # get number of objects in study
   n.objects <- max(c(player1, player2))
@@ -721,12 +785,12 @@ BBTm.with.formula <- function(
     kappa.vector <- numeric(n.iter)
     advantage.inf <- TRUE
   }
-
+  n.betas <- dim(X)[2]
   # Set initial values for beta
   if (is.null(beta.initial)) {
-    beta.initial <- numeric(dim(X)[2])
+    beta.initial <- numeric(n.betas)
   }
-  if (dim(X)[2] != length(beta.initial)) {
+  if (n.betas != length(beta.initial)) {
     stop(
       "Mismatch between number of covariates in study and length of vector for initial estimates."
     )
@@ -736,7 +800,7 @@ BBTm.with.formula <- function(
   beta <- beta.initial
   alpha.sq <- 1
 
-  beta.matrix <- matrix(0, n.iter, dim(X)[2])
+  beta.matrix <- matrix(0, n.iter, n.betas)
   lambda.matrix <- matrix(0, n.iter, n.objects)
   alpha.sq.vector <- numeric(n.iter)
   grand.covariance <- sum(player.prior.var)
@@ -785,29 +849,70 @@ BBTm.with.formula <- function(
   }
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
-    return(list(
-      "beta" = beta.matrix,
-      "lambda" = lambda.matrix,
-      "alpha.sq" = alpha.sq.vector,
-      "kappa" = kappa.vector
-    ))
+    pars.matrix <- cbind(
+      beta.matrix,
+      lambda.matrix,
+      kappa.vector,
+      alpha.sq.vector
+    )
+    # Output only kappa
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("beta[", 1:n.betas, "]", sep = ""),
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "kappa",
+      "alpha.sq"
+    )
   } else if (hyperparameter == FALSE & advantage.inf == TRUE) {
     # Output only kappa
-    return(list(
-      "beta" = beta.matrix,
-      "lambda" = lambda.matrix,
-      "kappa" = kappa.vector
-    ))
+    pars.matrix <- cbind(beta.matrix, lambda.matrix, kappa.vector)
+    # Output only kappa
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("beta[", 1:n.betas, "]", sep = ""),
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "kappa"
+    )
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
     # Output only alpha.sq
-    return(list(
-      "beta" = beta.matrix,
-      "lambda" = lambda.matrix,
-      "alpha.sq" = alpha.sq.vector
-    ))
+
+    pars.matrix <- cbind(beta.matrix, lambda.matrix, alpha.sq.vector)
+    # Output only kappa
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("lambda[", 1:n.objects, "]", sep = ""),
+      "alpha.sq"
+    )
   } else {
-    return(list("beta" = beta.matrix, "lambda" = lambda.matrix))
+    pars.matrix <- cbind(beta.matrix, lambda.matrix)
+    # Output only kappa
+    mcmc_out <- coda::as.mcmc(
+      x = pars.matrix[(burn.in + 1):n.iter, ],
+      start = burn.in + 1,
+      end = n.iter,
+      thin = 1
+    )
+    coda::varnames(mcmc_out) <- c(
+      paste("beta[", 1:n.betas, "]", sep = ""),
+      paste("lambda[", 1:n.objects, "]", sep = "")
+    )
   }
+  return(mcmc_out)
 }
 
 
@@ -824,8 +929,8 @@ BBTm.with.formula <- function(
 #'
 #' @inheritParams BBTm.with.formula
 #'
-#' @param lambda.initial (optional) vector containing the values of the
-#'  player parameters for the first MCMC iteration
+#' @param lambda.initial (optional) Vector containing the values of the
+#'  player parameters for the first MCMC iteration.
 #'
 #'
 #'
@@ -838,7 +943,7 @@ BBTm.with.formula <- function(
 #' it is set to 0.5.
 #'
 #'
-#' @return  A data frame containing samples from the posterior distribution
+#' @return  A `coda::mcmc` object containing samples from the posterior distribution.
 #'
 #'
 #'
@@ -861,9 +966,7 @@ BBTm.with.formula <- function(
 #' )
 #'
 #' # Plot posterior distributions
-#' hist(wimbledonModel$kappa[-c(1:100)], main = "", xlab = expression(kappa), freq = FALSE)
-#' hist(wimbledonModel$beta[-c(1:100), 1], main = "", xlab = expression(beta[1]), freq = FALSE)
-#' hist(wimbledonModel$beta[-c(1:100), 2], main = "", xlab = expression(beta[2]), freq = FALSE)
+#' hist(parameter(wimbledonModel, "kappa"), main = "", xlab = expression(kappa), freq = FALSE)
 #' }
 #' @export
 #'
@@ -882,7 +985,8 @@ BBTm <- function(
   kappa.var = NULL,
   hyperparameter = TRUE,
   chi = 0.01,
-  psi = 0.01
+  psi = 0.01,
+  burn.in = 100
 ) {
   if (!is.null(lambda.initial) & !is.null(beta.initial)) {
     stop("Cannot set initial values for both lambda and beta")
@@ -903,7 +1007,8 @@ BBTm <- function(
       n.iter,
       hyperparameter,
       chi,
-      psi
+      psi,
+      burn.in
     )
   } else {
     output <- BBTm.no.formula(
@@ -918,7 +1023,8 @@ BBTm <- function(
       n.iter,
       hyperparameter,
       chi,
-      psi
+      psi,
+      burn.in
     )
   }
   return(output)

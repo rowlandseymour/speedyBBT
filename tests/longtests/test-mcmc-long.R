@@ -1,7 +1,6 @@
 test_that("BBTm.ties produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
-  data("darEsSalaam")
 
   sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
   sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
@@ -13,11 +12,14 @@ test_that("BBTm.ties produces results within tolerance", {
     player2 = darEsSalaam$comparisons$subward2,
     player.prior.var = sigma,
     hyperparameter = TRUE,
-    rw.sd = 0.005
+    rw.sd = 0.005,
+    n.iter = 400
   )
+
   # Get posterior means
-  centered_lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
-  lambda.mean <- rowMeans(centered_lambda)
+  centered_lambda <- parameter(darTiedModel, "lambda") -
+    colMeans(parameter(darTiedModel, "lambda"))
+  lambda.mean <- colMeans(centered_lambda)
 
   # Read in means
   testMeans <- read.csv("darTiedModelMeansFullRun.csv")

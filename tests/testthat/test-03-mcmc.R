@@ -1,6 +1,5 @@
 test_that("speedyBBTm produces results within tolerance", {
   # Construct covariance matrix
-  data("forcedMarriage")
   expA <- expm::expm(forcedMarriage$adjacencyMatrix)
   sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
@@ -13,7 +12,10 @@ test_that("speedyBBTm produces results within tolerance", {
     n.iter = 2000
   )
 
-  forcedMarriageModelMeans <- colMeans(forcedMarriageModel[, grep("lambda", varnames(forcedMarriageModel))])
+  forcedMarriageModelMeans <- colMeans(forcedMarriageModel[, grep(
+    "lambda",
+    varnames(forcedMarriageModel)
+  )])
 
   # Read in means
   testMeansPath <- test_path("forcedMarriageModelMeans.csv")
@@ -41,7 +43,9 @@ test_that("BBTm produces results within tolerance", {
     n.iter = 4000
   )
 
-  wimbledonModelMeans <- colMeans(wimbledonModel$lambda[-c(1:50), ])
+  wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
+    -c(1:50),
+  ])
 
   # Read in means
   testMeansPath <- test_path("wimbledonModelMeans.csv")
@@ -58,7 +62,6 @@ test_that("BBTm produces results within tolerance", {
 test_that("BBTm.ties produces expected output from a single iteration", {
   # Construct covariance matrix
   # Fit model
-  data("darEsSalaam")
   set.seed(123)
   sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
   sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
@@ -71,10 +74,12 @@ test_that("BBTm.ties produces expected output from a single iteration", {
     player.prior.var = sigma,
     hyperparameter = TRUE,
     rw.sd = 0.005,
-    n.iter = 1
+    burn.in = 0,
+    n.iter = 2
   )
   # Get posterior means
-  centered_lambda <- darTiedModel$lambda - colMeans(darTiedModel$lambda)
+  centered_lambda <- parameter(darTiedModel, "lambda") -
+    colMeans(parameter(darTiedModel, "lambda"))
   lambda.mean <- rowMeans(centered_lambda)
 
   # Read in means
