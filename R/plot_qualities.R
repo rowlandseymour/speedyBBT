@@ -7,7 +7,6 @@
 #'
 #' @examples
 #'
-#' data("wimbledon")
 #' items <- wimbledon$players$name
 #'
 #' wimbledonModel <- BBTm(
@@ -24,7 +23,7 @@
 #'
 plot_qualities <- function(item_names, model_output, burn.in = 100) {
   # Posterior mean and 95% credible intervals (burn-in = 100)
-  param_draws <- model_output$lambda[-c(1:burn.in), ]
+  param_draws <- parameter(model_output, "lambda")
   model_means <- colMeans(param_draws)
   modelLowerCI <- apply(
     param_draws,
