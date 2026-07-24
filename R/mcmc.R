@@ -48,6 +48,8 @@
 #' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
 #'
 #' # Fit model
+#' # Using `n.iter = 3` here to reduce runtime, you will need more
+#' # iterations for inference.
 #' forcedMarriageModel <- speedyBBTm(
 #'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
 #'   player1 = forcedMarriage$comparisons$win,
@@ -243,7 +245,7 @@ speedyBBTm <- function(
 #'
 #'
 #' # Fit BT model with ties
-#' # Using `n.iter = 3` here to reduce runtime, you will need
+#' # Using `n.iter = 3` here to reduce model runtime, you will need
 #' # a larger number of iterations for valid inference.
 #' darTiedModel <- BBTm.ties(
 #'   n.objects = nrow(darEsSalaam$adjacencyMatrix),

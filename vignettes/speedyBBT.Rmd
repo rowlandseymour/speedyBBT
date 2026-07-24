@@ -36,7 +36,7 @@ You can learn more about the package functions and how to use them from the docu
 ?speedyBBTm
 ```
 
-The package includes some example datasets that you can use to practice fitting models. These datasets are automatically loaded when you install the package. To laod them  `data()` function. For example, to load the `forcedMarriage` dataset, you can run:
+The package includes some example datasets that you can use to practice fitting models. These datasets are automatically loaded when you install the package. To view the `forcedMarriage` dataset, you can run:
 ````{r load_data}
 data("forcedMarriage")
 ````

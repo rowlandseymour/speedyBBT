@@ -84,7 +84,7 @@ sigma <- diag(diag(sigma)^-0.5) \%*\% sigma \%*\% diag(diag(sigma)^-0.5)
 
 
 # Fit BT model with ties
-# Using `n.iter = 2` here to reduce runtime, you will need
+# Using `n.iter = 3` here to reduce model runtime, you will need
 # a larger number of iterations for valid inference.
 darTiedModel <- BBTm.ties(
   n.objects = nrow(darEsSalaam$adjacencyMatrix),
@@ -92,7 +92,7 @@ darTiedModel <- BBTm.ties(
   player1 = darEsSalaam$comparisons$subward1,
   player2 = darEsSalaam$comparisons$subward2,
   player.prior.var = sigma,
-  hyperparameter = TRUE, rw.sd = 0.005, n.iter = 2
+  hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3
 )
 
 # Get posterior means
