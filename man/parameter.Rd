@@ -2,14 +2,14 @@
 % Please edit documentation in R/parameters.R
 \name{parameter}
 \alias{parameter}
-\title{Extract Parameter Draws from a Model Object}
+\title{Extract parameter draws from a model object}
 \usage{
 parameter(model_output, parameter_name)
 }
 \arguments{
-\item{model_output}{The mcmc object that contains the draws output from the BBT model}
+\item{model_output}{The mcmc object that contains the draws output from the BBT model.}
 
-\item{parameter_name}{The name of the parameter to extract draws for}
+\item{parameter_name}{The name of the parameter to extract draws for.}
 }
 \value{
 A vector containing the draws of the parameter.

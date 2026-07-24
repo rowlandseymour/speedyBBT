@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcmc.R
 \name{speedyBBTm}
 \alias{speedyBBTm}
-\title{Standard Bayesian Bradley--Terry model}
+\title{Standard Bayesian Bradley-Terry model}
 \usage{
 speedyBBTm(
   outcome = NULL,
@@ -19,38 +19,38 @@ speedyBBTm(
 )
 }
 \arguments{
-\item{outcome}{vector of outcomes. 1 if player 2 is the winner,
+\item{outcome}{Vector of outcomes. 1 if player 2 is the winner,
 0 if player 1 is the winner.}
 
-\item{player1}{vector of first players.}
+\item{player1}{Vector of first players.}
 
-\item{player2}{vector of second players.}
+\item{player2}{Vector of second players.}
 
-\item{win.matrix}{(optional) a win-loss matrix where the i,j th element is the number of
+\item{win.matrix}{(optional) A win-loss matrix where the i,j th element is the number of
 times object i beat object j.}
 
-\item{player.prior.var}{(optional) matrix specifying the prior covariance of
+\item{player.prior.var}{(optional) A matrix specifying the prior covariance of
 the player correlation parameters.}
 
-\item{lambda.initial}{(optional) vector containing the values of the
+\item{lambda.initial}{(optional) A vector containing the values of the
 player correlation parameters for the first MCMC iteration.}
 
-\item{n.iter}{number of MCMC samples to be drawn.}
+\item{n.iter}{The number of MCMC samples to be drawn.}
 
-\item{hyperparameter}{boolean indicating if inference should be performed
+\item{hyperparameter}{A boolean indicating if inference should be performed
 for the prior variance hyperparameter. If TRUE the prior variance
 (main diagonal of the covariance matrix) must be set to 1.}
 
-\item{chi}{(Optional) rate parameter for the inverse-gamma prior distribution on the
+\item{chi}{(Optional) The rate parameter for the inverse-gamma prior distribution on the
 hyperparameter. Default is 0.01.}
 
-\item{psi}{(Optional) shape parameter for the inverse-gamma prior distribution on the
+\item{psi}{(Optional) The shape parameter for the inverse-gamma prior distribution on the
 hyperparameter. Default is 0.01.}
 
-\item{burn.in}{(optional) the number of iterations to discard as burn-in. Default is 100.}
+\item{burn.in}{(optional) The number of iterations to discard as burn-in. Default is 100.}
 }
 \value{
-A \code{mcmc} object containing samples from the posterior distribution
+A \code{mcmc} object containing samples from the posterior distribution.
 }
 \description{
 This function uses MCMC to sample from the posterior distribution of the

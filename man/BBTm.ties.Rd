@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcmc.R
 \name{BBTm.ties}
 \alias{BBTm.ties}
-\title{Bayesian inference for the Bradley--Terry model with ties}
+\title{Bayesian inference for the Bradley-Terry model with ties}
 \usage{
 BBTm.ties(
   n.objects,
@@ -21,44 +21,44 @@ BBTm.ties(
 )
 }
 \arguments{
-\item{n.objects}{number of objects in the study}
+\item{n.objects}{The number of objects in the study.}
 
-\item{outcome}{vector of outcomes. 0 if player 1 is the winner,
+\item{outcome}{Vector of outcomes. 0 if player 1 is the winner,
 1 if player 2 is the winner, and 2 if it is a tie.}
 
-\item{player1}{vector of first players.}
+\item{player1}{Vector of first players.}
 
-\item{player2}{vector of second players.}
+\item{player2}{Vector of second players.}
 
-\item{player.prior.var}{(optional) matrix specifying the prior covariance of
-the player correlation parameters}
+\item{player.prior.var}{(optional) Matrix specifying the prior covariance of
+the player correlation parameters.}
 
-\item{theta.initial}{(optional) value of the tied parameter there for
-the first MCMC iteration}
+\item{theta.initial}{(optional) Value of the tied parameter there for
+the first MCMC iteration.}
 
-\item{lambda.initial}{(optional) vector containing the values of the
-player parameters for the first MCMC iteration}
+\item{lambda.initial}{(optional) Vector containing the values of the
+player parameters for the first MCMC iteration.}
 
-\item{n.iter}{number of MCMC samples to be drawn}
+\item{n.iter}{Number of MCMC samples to be drawn.}
 
-\item{hyperparameter}{boolean indicating if inference should be performed
+\item{hyperparameter}{Boolean indicating if inference should be performed
 for the prior variance hyperparameter. If TRUE the prior variance
 (main diagonal of the covariance matrix) must be set to 1.}
 
-\item{chi}{(optional) rate parameter for the inverse-gamma prior distribution on the
-hyperparameter}
+\item{chi}{(optional) Rate parameter for the inverse-gamma prior distribution on the
+hyperparameter.}
 
-\item{psi}{(optional) shape parameter for the inverse-gamma prior distribution on the
-hyperparameter}
+\item{psi}{(optional) Shape parameter for the inverse-gamma prior distribution on the
+hyperparameter.}
 
-\item{rw.sd}{(optional) number describing the standard deviation of normal distribution
-proposal distribution for theta}
+\item{rw.sd}{(optional) Number describing the standard deviation of normal distribution
+proposal distribution for theta.}
 
 \item{theta.rate}{(optional) The rate parameter of the exponential prior
-distribution placed on theta}
+distribution placed on theta.}
 }
 \value{
-A data frame containing samples from the posterior distribution
+A data frame containing samples from the posterior distribution.
 }
 \description{
 This function uses MCMC to sample from the posterior distribution of the

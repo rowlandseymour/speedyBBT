@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcmc.R
 \name{BBTm.with.formula}
 \alias{BBTm.with.formula}
-\title{Bayesian Bradley--Terry model with comparison and player specific effect and formula}
+\title{Bayesian Bradley--Terry model with comparison- and player-specific effect and formula}
 \usage{
 BBTm.with.formula(
   outcome,
