@@ -67,7 +67,6 @@ If \code{lambda.initial} is ommitted, it is set to a vector of zeroes.
 }
 \examples{
 \donttest{
-
 ########################################
 ## Forced Marriage in Nottinghamshire ##
 ########################################

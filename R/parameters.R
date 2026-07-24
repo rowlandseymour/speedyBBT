@@ -12,11 +12,6 @@ parameter.matrix <- function(
   parameter_name,
   indices_to_extract = NULL
 ) {
-  check_model(model_output, parameter_name)
-#' @param model_output The mcmc object that contains the draws output from the BBT model.
-#' @param indices_to_extract A single column or a vector of column indices to extract from the draws matrix.
-#' @return A matrix with the selected indices, or the full matrix of draws.
-lambda <- function(model_output, indices_to_extract = NULL) {
   check_model(model_output, "lambda")
 
   if (is.null(indices_to_extract)) {
