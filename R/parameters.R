@@ -52,12 +52,9 @@ check_model <- function(model_output, parameter_name) {
 
   if (length(grep(parameter_name, varnames(model_output))) == 0) {
     stop(
-      paste(
         "This model object does not contain estimates of the ",
         parameter_name,
         " parameter. Please run a model using the `speedyBBTm` function."
-      ),
-      sep = ""
     )
   }
 }
