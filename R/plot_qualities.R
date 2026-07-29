@@ -5,7 +5,7 @@
 #'
 #' @param item_names The names of the different items (or players or wards) being compared.
 #' @param model_output The model output object containing the draws.
-#'
+#' @export
 #' @examples
 #'
 #' items <- wimbledon$players$name
@@ -24,7 +24,7 @@
 #'
 plot_qualities <- function(item_names, model_output) {
   # Posterior mean and 95% credible intervals (burn-in = 100)
-  param_draws <- parameter(model_output, "lambda")
+  param_draws <- model_output$lambda
   model_means <- colMeans(param_draws)
   modelLowerCI <- apply(
     param_draws,
