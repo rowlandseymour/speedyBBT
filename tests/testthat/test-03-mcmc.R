@@ -59,6 +59,44 @@ test_that("BBTm produces results within tolerance", {
   )
 })
 
+test_that("BBTm.no.formula produces results within tolerance", {
+  # Construct covariance matrix
+  # Fit model
+  set.seed(332)
+  # Construct covariance matrix
+  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+  sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+
+  # Fit model
+  forcedMarriageModel <- BBTm(
+    outcome = rep(1, length(forcedMarriage$comparisons$win)),
+    player1 = forcedMarriage$comparisons$win,
+    player2 = forcedMarriage$comparisons$lost,
+    player.prior.var = sigma,
+    n.iter = 2000
+  )
+
+  lambda_draws <- forcedMarriageModel[
+    -c(1:100),
+    grep(
+      "lambda",
+      varnames(forcedMarriageModel)
+    )
+  ]
+  forcedMarriageModelMeans <- lambda_draws - colMeans(lambda_draws)
+
+  # Read in means
+  testMeansPath <- test_path("forcedMarriageModelMeans.csv")
+  testMeans <- read.csv(testMeansPath)
+
+  expect_equal(
+    sum(abs(testMeans - forcedMarriageModelMeans)) /
+      nrow(forcedMarriage$adjacencyMatrix),
+    0,
+    tolerance = 1e-1
+  )
+})
+
 test_that("BBTm.ties produces expected output from a single iteration", {
   # Construct covariance matrix
   # Fit model
