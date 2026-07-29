@@ -443,7 +443,7 @@ BBTm.ties <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      paste("lambda[", 1:n.objects, "]", sep = ""),
+      paste0("lambda[", 1:n.objects, "]"),
       "theta"
     )
   }
@@ -590,7 +590,6 @@ BBTm.no.formula <- function(
           0.5 * t(lambda) %*% player.prior.var.inverse %*% lambda + psi
         )
     }
-
     # Update Z
     z <- BayesLogit::rpg(
       n.comp,
@@ -633,7 +632,7 @@ BBTm.no.formula <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      paste("lambda[", 1:n.objects, "]", sep = ""),
+      paste0("lambda[", 1:n.objects, "]"),
       "alpha.sq",
       "kappa"
     )
@@ -647,7 +646,7 @@ BBTm.no.formula <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      paste("lambda[", 1:n.objects, "]", sep = ""),
+      paste0("lambda[", 1:n.objects, "]"),
       "kappa"
     )
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
@@ -660,7 +659,7 @@ BBTm.no.formula <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      paste("lambda[", 1:n.objects, "]", sep = ""),
+      paste0("lambda[", 1:n.objects, "]"),
       "alpha.sq"
     )
   } else {
@@ -671,7 +670,7 @@ BBTm.no.formula <- function(
       end = n.iter,
       thin = 1
     )
-    coda::varnames <- c(paste("lambda[", 1:n.objects, "]", sep = ""))
+    coda::varnames(mcmc_out) <- paste0("lambda[", 1:n.objects, "]")
   }
   return(mcmc_out)
 }
@@ -869,8 +868,8 @@ BBTm.with.formula <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      paste("beta[", 1:n.betas, "]", sep = ""),
-      paste("lambda[", 1:n.objects, "]", sep = ""),
+      paste0("beta[", 1:n.betas, "]"),
+      paste0("lambda[", 1:n.objects, "]"),
       "kappa",
       "alpha.sq"
     )
@@ -885,8 +884,8 @@ BBTm.with.formula <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      paste("beta[", 1:n.betas, "]", sep = ""),
-      paste("lambda[", 1:n.objects, "]", sep = ""),
+      paste0("beta[", 1:n.betas, "]"),
+      paste0("lambda[", 1:n.objects, "]"),
       "kappa"
     )
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
@@ -901,7 +900,7 @@ BBTm.with.formula <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      paste("lambda[", 1:n.objects, "]", sep = ""),
+      paste0("lambda[", 1:n.objects, "]"),
       "alpha.sq"
     )
   } else {
@@ -914,8 +913,8 @@ BBTm.with.formula <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      paste("beta[", 1:n.betas, "]", sep = ""),
-      paste("lambda[", 1:n.objects, "]", sep = "")
+      paste0("beta[", 1:n.betas, "]"),
+      paste0("lambda[", 1:n.objects, "]")
     )
   }
   return(mcmc_out)
