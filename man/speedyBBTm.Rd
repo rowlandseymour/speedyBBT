@@ -81,7 +81,7 @@ forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
   player1 = forcedMarriage$comparisons$win,
   player2 = forcedMarriage$comparisons$lost,
-  player.prior.var = sigma, n.iter = 3, burn.in = 1
+  player.prior.var = sigma, n.iter = 3, burn.in = 0
 )
 
 # Plot results
