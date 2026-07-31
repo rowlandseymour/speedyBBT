@@ -170,24 +170,26 @@ speedyBBTm <- function(
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
   if (hyperparameter == TRUE) {
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
-    )
-    coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
-      "alpha.sq"
+      thin = 1,
+      model_type = "speedy",
+      varnames = c(
+        paste0("lambda[", 1:n.objects, "]"),
+        "alpha.sq"
+      )
     )
   } else {
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, 1:n.objects],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, 1:n.objects],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = 1,
+      model_type = "speedy",
+      varnames = paste0("lambda[", 1:n.objects, "]")
     )
-    coda::varnames(mcmc_out) <- paste0("lambda[", 1:n.objects, "]")
   }
   return(mcmc_out)
 }
