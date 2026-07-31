@@ -424,27 +424,29 @@ BBTm.ties <- function(
   pars.matrix <- cbind(t(lambda.matrix), theta.store, alpha.sq.store)
 
   if (hyperparameter == TRUE) {
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 2)],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 2)],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
-    )
-    coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:(n.objects), "]"),
-      "theta",
-      "alpha.sq"
+      thin = 1,
+      model_type = "ties",
+      varnames = c(
+        paste0("lambda[", 1:n.objects, "]"),
+        "theta",
+        "alpha.sq"
+      )
     )
   } else {
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 1)],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 1)],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
-    )
-    coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
-      "theta"
+      thin = 1,
+      model_type = "ties",
+      varnames = c(
+        paste0("lambda[", 1:n.objects, "]"),
+        "theta"
+      )
     )
   }
   return(mcmc_out)
@@ -629,52 +631,56 @@ BBTm.no.formula <- function(
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector, kappa.vector)
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
-    )
-    coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
-      "alpha.sq",
-      "kappa"
+      thin = 1,
+      model_type = "no_formula",
+      varnames = c(
+        paste0("lambda[", 1:n.objects, "]"),
+        "alpha.sq",
+        "kappa"
+      )
     )
   } else if (hyperparameter == FALSE & advantage.inf == TRUE) {
     pars.matrix <- cbind(lambda.matrix, kappa.vector)
     # Output only kappa
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
-    )
-    coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
-      "kappa"
+      thin = 1,
+      model_type = "no_formula",
+      varnames = c(
+        paste0("lambda[", 1:n.objects, "]"),
+        "kappa"
+      )
     )
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     # Output only alpha.sq
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
-    )
-    coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
-      "alpha.sq"
+      thin = 1,
+      model_type = "bbtm",
+      varnames = c(
+        paste0("lambda[", 1:n.objects, "]"),
+        "alpha.sq"
+      )
     )
   } else {
     pars.matrix <- lambda.matrix
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = 1,
+      model_type = "bbtm",
+      varnames = c(paste0("lambda[", 1:n.objects, "]"))
     )
-    coda::varnames(mcmc_out) <- paste0("lambda[", 1:n.objects, "]")
   }
   return(mcmc_out)
 }
@@ -863,60 +869,62 @@ BBTm.with.formula <- function(
       alpha.sq.vector
     )
     # Output only kappa
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
-    )
-    coda::varnames(mcmc_out) <- c(
-      paste0("beta[", 1:n.betas, "]"),
-      paste0("lambda[", 1:n.objects, "]"),
-      "kappa",
-      "alpha.sq"
+      thin = 1,
+      model_type = "bbtm",
+      varnames = c(
+        paste0("beta[", 1:n.betas, "]"),
+        paste0("lambda[", 1:n.objects, "]"),
+        "kappa",
+        "alpha.sq"
+      ),
+      formula = formula
     )
   } else if (hyperparameter == FALSE & advantage.inf == TRUE) {
     # Output only kappa
     pars.matrix <- cbind(beta.matrix, lambda.matrix, kappa.vector)
     # Output only kappa
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
-    )
-    coda::varnames(mcmc_out) <- c(
-      paste0("beta[", 1:n.betas, "]"),
-      paste0("lambda[", 1:n.objects, "]"),
-      "kappa"
+      thin = 1,
+      model_type = "bbtm",
+      varnames = c(
+        paste0("beta[", 1:n.betas, "]"),
+        paste0("lambda[", 1:n.objects, "]"),
+        "kappa"
+      ),
+      formula = formula
     )
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
     # Output only alpha.sq
 
     pars.matrix <- cbind(beta.matrix, lambda.matrix, alpha.sq.vector)
     # Output only kappa
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
-    )
-    coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
-      "alpha.sq"
+      thin = 1,
+      model_type = "bbtm",
+      varnames = c(paste0("lambda[", 1:n.objects, "]"), "alpha.sq"),
+      formula = formula
     )
   } else {
     pars.matrix <- cbind(beta.matrix, lambda.matrix)
     # Output only kappa
-    mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+    mcmc_out <- new_bbtmodel(
+      data = pars.matrix[(burn.in + 1):n.iter, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
-    )
-    coda::varnames(mcmc_out) <- c(
-      paste0("beta[", 1:n.betas, "]"),
-      paste0("lambda[", 1:n.objects, "]")
+      thin = 1,
+      model_type = "bbtm",
+      varnames = c(paste0("lambda[", 1:n.objects, "]"), "alpha.sq"),
+      formula = formula
     )
   }
   return(mcmc_out)

@@ -5,7 +5,7 @@
 #' @param start An integer representing the starting iteration in the model.
 #' @param end An integer representing the last iteration in the model.
 #' @param thin An integer representing the thinning interval for the model.
-#' @param model_type A character string representing the type of model. One of "speedy", "ties", "bbt".
+#' @param model_type A character string representing the type of model. One of "speedy", "ties", or "bbtm".
 #' @param formula An optional formula object representing the model formula.
 #' @return An object of class bbtmodel, which is a subclass of coda::mcmc.
 new_bbtmodel <- function(
@@ -61,11 +61,14 @@ validate_varnames <- function(varnames, n.objects) {
 #' @param bbtmodel_obj An object of class bbtmodel to validate against.
 #' @return A character string of the validated model type.
 validate_model_type <- function(model_type, bbtmodel_obj) {
-  model_type <- match.arg(model_type, choices = c("speedy", "ties", "bbt"))
+  model_type <- match.arg(
+    model_type,
+    choices = c("speedy", "ties", "bbtm")
+  )
 
   # Check that ties model has additional parameters
   if (model_type == "ties") {
-    if (varnames(bbtmodel_obj) != "theta") {
+    if (length(grep("theta", varnames(bbtmodel_obj))) == 0) {
       stop(
         "The 'ties' model type requires a theta parameter. Please ensure that the bbtmodel object has the correct variable names."
       )
