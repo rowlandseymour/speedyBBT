@@ -61,7 +61,7 @@ distribution placed on theta.}
 \item{burn.in}{(optional) The number of iterations to use as a burn-in period. Default is 100.}
 }
 \value{
-A `coda::mcmc`` object containing samples from the posterior distribution
+A \code{coda::mcmc} object containing samples from the posterior distribution
 }
 \description{
 This function uses MCMC to sample from the posterior distribution of the

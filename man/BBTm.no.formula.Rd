@@ -73,5 +73,8 @@ N(0, 5^2) prior distributions are placed on each object quality parameter.
 If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 
 If \code{lambda.var} is omitted, it is set to N(0, 5^2).
+
+#' If \code{kappa.var} is omitted, it is set to N(0, 5^2), if \code{kappa.initial} is omitted
+it is set to 0.5.
 }
 \keyword{internal}
