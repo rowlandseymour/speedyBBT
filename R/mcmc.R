@@ -362,7 +362,7 @@ BBTm.ties <- function(
   grand.covariance <- sum(item.prior.var)
 
   # Create empty storage vessels
-  lambda.matrix <- matrix(0, n.objects, n.iter) # store results
+  lambda.matrix <- matrix(0, n.iter, n.objects) # store results
   theta.store <- numeric(n.iter) # store results
   alpha.sq.store <- numeric(n.iter) # store results
 
@@ -420,11 +420,11 @@ BBTm.ties <- function(
 
     theta.store[i] <- theta
     alpha.sq.store[i] <- alpha.sq
-    lambda.matrix[, i] <- as.numeric(lambda)
+    lambda.matrix[i, ] <- as.numeric(lambda)
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
+  pars.matrix <- cbind(lambda.matrix, theta.store, alpha.sq.store)
 
-  pars.matrix <- cbind(t(lambda.matrix), theta.store, alpha.sq.store)
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 2)],
