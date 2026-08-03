@@ -7,11 +7,8 @@
 BBTm.ties(
   n.objects,
   outcome,
-  player1 = deprecated(),
-  player2 = deprecated(),
-  player.prior.var = deprecated(),
-  item1 = NULL,
-  item2 = NULL,
+  item1,
+  item2,
   item.prior.var = NULL,
   theta.initial = NULL,
   lambda.initial = NULL,
@@ -32,17 +29,12 @@ BBTm.ties(
 \item{outcome}{Vector of outcomes. 0 if item 1 is the winner,
 1 if item 2 is the winner, and 2 if it is a tie.}
 
-\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player1 argument is no longer supported, please use item1}
-
-\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player2 argument is no longer supported, please use item2 instead}
-
-\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player.prior.var argument is no longer supported, please use item.prior.var instead}
-
 \item{item1}{Vector of first items.}
 
 \item{item2}{Vector of second items.}
 
-\item{item.prior.var}{(optional) A matrix specifying the prior covariance of the items with one another.}
+\item{item.prior.var}{(optional) Matrix specifying the prior covariance of
+the item correlation parameters.}
 
 \item{theta.initial}{(optional) Value of the tied parameter there for
 the first MCMC iteration.}

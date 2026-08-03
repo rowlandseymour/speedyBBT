@@ -30,7 +30,8 @@ BBTm.no.formula(
 
 \item{item2}{Vector of second items.}
 
-\item{item.prior.var}{(optional) A matrix specifying the prior covariance of the items with one another.}
+\item{item.prior.var}{(optional) Matrix specifying the prior covariance of
+the item correlation parameters.}
 
 \item{lambda.initial}{(optional) Vector containing the values of the
 item parameters for the first MCMC iteration.}
@@ -76,7 +77,7 @@ on both kappa and the item quality parameters \eqn{\lambda}.
 }
 \details{
 If \code{item.prior.var} is omitted, independent and identical
-N(0, 5^2) prior distributions are placed on each item quality parameter.
+N(0, 5^2) prior distributions are placed on each object quality parameter.
 
 If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 

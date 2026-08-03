@@ -6,13 +6,10 @@
 \usage{
 speedyBBTm(
   outcome = NULL,
-  player1 = deprecated(),
-  player2 = deprecated(),
   item1 = NULL,
   item2 = NULL,
   win.matrix = NULL,
   item.prior.var = NULL,
-  player.prior.var = deprecated(),
   lambda.initial = NULL,
   n.iter = 1000,
   hyperparameter = TRUE,
@@ -27,10 +24,6 @@ speedyBBTm(
 \item{outcome}{Vector of outcomes. 1 if item 2 is the winner,
 0 if item 1 is the winner.}
 
-\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player1 argument is no longer supported, please use item1}
-
-\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player2 argument is no longer supported, please use item2 instead}
-
 \item{item1}{Vector of first items.}
 
 \item{item2}{Vector of second items.}
@@ -38,9 +31,8 @@ speedyBBTm(
 \item{win.matrix}{(optional) A win-loss matrix where the i,j th element is the number of
 times object i beat object j.}
 
-\item{item.prior.var}{(optional) A matrix specifying the prior covariance of the items with one another.}
-
-\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player.prior.var argument is no longer supported, please use item.prior.var instead}
+\item{item.prior.var}{(optional) A matrix specifying the prior covariance of
+the item correlation parameters.}
 
 \item{lambda.initial}{(optional) A vector containing the values of the
 item correlation parameters for the first MCMC iteration.}

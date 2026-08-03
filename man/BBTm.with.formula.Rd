@@ -14,9 +14,6 @@ BBTm.with.formula(
   kappa.initial = NULL,
   kappa.var = NULL,
   item.prior.var = NULL,
-  player1 = deprecated(),
-  player2 = deprecated(),
-  player.prior.var = deprecated(),
   beta.initial = NULL,
   n.iter = 1000,
   hyperparameter = TRUE,
@@ -35,7 +32,7 @@ BBTm.with.formula(
 
 \item{item2}{Vector of second items.}
 
-\item{formula}{Formula with no left-hand-side specifying the player specific
+\item{formula}{Formula with no left-hand-side specifying the item specific
 effects.}
 
 \item{data}{Data frame with a row corresponding to each item and a column corresponding
@@ -50,13 +47,8 @@ value kappa.}
 \item{kappa.var}{(optional) The prior variance of the comparison specific
 value kappa.}
 
-\item{item.prior.var}{(optional) A matrix specifying the prior covariance of the items with one another.}
-
-\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player1 argument is no longer supported, please use item1}
-
-\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player2 argument is no longer supported, please use item2 instead}
-
-\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player.prior.var argument is no longer supported, please use item.prior.var instead}
+\item{item.prior.var}{(optional) Matrix specifying the prior covariance of
+the item correlation parameters.}
 
 \item{beta.initial}{(optional) Vector containing the values of the
 item specific  parameters for the first MCMC iteration.}
