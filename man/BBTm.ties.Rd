@@ -7,9 +7,9 @@
 BBTm.ties(
   n.objects,
   outcome,
-  player1,
-  player2,
-  player.prior.var = NULL,
+  item1,
+  item2,
+  item.prior.var = NULL,
   theta.initial = NULL,
   lambda.initial = NULL,
   n.iter = 1000,
@@ -24,21 +24,21 @@ BBTm.ties(
 \arguments{
 \item{n.objects}{The number of objects in the study.}
 
-\item{outcome}{Vector of outcomes. 0 if player 1 is the winner,
-1 if player 2 is the winner, and 2 if it is a tie.}
+\item{outcome}{Vector of outcomes. 0 if item 1 is the winner,
+1 if item 2 is the winner, and 2 if it is a tie.}
 
-\item{player1}{Vector of first players.}
+\item{item1}{Vector of first items.}
 
-\item{player2}{Vector of second players.}
+\item{item2}{Vector of second items.}
 
-\item{player.prior.var}{(optional) Matrix specifying the prior covariance of
-the player correlation parameters.}
+\item{item.prior.var}{(optional) Matrix specifying the prior covariance of
+the item correlation parameters.}
 
 \item{theta.initial}{(optional) Value of the tied parameter there for
 the first MCMC iteration.}
 
 \item{lambda.initial}{(optional) Vector containing the values of the
-player parameters for the first MCMC iteration.}
+item parameters for the first MCMC iteration.}
 
 \item{n.iter}{Number of MCMC samples to be drawn.}
 
@@ -66,12 +66,12 @@ A \code{coda::mcmc} object containing samples from the posterior distribution
 \description{
 This function uses MCMC to sample from the posterior distribution of the
 Bradley--Terry model with ties.A multivariate normal prior
-distribution on the player quality parameters can be specified. An exponential
+distribution on the item quality parameters can be specified. An exponential
 prior distribution is placed on the tie parameter theta, and a Metropolis-
 Hasting random walk algorithm is used to update this parameter.
 }
 \details{
-If \code{player.prior.var} is omitted, independent and identical
+If \code{item.prior.var} is omitted, independent and identical
 N(0, 5^2) prior distributions are placed on each object quality parameter.
 
 If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
@@ -92,9 +92,9 @@ sigma <- diag(diag(sigma)^-0.5) \%*\% sigma \%*\% diag(diag(sigma)^-0.5)
 darTiedModel <- BBTm.ties(
   n.objects = nrow(darEsSalaam$adjacencyMatrix),
   outcome = darEsSalaam$comparisons$outcome,
-  player1 = darEsSalaam$comparisons$subward1,
-  player2 = darEsSalaam$comparisons$subward2,
-  player.prior.var = sigma,
+  item1 = darEsSalaam$comparisons$subward1,
+  item2 = darEsSalaam$comparisons$subward2,
+  item.prior.var = sigma,
   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0
 )
 
