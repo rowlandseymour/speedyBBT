@@ -664,6 +664,7 @@ BBTm.no.formula <- function(
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
     }
   }
+  close(pb)
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector, kappa.vector)
