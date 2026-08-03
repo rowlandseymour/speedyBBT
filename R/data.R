@@ -12,9 +12,9 @@
 #' The first is a dataframe containing the comparison. Each row corresponds
 #' to a judgement made by a single judge. Columns 2 and 3 contain the pair of s
 #' ubwards being compared. The first column shows the outcome
-#' of the comparison: 1 if player 2 won, 2 if it was a tie and 0 if player 1 won
+#' of the comparison: 1 if item 2 won, 2 if it was a tie and 0 if item 1 won
 #' (although there a no instances of this happening). This differs from the data
-#' in the `BSBT` package as it explicitly includes ties rather than randomly
+#' in the `BBT` package as it explicitly includes ties rather than randomly
 #' allocating a winner.
 #'
 #' The second is a dataframe containing the names and shapefiles of the subwards
