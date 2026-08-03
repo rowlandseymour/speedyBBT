@@ -7,10 +7,18 @@ export(comparisons_to_matrix)
 export(parameter)
 export(plot_qualities)
 export(speedyBBTm)
-importFrom(coda,mcmc)
-importFrom(coda,varnames)
-importFrom(graphics,axis)
-importFrom(graphics,mtext)
-importFrom(graphics,par)
-importFrom(graphics,segments)
-importFrom(stats,quantile)
+importFrom(coda,
+  mcmc,
+  varnames
+)
+importFrom(graphics,
+  axis,
+  mtext,
+  par,
+  segments
+)
+importFrom(lifecycle,deprecated)
+importFrom(stats,
+  median,
+  quantile
+)
