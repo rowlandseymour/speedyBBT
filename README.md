@@ -16,7 +16,7 @@ You can install `speedyBBT` by calling the following commands:
 
 ```{r}
 install.packages("speedyBBT")
-#devtools::install_github("rowlandseymour/BSBT", dependencies = TRUE) #for development version
+#devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) #for development version
 ```
 
 ## Usage
