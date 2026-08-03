@@ -170,7 +170,6 @@ speedyBBTm <- function(
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
-  close(pb)
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[(burn.in + 1):n.iter, ],
