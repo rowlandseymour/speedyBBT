@@ -111,7 +111,7 @@ speedyBBTm <- function(
   # Get inverse of prior covariance matrix
   # If not set, the prior is iid N(0,1^2)
   if (is.null(item.prior.var)) {
-    item.prior.var <- diag(n.objects)
+    item.prior.var <- 5^2 * diag(n.objects)
   }
   item.prior.var.inverse <- solve(item.prior.var)
 
