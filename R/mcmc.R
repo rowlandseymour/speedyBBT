@@ -105,7 +105,7 @@ speedyBBTm <- function(
   # Get inverse of prior covariance matrix
   # If not set, the prior is iid N(0,1^2)
   if (is.null(item.prior.var)) {
-    item.prior.var <- diag(n.objects)
+    item.prior.var <- 5^2 * diag(n.objects)
   }
   item.prior.var.inverse <- solve(item.prior.var)
 
@@ -608,7 +608,9 @@ BBTm.no.formula <- function(
     Z <- Matrix::sparseMatrix(i = 1:n.comp, j = 1:n.comp, x = z)
 
     # Update lambda
-    V <- chol2inv(chol(Matrix::t(X) %*% Z %*% X + item.prior.var.inverse))
+    V <- chol2inv(chol(
+      Matrix::t(X) %*% Z %*% X + item.prior.var.inverse / alpha.sq
+    ))
     mu <- V %*% (Matrix::t(X) %*% (k - kappa * Z %*% advantage))
     V.chol <- chol(V)
     lambda <- as.numeric(t(V.chol) %*% stats::rnorm(n.objects, 0, 1) + mu)
