@@ -179,6 +179,9 @@ speedyBBTm <- function(
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
     }
   }
+  if (verbose) {
+    close(pb)
+  }
   iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
@@ -566,8 +569,10 @@ BBTm.no.formula <- function(
 
   # Get inverse of prior covariance matrix
   # If not set, the prior is iid N(0, 5^2)
-  if (is.null(item.prior.var)) {
+  if (is.null(item.prior.var) & hyperparameter == FALSE) {
     item.prior.var <- 5^2 * diag(n.objects)
+  } else if (is.null(item.prior.var)) {
+    item.prior.var <- diag(n.objects)
   }
   item.prior.var.inverse <- solve(item.prior.var)
 
@@ -661,7 +666,6 @@ BBTm.no.formula <- function(
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
     }
   }
-  close(pb)
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector, kappa.vector)
