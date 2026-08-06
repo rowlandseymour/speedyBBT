@@ -27,6 +27,9 @@
 #' @param chi (Optional) The rate parameter for the inverse-gamma prior distribution on the
 #'  hyperparameter. Default is 0.01.
 #' @param burn.in (optional) The number of iterations to discard as burn-in. Default is 100.
+#' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
+#' @param verbose (optional) A boolean indicating if progress should be printed to the console.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
 #'
 #' @details If `item.prior.var` is omitted, independent and identical
 #' N(0, 1^2) prior distributions are placed on each object quality parameter.
@@ -76,7 +79,9 @@ speedyBBTm <- function(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 ) {
   if (is.null(win.matrix)) {
     # Create win matrix
@@ -168,7 +173,12 @@ speedyBBTm <- function(
     lambda.matrix[i, ] <- lambda
     alpha.sq.vector[i] <- alpha.sq
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
-    utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    if (verbose) {
+      utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    }
+  }
+  if (verbose) {
+    close(pb)
   }
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
@@ -226,6 +236,10 @@ speedyBBTm <- function(
 #' @param theta.rate (optional) The rate parameter of the exponential prior
 #' distribution placed on theta.
 #' @param burn.in (optional) The number of iterations to use as a burn-in period. Default is 100.
+#' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
+#' @param verbose (optional) A boolean indicating if progress should be printed to the console.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
+
 #'
 #' @details If `item.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -281,7 +295,9 @@ BBTm.ties <- function(
   psi = 0.01,
   rw.sd = 0.1,
   theta.rate = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 ) {
   # get number of objects in study
   n.objects <- max(c(item1, item2))
@@ -366,7 +382,6 @@ BBTm.ties <- function(
   alpha.sq.store <- numeric(n.iter) # store results
 
   pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
-  on.exit(close(pb), add = TRUE)
 
   # MCMC
   for (i in 1:n.iter) {
@@ -420,7 +435,12 @@ BBTm.ties <- function(
     theta.store[i] <- theta
     alpha.sq.store[i] <- alpha.sq
     lambda.matrix[i, ] <- as.numeric(lambda)
-    utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    if (verbose) {
+      utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    }
+  }
+  if (verbose) {
+    close(pb)
   }
   pars.matrix <- cbind(lambda.matrix, theta.store, alpha.sq.store)
 
@@ -485,6 +505,10 @@ BBTm.ties <- function(
 #' @param chi Rate parameter for the inverse-gamma prior distribution on the
 #'  hyperparameter.
 #' @param burn.in Number of iterations to use as a burn-in period. Default is 100.
+#' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
+#' @param verbose (optional) A boolean indicating if progress should be printed to the console.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
+
 #'
 #' @details If `item.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -515,7 +539,9 @@ BBTm.no.formula <- function(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 ) {
   # get number of objects in study
   n.objects <- max(c(item1, item2))
@@ -585,7 +611,6 @@ BBTm.no.formula <- function(
 
   # Set iteration counter
   pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
-  on.exit(close(pb), add = TRUE)
 
   # MCMC loop
   for (i in 1:n.iter) {
@@ -628,7 +653,12 @@ BBTm.no.formula <- function(
     lambda.matrix[i, ] <- lambda
     alpha.sq.vector[i] <- alpha.sq
 
-    utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    if (verbose) {
+      utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    }
+    if (verbose) {
+      close(pb)
+    }
   }
   close(pb)
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
@@ -724,6 +754,10 @@ BBTm.no.formula <- function(
 #' @param chi Rate parameter for the inverse-gamma prior distribution on the
 #'  hyperparameter.
 #' @param burn.in The number of iterations to use for a burn.in, default is 100.
+#' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
+#' @param verbose (optional) A boolean indicating if progress should be printed to the console.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
+
 #'
 #' @details If `item.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -755,7 +789,9 @@ BBTm.with.formula <- function(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 ) {
   # get number of objects in study
   n.objects <- max(c(item1, item2))
@@ -818,7 +854,6 @@ BBTm.with.formula <- function(
   grand.covariance <- sum(item.prior.var)
 
   pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
-  on.exit(close(pb), add = TRUE)
   for (i in 1:n.iter) {
     if (hyperparameter == TRUE) {
       alpha.sq <- 1 /
@@ -858,7 +893,12 @@ BBTm.with.formula <- function(
     beta.matrix[i, ] <- t(beta)
     lambda.matrix[i, ] <- lambda
     alpha.sq.vector[i] <- alpha.sq
-    utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    if (verbose) {
+      utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    }
+  }
+  if (verbose) {
+    close(pb)
   }
   close(pb)
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
@@ -1000,7 +1040,9 @@ BBTm <- function(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 ) {
   if (!is.null(lambda.initial) & !is.null(beta.initial)) {
     stop("Cannot set initial values for both lambda and beta")
@@ -1022,7 +1064,9 @@ BBTm <- function(
       hyperparameter,
       chi,
       psi,
-      burn.in
+      burn.in,
+      n.thin,
+      verbose
     )
   } else {
     output <- BBTm.no.formula(
@@ -1038,7 +1082,9 @@ BBTm <- function(
       hyperparameter,
       chi,
       psi,
-      burn.in
+      burn.in,
+      n.thin,
+      verbose
     )
   }
   return(output)
