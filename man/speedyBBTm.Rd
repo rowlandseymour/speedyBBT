@@ -85,9 +85,9 @@ forcedMarriageModel <- speedyBBTm(
 )
 
 # Plot results
-oldpar <- par(mfrow = c(2, 2))
 
-plot(forcedMarriageModel[, paste0("lambda[", c(10, 20, 30, 40), "]")], xlab = "Iteration", ylab = expression(lambda[i]))
-par(oldpar)
+
+plot(forcedMarriageModel[, paste0("lambda[1]")], xlab = "Iteration", ylab = expression(lambda[i]))
+
 }
 }
