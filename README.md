@@ -21,7 +21,7 @@ install.packages("speedyBBT")
 
 ## Usage
 
-The code chunks below show how to use the package to fit the Bradley--Terry model to a data set relating to forced marriage. Judges were shown pairs of wards and asked which had a higher rate of forced marriage. We can use the `speedyBBTm` function to draw samples for the full conditional distributions for the ward quality parameters. We place a multivariate normal prior distribution on the ward quality parameters. The covariance matrix of this prior distribution is constructed using a network representation of the wards in Nottinghamshire.
+The code chunks below show how to use the package to fit the Bradley--Terry model to a data set relating to forced marriage. Judges were shown pairs of wards and asked which had a higher rate of forced marriage. We can use the `speedy_BBTm` function to draw samples for the full conditional distributions for the ward quality parameters. We place a multivariate normal prior distribution on the ward quality parameters. The covariance matrix of this prior distribution is constructed using a network representation of the wards in Nottinghamshire.
 
 ``` r
 #View Data
@@ -34,7 +34,7 @@ expA  <- expm::expm(forcedMarriage$adjacencyMatrix)
 prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
     
 #Fit model
-forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
+forcedMarriageModel <- speedy_BBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
                                   item1 = forcedMarriage$comparisons$win, 
                                   item= forcedMarriage$comparisons$lost, 
                                   item.prior.var = prior.var)
