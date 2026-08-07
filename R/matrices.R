@@ -89,9 +89,6 @@ construct.design.matrix <- function(n.objects) {
 #' item1 <- c(1, 3, 2, 1)
 #' item2 <- c(3, 1, 1, 2)
 #' X <- construct.generalised.design.matrix(item1, item2, example.formula, example.df)
-#'
-#' @keywords internal
-#' @noRd
 construct.generalised.design.matrix <- function(
   item1,
   item2,
