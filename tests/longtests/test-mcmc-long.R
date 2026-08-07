@@ -12,7 +12,7 @@ test_that("BBTm.ties produces results within tolerance", {
     outcome = darEsSalaam$comparisons$outcome,
     item1 = darEsSalaam$comparisons$subward1,
     item2 = darEsSalaam$comparisons$subward2,
-    item.prior.var = sigma,
+    item.prior.var = prior.var,
     hyperparameter = TRUE,
     rw.sd = 0.005,
     n.iter = 400
