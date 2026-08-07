@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, warning = FALSE}
 library(speedyBBT)
 library(coda)
 ```
@@ -48,7 +48,7 @@ The `speedyBBTm` function can be used to fit a Bradley-Terry model to the data. 
 ```{r covariance}
 # Construct covariance matrix
 expA <- expm::expm(forcedMarriage$adjacencyMatrix)
-sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 ```
 
 Next, you can fit the model using the `speedyBBTm()` function. You will need to specify the outcome variable, the items involved in each comparison, and the prior covariance matrix for the item qualities. You can also specify the number of MCMC iterations to run. This example uses the default values for the hyperparameters of the prior distribution, but you can also specify your own values if you have prior knowledge about the items' rating using the `hyperparameter` argument. To match the plots in this vignette, you will need to use the same argument to `set.seed` as the one provided here. 
@@ -60,7 +60,7 @@ forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
   item1 = forcedMarriage$comparisons$win,
   item2 = forcedMarriage$comparisons$lost,
-  item.prior.var = sigma,
+  item.prior.var = prior.var,
   n.iter = 10000,
   burn.in = 100
 )
@@ -83,7 +83,7 @@ geweke.diag(forcedMarriageModel)
 
 You can use the `plot` function in `coda` or install `bayesplot` and `ggplot2` to get additional, colourful plots. For example, you can use the `mcmc_intervals()` function to create interval plots of the parameter posterior distributions and the `mcmc_dens()` function to create density plots of the MCMC samples. For more information, see the [**bayesplot** package documentation](https://mc-stan.org/bayesplot/).
 
-```{r bayesplot_diagnostics, fig.width=8, fig.height=6}
+```{r bayesplot_diagnostics, fig.width=8, fig.height=6, warning = FALSE}
 if (requireNamespace("bayesplot", quietly = TRUE)) {
   # Install bayesplot if not already installed
   # install.packages("bayesplot")

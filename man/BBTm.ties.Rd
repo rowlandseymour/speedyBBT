@@ -18,7 +18,9 @@ BBTm.ties(
   psi = 0.01,
   rw.sd = 0.1,
   theta.rate = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 )
 }
 \arguments{
@@ -59,6 +61,11 @@ proposal distribution for theta.}
 distribution placed on theta.}
 
 \item{burn.in}{(optional) The number of iterations to use as a burn-in period. Default is 100.}
+
+\item{n.thin}{(optional) The number of iterations to thin the MCMC samples by. Default is 1.}
+
+\item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
+Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in non-interactive contexts.}
 }
 \value{
 A \code{coda::mcmc} object containing samples from the posterior distribution
@@ -82,8 +89,8 @@ If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 ## Seymour et al (2022)                   ##
 ############################################
 # Construct covariance matrix based on spatial informartion
-sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
-sigma <- diag(diag(sigma)^-0.5) \%*\% sigma \%*\% diag(diag(sigma)^-0.5)
+prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.var)^-0.5)
 
 
 # Fit BT model with ties
@@ -94,8 +101,8 @@ darTiedModel <- BBTm.ties(
   outcome = darEsSalaam$comparisons$outcome,
   item1 = darEsSalaam$comparisons$subward1,
   item2 = darEsSalaam$comparisons$subward2,
-  item.prior.var = sigma,
-  hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0
+  item.prior.var = prior.var,
+  hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0, verbose = FALSE
 )
 
 # Get posterior means

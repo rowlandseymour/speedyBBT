@@ -10,8 +10,8 @@
 #' @export
 #' @examples
 #'
-#' sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
-#' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
+#' prior.var <- expm::expm(forcedMarriage$adjacencyMatrix)
+#' prior.var <- diag(diag(prior.var)^-0.5) %*% prior.var %*% diag(diag(prior.var)^-0.5)
 #'
 #' # Fit model
 #' # Using `n.iter = 3, burn.in = 0` to reduce runtime

@@ -15,7 +15,9 @@ speedyBBTm(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 )
 }
 \arguments{
@@ -48,6 +50,11 @@ hyperparameter. Default is 0.01.}
 hyperparameter. Default is 0.01.}
 
 \item{burn.in}{(optional) The number of iterations to discard as burn-in. Default is 100.}
+
+\item{n.thin}{(optional) The number of iterations to thin the MCMC samples by. Default is 1.}
+
+\item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
+Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in non-interactive contexts.}
 }
 \value{
 A \code{mcmc} object containing samples from the posterior distribution.
@@ -71,8 +78,8 @@ If \code{lambda.initial} is ommitted, it is set to a vector of zeroes.
 ## Forced Marriage in Nottinghamshire ##
 ########################################
 # Construct covariance matrix based on spatial information
-sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
-sigma <- diag(diag(sigma)^-0.5) \%*\% sigma \%*\% diag(diag(sigma)^-0.5)
+prior.var <- expm::expm(forcedMarriage$adjacencyMatrix)
+prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.var)^-0.5)
 
 # Fit model
 # Using `n.iter = 3` here to reduce runtime, you will need more
@@ -81,13 +88,11 @@ forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
   item1 = forcedMarriage$comparisons$win,
   item2 = forcedMarriage$comparisons$lost,
-  item.prior.var = sigma, n.iter = 3, burn.in = 0
+  item.prior.var = prior.var, n.iter = 3, burn.in = 0, verbose = FALSE
 )
 
 # Plot results
 
-
-plot(forcedMarriageModel[, paste0("lambda[1]")], xlab = "Iteration", ylab = expression(lambda[i]))
-
+plot(forcedMarriageModel[, "lambda[1]"], xlab = "Iteration", ylab = expression(lambda[i]))
 }
 }
