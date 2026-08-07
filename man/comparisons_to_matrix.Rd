@@ -2,7 +2,7 @@
 % Please edit documentation in R/matrices.R
 \name{comparisons_to_matrix}
 \alias{comparisons_to_matrix}
-\title{Construct Win Matrix from Comparisons}
+\title{Construct win matrix from comparisons}
 \usage{
 comparisons_to_matrix(n.objects, comparisons)
 }

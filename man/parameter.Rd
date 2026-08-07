@@ -32,7 +32,7 @@ forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
   item1 = forcedMarriage$comparisons$win,
   item2 = forcedMarriage$comparisons$lost,
-  item.prior.var = prior.var, n.iter = 3, burn.in = 1
+  item.prior.var = prior.var, n.iter = 3, burn.in = 1, verbose = FALSE
 )
 
 parameter(forcedMarriageModel, "lambda", c(10, 20, 30, 40))

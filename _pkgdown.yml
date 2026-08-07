@@ -1,4 +1,25 @@
-url: ~
+url: https://rowlandseymour.github.io/speedyBBT/
 template:
   bootstrap: 5
-
+  math-rendering: mathjax
+reference:
+  - title: Data sets
+    contents:
+      - darEsSalaam
+      - forcedMarriage
+      - oxon.comparisons
+      - sy.comparisons
+      - wimbledon
+  - title: Model fitting functions
+    contents:
+      - BBTm.ties
+      - BBTm
+      - speedyBBTm
+  - title: Helper functions
+    contents:
+      - comparisons_to_matrix
+      - construct.design.matrix.both.ways
+      - construct.design.matrix.by.comparison
+      - construct.design.matrix
+      - construct.generalised.design.matrix
+      - parameter
