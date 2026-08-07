@@ -98,7 +98,7 @@ library(speedyBBT)
 forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
                                   item1 = forcedMarriage$comparisons$win, 
                                   item= forcedMarriage$comparisons$lost, 
-                                  item.prior.var = sigma)
+                                  item.prior.var = prior.var)
 forcedMarriageModel$lambda  <- forcedMarriageModel$lambda - rowMeans(forcedMarriageModel$lambda)
 
 #View Trace Plots

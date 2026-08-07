@@ -8,7 +8,7 @@ test_that("speedyBBTm produces results within tolerance", {
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
     item1 = forcedMarriage$comparisons$win,
     item2 = forcedMarriage$comparisons$lost,
-    item.prior.var = sigma,
+    item.prior.var = prior.var,
     n.iter = 2000
   )
 
@@ -72,7 +72,7 @@ test_that("BBTm.no.formula produces results within tolerance", {
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
     item1 = forcedMarriage$comparisons$win,
     item2 = forcedMarriage$comparisons$lost,
-    item.prior.var = sigma,
+    item.prior.var = prior.var,
     n.iter = 2000
   )
 
@@ -109,7 +109,7 @@ test_that("BBTm.ties produces expected output from a single iteration", {
     outcome = darEsSalaam$comparisons$outcome,
     item1 = darEsSalaam$comparisons$subward1,
     item2 = darEsSalaam$comparisons$subward2,
-    item.prior.var = sigma,
+    item.prior.var = prior.var,
     hyperparameter = TRUE,
     rw.sd = 0.005,
     burn.in = 0,

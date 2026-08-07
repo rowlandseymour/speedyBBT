@@ -58,7 +58,7 @@
 #'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
 #'   item1 = forcedMarriage$comparisons$win,
 #'   item2 = forcedMarriage$comparisons$lost,
-#'   item.prior.var = sigma, n.iter = 3, burn.in = 0
+#'   item.prior.var = prior.var, n.iter = 3, burn.in = 0, verbose = FALSE
 #' )
 #'
 #' # Plot results
@@ -269,8 +269,8 @@ speedyBBTm <- function(
 #'   outcome = darEsSalaam$comparisons$outcome,
 #'   item1 = darEsSalaam$comparisons$subward1,
 #'   item2 = darEsSalaam$comparisons$subward2,
-#'   item.prior.var = sigma,
-#'   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0
+#'   item.prior.var = prior.var,
+#'   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0, verbose = FALSE
 #' )
 #'
 #' # Get posterior means
