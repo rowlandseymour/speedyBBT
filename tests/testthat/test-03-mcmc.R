@@ -9,7 +9,7 @@ test_that("speedyBBTm produces results within tolerance", {
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
     item1 = forcedMarriage$comparisons$win,
     item2 = forcedMarriage$comparisons$lost,
-    item.prior.var = sigma,
+    item.prior.var = prior.var,
     n.iter = 2000
   )
 
@@ -77,14 +77,14 @@ test_that("BBTm.no.formula produces results within tolerance", {
   set.seed(332)
   # Construct covariance matrix
   expA <- expm::expm(forcedMarriage$adjacencyMatrix)
-  sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
   # Fit model
   forcedMarriageModel <- BBTm(
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
     item1 = forcedMarriage$comparisons$win,
     item2 = forcedMarriage$comparisons$lost,
-    item.prior.var = sigma,
+    item.prior.var = prior.var,
     n.iter = 2000
   )
 

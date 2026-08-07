@@ -100,11 +100,10 @@ prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.va
 darTiedModel <- BBTm.ties(
   n.objects = nrow(darEsSalaam$adjacencyMatrix),
   outcome = darEsSalaam$comparisons$outcome,
-  player1 = darEsSalaam$comparisons$subward1,
-  player2 = darEsSalaam$comparisons$subward2,
-  player.prior.var = prior.var,
-  hyperparameter = TRUE,
-  rw.sd = 0.005, n.iter = 3, burn.in = 0, verbose = FALSE
+  item1 = darEsSalaam$comparisons$subward1,
+  item2 = darEsSalaam$comparisons$subward2,
+  item.prior.var = prior.var,
+  hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0, verbose = FALSE
 )
 
 # Get posterior means
