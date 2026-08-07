@@ -2,11 +2,11 @@
 
 export(BBTm)
 export(BBTm.ties)
-export(BBTm.with.formula)
+export(BBTm_with_formula)
 export(comparisons_to_matrix)
 export(parameter)
 export(plot_qualities)
-export(speedyBBTm)
+export(speedy_BBTm)
 importFrom(coda,
   mcmc,
   varnames

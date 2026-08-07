@@ -56,7 +56,7 @@
 #' # Fit model
 #' # Using `n.iter = 3` here to reduce runtime, you will need more
 #' # iterations for inference.
-#' forcedMarriageModel <- speedyBBTm(
+#' forcedMarriageModel <- speedy_BBTm(
 #'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
 #'   item1 = forcedMarriage$comparisons$win,
 #'   item2 = forcedMarriage$comparisons$lost,
@@ -71,7 +71,7 @@
 #' }
 #' @export
 #'
-speedyBBTm <- function(
+speedy_BBTm <- function(
   outcome = NULL,
   player1 = deprecated(),
   player2 = deprecated(),
@@ -635,7 +635,7 @@ BBTm.no.formula <- function(
   k <- y - 0.5
 
   # Construct the design matrix
-  X <- construct.design.matrix.by.comparison(item1, item2)
+  X <- construct_design_matrix_by_comparison(item1, item2)
 
   # Get inverse of prior covariance matrix
   # If not set, the prior is iid N(0, 5^2)
@@ -851,7 +851,7 @@ BBTm.no.formula <- function(
 #'
 #' @export
 #'
-BBTm.with.formula <- function(
+BBTm_with_formula <- function(
   outcome,
   item1,
   item2,
@@ -1092,7 +1092,7 @@ BBTm.with.formula <- function(
 #' parameters beta.
 #'
 #'
-#' @inheritParams BBTm.with.formula
+#' @inheritParams BBTm_with_formula
 #'
 #' @param lambda.initial (optional) Vector containing the values of the
 #'  item parameters for the first MCMC iteration.
@@ -1197,7 +1197,7 @@ BBTm <- function(
   }
 
   if (!is.null(formula)) {
-    output <- BBTm.with.formula(
+    output <- BBTm_with_formula(
       outcome,
       item1 = item1,
       item2 = item2,
@@ -1217,7 +1217,7 @@ BBTm <- function(
       verbose = verbose
     )
   } else {
-    output <- BBTm.no.formula(
+    output <- BBTm_no_formula(
       outcome,
       item1 = item1,
       item2 = item2,

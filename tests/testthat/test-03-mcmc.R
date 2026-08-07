@@ -1,11 +1,11 @@
-test_that("speedyBBTm produces results within tolerance", {
+test_that("speedy_BBTm produces results within tolerance", {
   # Construct covariance matrix
   set.seed(905)
   expA <- expm::expm(forcedMarriage$adjacencyMatrix)
   prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
   # Fit model
-  forcedMarriageModel <- speedyBBTm(
+  forcedMarriageModel <- speedy_BBTm(
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
     item1 = forcedMarriage$comparisons$win,
     item2 = forcedMarriage$comparisons$lost,
