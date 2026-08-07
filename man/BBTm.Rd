@@ -20,7 +20,9 @@ BBTm(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 )
 }
 \arguments{
@@ -68,6 +70,11 @@ hyperparameter.}
 hyperparameter.}
 
 \item{burn.in}{The number of iterations to use for a burn.in, default is 100.}
+
+\item{n.thin}{(optional) The number of iterations to thin the MCMC samples by. Default is 1.}
+
+\item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
+Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in non-interactive contexts.}
 }
 \value{
 A \code{coda::mcmc} object containing samples from the posterior distribution.
@@ -105,7 +112,7 @@ wimbledonModel <- BBTm(
   advantage = wimbledon$matches$secondWeek,
   formula = ~ rank + points,
   data = wimbledon$players,
-  n.iter = 1000
+  n.iter = 1000, verbose = FALSE
 )
 
 # Plot posterior distributions

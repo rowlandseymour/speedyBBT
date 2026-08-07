@@ -9,24 +9,32 @@
 #'
 #'
 #' @format A list with three elements.
-#' The first is a dataframe containing the comparison. Each row corresponds
-#' to a judgement made by a single judge. Columns 2 and 3 contain the pair of s
-#' ubwards being compared. The first column shows the outcome
-#' of the comparison: 1 if item 2 won, 2 if it was a tie and 0 if item 1 won
-#' (although there a no instances of this happening). This differs from the data
-#' in the `BBT` package as it explicitly includes ties rather than randomly
-#' allocating a winner.
-#'
-#' The second is a dataframe containing the names and shapefiles of the subwards
-#'
-#' The third is an adjacency matrix of the subwards formed from the shapefiles.
-#' This considers subwards as nodes and places edges between adjacent subwards.
-#' Two additional edges have been manually included to allow for crossings of the
-#' Kurasini creek.
+#' \describe{
+#'   \item{comparisons}{A dataframe containing the comparisons. Each row corresponds
+#'   to a judgement made by a single judge. This differs from the data
+#'   in the `BBT` package as it explicitly includes ties rather than randomly
+#'   allocating a winner. The columns are:
+#'   \describe{
+#'      \item{outcome}{The outcome of the comparison. 1 if item 2 is the winner, 0 if item 1 is the winner, and 2 if it was a tie (although there are no instances of this happening).}
+#'      \item{item1}{The first item in the comparison.}
+#'      \item{item2}{The second item in the comparison.}
+#'      \item{sex}{The sex of the judge making the comparison.}
+#'    }
+#' }
+#'   \item{wards}{A dataframe containing the names and shapefiles of the subwards with columns:
+#'     \describe{
+#'       \item{subwardName}{The name of the subward.}
+#'       \item{geometry}{A list containing the shapefile of the subward.}
+#'       \item{adjacencyMatrix}{An adjacency matrix of the subwards formed from the shapefiles.This considers subwards as nodes and places edges between adjacent subwards.
+#' Two additional edges have been manually included to allow for crossings of the Kurasini creek.}
+#'     }
+#'   }
+#' }
 #'
 #' @keywords datasets
 #'
-#' @source This data set was collected by Madeleine Ellis, James Goulding, Bertrand Perrat,
+#' @source
+#' This data set was collected by Madeleine Ellis, James Goulding, Bertrand Perrat,
 #' Gavin Smith and Gregor Engelmann. We gratefully acknowledge the Rights Lab at the
 #' University of Nottingham for supporting funding for the comprehensive ground truth survey.
 #' We also acknowledge HumanitarianStreet Mapping Team (HOT) for providing a team of experts in
@@ -48,11 +56,25 @@
 #'
 #'
 #' @format A list containing a dataframe with the  outcomes of the matches and a dataframe
-#' describing the players. Each row of the matchs dataframe corresponds to a match. The players
-#' dataframw has the name and id fo the player as weel as their rank in the ATP league table
-#' and the number of points received so far in the ATP 2019 tour prior to Wimbledon starting.
-#'
-#'
+#' describing the players.
+#' \describe{
+#'   \item{matches}{Each row of the matchs dataframe corresponds to a match. The columns are:
+#'     \describe{
+#'       \item{winner}{The `id`` of the winner of the match.}
+#'       \item{loser}{The `id` of the loser of the match.}
+#'       \item{secondWeek}{A boolean indicating if the match was played in the second week of the tournament.}
+#'       \item{outcome}{The outcome of the match. 1 if the winner is item 2, 0 if the winner is item 1.}
+#'   }
+#' }
+#' \item{players}{Data frame describing the players. The columns are:
+#'   \describe{
+#'     \item{name}{The name of the player.}
+#'     \item{rank}{The rank of the player in the ATP league table.}
+#'     \item{points}{The number of points received so far in the ATP 2019 tour prior to Wimbledon starting.}
+#'     \item{id}{The ID of the player.}
+#'    }
+#' }
+#' }
 #' @keywords datasets
 #'
 #' @source \url{http://tennis-data.co.uk/alldata.php}
@@ -67,22 +89,35 @@
 #'
 #' @docType data
 #'
-#' @format A list with three elements. The first is c dataframe containing 1846 rows and 4 columns.
-#'  Each row corresponds to a judgement made by a single judge. Columns 3 and 4 shows which of the
-#'  pair of wards was judged to have relatively higher and low forced marriage risk level, column 1
-#'  shows which judge the comparison belong to, and column 2 shows what time they made the decision.
+#' @format A list with three elements.
+#' \describe{
+#'   \item{comparisons}{A dataframe containing the comparisons. Each row corresponds to a judgement made by a single judge. The columns are:
+#'     \describe{
+#'       \item{user}{The ID of the judge.}
+#'       \item{time}{The time the comparison was made.}
+#'       \item{win}{The ID of the ward that was judged to have a higher risk of forced marriage.}
+#'       \item{lost}{The ID of the ward that was judged to have a lower risk of forced marriage.}
+#'     }
+#'   }
+#' \item{wards}{A dataframe containing information about each of the wards. The columns are:
+#'   \describe{
+#'     \item{NAME}{The name of the ward.}
+#'     \item{AREA_CODE}{The code of the ward.}
+#'     \item{DESCRIPTIO}{The electoral division of the ward.}
+#'     \item{FILE_NAME}{The name of the file containing the shapefile for the ward.}
+#'   }
+#'  }
+#' \item{adjacencyMatrix}{The final element is an adjacency matrix, where the wards are nodes and edges are placed between
+#'  adjacent wards.}
+#' }
 #'
-#'  The second is the a dataframe describing each ward and its geometry.
+#' @keywords datasets
 #'
-#'  The final element is an adjacency matrix, where the wards are nodes and edges are placed between
-#'  adjacent wards.
-#'
-#'  @keywords datasets
-#'
-#'  @source The data was collected using support from the Engineering and Physical Sciences Research
-#'  Council (grant reference EP/R513283/1), the Economic and Social Sciences Research Council (ES/V015370/1)
-#'  and the Research England Policy Support Fund. The data was collected following ethical approval
-#'  from the University of Nottingham School of Politics and International Relations ethics committee.
+#' @source
+#' The data was collected using support from the Engineering and Physical Sciences Research
+#' Council (grant reference EP/R513283/1), the Economic and Social Sciences Research Council (ES/V015370/1)
+#' and the Research England Policy Support Fund. The data was collected following ethical approval
+#' from the University of Nottingham School of Politics and International Relations ethics committee.
 #'
 #'
 #'
@@ -96,15 +131,23 @@
 #'
 #' @docType data
 #'
-#' @format A data frame with 877 comparisons. Each comparison has an ID, the ID
-#' of the user who made the comparisons, the IDs of the two areas involved in the
-#' comparisons, the ID of the selected area, and the state of the outcome. If the
-#' comparison was tied, the ID of the selected area is NA
+#' @format A data frame with 877 comparisons.
+#' \describe{
+#' \item{comparison_id}{The ID of each comparison.}
+#' \item{user_id}{The ID
+#' of the user who made the comparisons.}
+#' \item{item_1_id}{The ID of the first area involved in the
+#' comparison.}
+#' \item{item_2_id}{The ID of the second area involved in the comparison.}
+#' \item{selected_item_id}{The ID of the selected area. If the
+#' comparison was tied, the `selected_item_id` is NA.}
+#' \item{state}{The state of the outcome. `selected` indicates that a judgment was made, `skipped` indicates that the comparison was skipped, and `tied` indicates that the comparison was tied.}
+#' }
+#' @keywords datasets
 #'
-#'  @keywords datasets
-#'
-#'  @source  The data was collected following ethical approval the University
-#'  of Birmingham's Science, Engineering and Maths Ethics Committee.
+#' @source
+#' The data was collected following ethical approval the University
+#' of Birmingham's Science, Engineering and Maths Ethics Committee.
 #'
 #'
 #'
@@ -117,17 +160,22 @@
 #'
 #' @docType data
 #'
-#' @format A data frame with 1,167 comparisons. Each comparison has an ID, the ID
-#' of the user who made the comparisons, the IDs of the two areas involved in the
-#' comparisons, the ID of the selected area, and the state of the outcome. If the
-#' comparison was tied, the ID of the selected area is NA
+#' @format A data frame with 1,167 comparisons.
+#' \describe{
+#' \item{comparison_id}{The ID of the comparison.}
+#' \item{user_id}{The ID
+#' of the user who made the comparisons.}
+#' \item{item_1_id}{The ID of the first area involved in the
+#' comparison.}
+#' \item{item_2_id}{The ID of the second area involved in the comparison.}
+#' \item{selected_item_id}{The ID of the selected area. If the
+#' comparison was tied, the `selected_item_id` is NA.}
+#' \item{state}{The state of the outcome. `selected` indicates that a judgment was made, `skipped` indicates that the comparison was skipped, and `tied` indicates that the comparison was tied.}
+#' }
+#' @keywords datasets
 #'
-#'  @keywords datasets
-#'
-#'  @source  The data was collected following ethical approval the University
-#'  of Birmingham's Science, Engineering and Maths Ethics Committee.
-#'
-#'
-#'
+#' @source
+#' The data was collected following ethical approval the University
+#' of Birmingham's Science, Engineering and Maths Ethics Committee.
 #'
 "oxon.comparisons"

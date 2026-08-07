@@ -47,8 +47,8 @@
 #' ## Forced Marriage in Nottinghamshire ##
 #' ########################################
 #' # Construct covariance matrix based on spatial information
-#' sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
-#' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
+#' prior.var <- expm::expm(forcedMarriage$adjacencyMatrix)
+#' prior.var <- diag(diag(prior.var)^-0.5) %*% prior.var %*% diag(diag(prior.var)^-0.5)
 #'
 #' # Fit model
 #' # Using `n.iter = 3` here to reduce runtime, you will need more
@@ -57,14 +57,12 @@
 #'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
 #'   item1 = forcedMarriage$comparisons$win,
 #'   item2 = forcedMarriage$comparisons$lost,
-#'   item.prior.var = sigma, n.iter = 3, burn.in = 0
+#'   item.prior.var = prior.var, n.iter = 3, burn.in = 0, verbose = FALSE
 #' )
 #'
 #' # Plot results
 #'
-#'
 #' plot(forcedMarriageModel[, "lambda[1]"], xlab = "Iteration", ylab = expression(lambda[i]))
-#'
 #' }
 #' @export
 #'
@@ -257,8 +255,8 @@ speedyBBTm <- function(
 #' ## Seymour et al (2022)                   ##
 #' ############################################
 #' # Construct covariance matrix based on spatial informartion
-#' sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
-#' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
+#' prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+#' prior.var <- diag(diag(prior.var)^-0.5) %*% prior.var %*% diag(diag(prior.var)^-0.5)
 #'
 #'
 #' # Fit BT model with ties
@@ -269,8 +267,8 @@ speedyBBTm <- function(
 #'   outcome = darEsSalaam$comparisons$outcome,
 #'   item1 = darEsSalaam$comparisons$subward1,
 #'   item2 = darEsSalaam$comparisons$subward2,
-#'   item.prior.var = sigma,
-#'   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0
+#'   item.prior.var = prior.var,
+#'   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0, verbose = FALSE
 #' )
 #'
 #' # Get posterior means
@@ -1017,7 +1015,7 @@ BBTm.with.formula <- function(
 #'   advantage = wimbledon$matches$secondWeek,
 #'   formula = ~ rank + points,
 #'   data = wimbledon$players,
-#'   n.iter = 1000
+#'   n.iter = 1000, verbose = FALSE
 #' )
 #'
 #' # Plot posterior distributions

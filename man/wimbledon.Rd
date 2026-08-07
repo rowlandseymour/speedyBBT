@@ -6,9 +6,24 @@
 \title{Wimbledon Men's Singles Championship 2019}
 \format{
 A list containing a dataframe with the  outcomes of the matches and a dataframe
-describing the players. Each row of the matchs dataframe corresponds to a match. The players
-dataframw has the name and id fo the player as weel as their rank in the ATP league table
-and the number of points received so far in the ATP 2019 tour prior to Wimbledon starting.
+describing the players.
+\describe{
+\item{matches}{Each row of the matchs dataframe corresponds to a match. The columns are:
+\describe{
+\item{winner}{The \verb{id`` of the winner of the match.\} \\item\{loser\}\{The }id` of the loser of the match.}
+\item{secondWeek}{A boolean indicating if the match was played in the second week of the tournament.}
+\item{outcome}{The outcome of the match. 1 if the winner is item 2, 0 if the winner is item 1.}
+}
+}
+\item{players}{Data frame describing the players. The columns are:
+\describe{
+\item{name}{The name of the player.}
+\item{rank}{The rank of the player in the ATP league table.}
+\item{points}{The number of points received so far in the ATP 2019 tour prior to Wimbledon starting.}
+\item{id}{The ID of the player.}
+}
+}
+}
 }
 \source{
 \url{http://tennis-data.co.uk/alldata.php}

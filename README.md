@@ -1,4 +1,4 @@
-# speedyBBT <img src="man/figures/speedyBBT.png" align="right" height="140px"/>
+# speedyBBT <img src="man/figures/logo.png" align="right" />
 
 <!-- badges: start -->
 
@@ -14,7 +14,7 @@
 
 You can install `speedyBBT` by calling the following commands:
 
-```{r}
+```
 install.packages("speedyBBT")
 #devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) #for development version
 ```
@@ -23,7 +23,7 @@ install.packages("speedyBBT")
 
 The code chunks below show how to use the package to fit the Bradley--Terry model to a data set relating to forced marriage. Judges were shown pairs of wards and asked which had a higher rate of forced marriage. We can use the `speedyBBTm` function to draw samples for the full conditional distributions for the ward quality parameters. We place a multivariate normal prior distribution on the ward quality parameters. The covariance matrix of this prior distribution is constructed using a network representation of the wards in Nottinghamshire.
 
-```{r}
+```
 #View Data
 data("forcedMarriage", package = "speedyBBT")
 head(forcedMarriage$comparisons)
@@ -31,13 +31,13 @@ head(forcedMarriage$comparisons)
 
 #Construct covariance matrix
 expA  <- expm::expm(forcedMarriage$adjacencyMatrix)
-sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
     
 #Fit model
 forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
                                   item1 = forcedMarriage$comparisons$win, 
                                   item= forcedMarriage$comparisons$lost, 
-                                  item.prior.var = sigma)
+                                  item.prior.var = prior.var)
 forcedMarriageModel$lambda  <- forcedMarriageModel$lambda - rowMeans(forcedMarriageModel$lambda)
 
 #View Trace Plots
