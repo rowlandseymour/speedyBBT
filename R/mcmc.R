@@ -60,7 +60,7 @@
 #'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
 #'   item1 = forcedMarriage$comparisons$win,
 #'   item2 = forcedMarriage$comparisons$lost,
-#'   item.prior.var = prior.var, n.iter = 3, burn.in = 0
+#'   item.prior.var = prior.var, n.iter = 3, burn.in = 0, verbose = FALSE
 #' )
 #'
 #' # Plot results
