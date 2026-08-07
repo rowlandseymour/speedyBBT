@@ -12,7 +12,7 @@ reference:
       - wimbledon
   - title: Model fitting functions
     contents:
-      - BBTm.ties
+      - BBTm_ties
       - BBTm
       - BBTm.with.formula
       - speedyBBTm

@@ -97,7 +97,7 @@ prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 library(speedyBBT)
 forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
                                   item1 = forcedMarriage$comparisons$win, 
-                                  item= forcedMarriage$comparisons$lost, 
+                                  item2 = forcedMarriage$comparisons$lost, 
                                   item.prior.var = prior.var)
 forcedMarriageModel$lambda  <- forcedMarriageModel$lambda - rowMeans(forcedMarriageModel$lambda)
 
