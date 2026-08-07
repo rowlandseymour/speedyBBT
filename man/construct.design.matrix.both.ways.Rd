@@ -2,9 +2,7 @@
 % Please edit documentation in R/matrices.R
 \name{construct.design.matrix.both.ways}
 \alias{construct.design.matrix.both.ways}
-\title{Construct the Bradley--Terry design matrix for ties
-This is the design matrix for tied comparisons. Each permutation
-(rather than combination) is featured, i.e. both (i, j) and (j, i).}
+\title{Construct the Bradley--Terry design matrix for ties}
 \usage{
 construct.design.matrix.both.ways(n.objects)
 }
@@ -15,7 +13,6 @@ construct.design.matrix.both.ways(n.objects)
 design matrix X
 }
 \description{
-Construct the Bradley--Terry design matrix for ties
 This is the design matrix for tied comparisons. Each permutation
 (rather than combination) is featured, i.e. both (i, j) and (j, i).
 }
