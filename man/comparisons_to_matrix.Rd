@@ -24,5 +24,4 @@ comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 
 # Create matrix from comparisons
 win.matrix <- comparisons_to_matrix(3, comparisons)
-
 }
