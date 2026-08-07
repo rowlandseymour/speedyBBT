@@ -1,4 +1,4 @@
-test_that("BBTm.ties produces results within tolerance", {
+test_that("BBTm_ties produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
 
@@ -7,7 +7,7 @@ test_that("BBTm.ties produces results within tolerance", {
     prior.var %*%
     diag(diag(prior.var)^-0.5)
   n.objects <- nrow(darEsSalaam$adjacencyMatrix)
-  darTiedModel <- BBTm.ties(
+  darTiedModel <- BBTm_ties(
     n.objects = n.objects,
     outcome = darEsSalaam$comparisons$outcome,
     item1 = darEsSalaam$comparisons$subward1,

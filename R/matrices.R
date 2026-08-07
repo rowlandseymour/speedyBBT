@@ -42,8 +42,9 @@ comparisons_to_matrix <- function(n.objects, comparisons) {
 #'
 #' # design matrix with 3 objects
 #'
-#' X <- construct.design.matrix(3)
-construct.design.matrix <- function(n.objects) {
+#' X <- construct_design_matrix(3)
+#' @noRd
+construct_design_matrix <- function(n.objects) {
   all.pairs <- t(utils::combn(n.objects, 2))
   winners <- Matrix::sparseMatrix(
     i = 1:(n.objects * (n.objects - 1) / 2),
@@ -87,8 +88,9 @@ construct.design.matrix <- function(n.objects) {
 #' # Generate comparisons of three items
 #' item1 <- c(1, 3, 2, 1)
 #' item2 <- c(3, 1, 1, 2)
-#' X <- construct.generalised.design.matrix(item1, item2, example.formula, example.df)
-construct.generalised.design.matrix <- function(
+#' X <- construct_generalised_design_matrix(item1, item2, example.formula, example.df)
+#' @noRd
+construct_generalised_design_matrix <- function(
   item1,
   item2,
   formula,
@@ -123,8 +125,9 @@ construct.generalised.design.matrix <- function(
 #' # Generate comparisons of three items
 #' object1 <- c(1, 3, 2, 1)
 #' object2 <- c(3, 1, 1, 2)
-#' X <- construct.design.matrix.by.comparison(object1, object2)
-construct.design.matrix.by.comparison <- function(object1, object2) {
+#' X <- construct_design_matrix_by_comparison(object1, object2)
+#' @noRd
+construct_design_matrix_by_comparison <- function(object1, object2) {
   K <- length(object1)
   n.objects <- max(c(object1, object2))
   term1 <- Matrix::sparseMatrix(
@@ -158,8 +161,9 @@ construct.design.matrix.by.comparison <- function(object1, object2) {
 #'
 #' # design matrix with 3 objects
 #'
-#' X <- construct.design.matrix.both.ways(3)
-construct.design.matrix.both.ways <- function(n.objects) {
+#' X <- construct_design_matrix_both_ways(3)
+#' @noRd
+construct_design_matrix_both_ways <- function(n.objects) {
   all.pairs <- t(utils::combn(n.objects, 2))
   a <- c(all.pairs[, 1], all.pairs[, 2])
   b <- c(all.pairs[, 2], all.pairs[, 1])
