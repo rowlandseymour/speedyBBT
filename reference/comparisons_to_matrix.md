@@ -1,4 +1,4 @@
-# Construct Win Matrix from Comparisons
+# Construct win matrix from comparisons
 
 This function constructs a win matrix from a data frame of comparisons.
 It is needed for the MCMC functions.

@@ -12,8 +12,11 @@ comparative judgement data quick and easy.
 
 You can install `speedyBBT` by calling the following commands:
 
-    install.packages("speedyBBT")
-    #devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) #for development version
+``` r
+
+install.packages("speedyBBT")
+#devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) #for development version
+```
 
 ## Usage
 
@@ -26,47 +29,50 @@ a multivariate normal prior distribution on the ward quality parameters.
 The covariance matrix of this prior distribution is constructed using a
 network representation of the wards in Nottinghamshire.
 
-    #View Data
-    data("forcedMarriage", package = "speedyBBT")
-    head(forcedMarriage$comparisons)
+``` r
+
+#View Data
+data("forcedMarriage", package = "speedyBBT")
+head(forcedMarriage$comparisons)
 
 
-    #Construct covariance matrix
-    expA  <- expm::expm(forcedMarriage$adjacencyMatrix)
-    prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+#Construct covariance matrix
+expA  <- expm::expm(forcedMarriage$adjacencyMatrix)
+prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+    
+#Fit model
+forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
+                                  item1 = forcedMarriage$comparisons$win, 
+                                  item= forcedMarriage$comparisons$lost, 
+                                  item.prior.var = prior.var)
+forcedMarriageModel$lambda  <- forcedMarriageModel$lambda - rowMeans(forcedMarriageModel$lambda)
 
-    #Fit model
-    forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
-                                      item1 = forcedMarriage$comparisons$win,
-                                      item= forcedMarriage$comparisons$lost,
-                                      item.prior.var = prior.var)
-    forcedMarriageModel$lambda  <- forcedMarriageModel$lambda - rowMeans(forcedMarriageModel$lambda)
+#View Trace Plots
+plot(forcedMarriageModel$lambda[, 10], type = 'l',
+     xlab = "Iteration", ylab = expression(lambda[10]))
+plot(forcedMarriageModel$lambda[, 20], type = 'l', 
+     xlab = "Iteration", ylab = expression(lambda[20]))
+plot(forcedMarriageModel$lambda[, 30], type = 'l', 
+     xlab = "Iteration", ylab = expression(lambda[30]))
+plot(forcedMarriageModel$lambda[, 40], type = 'l', 
+     xlab = "Iteration", ylab = expression(lambda[40]))
 
-    #View Trace Plots
-    plot(forcedMarriageModel$lambda[, 10], type = 'l',
-         xlab = "Iteration", ylab = expression(lambda[10]))
-    plot(forcedMarriageModel$lambda[, 20], type = 'l',
-         xlab = "Iteration", ylab = expression(lambda[20]))
-    plot(forcedMarriageModel$lambda[, 30], type = 'l',
-         xlab = "Iteration", ylab = expression(lambda[30]))
-    plot(forcedMarriageModel$lambda[, 40], type = 'l',
-         xlab = "Iteration", ylab = expression(lambda[40]))
+plot(forcedMarriageModel$alpha.sq, type = 'l')
 
-    plot(forcedMarriageModel$alpha.sq, type = 'l')
+#View Results
+forcedMarriageModelMeans <- colMeans(forcedMarriageModel$lambda[-c(1:50), ])
+forcedMarriageModelLowerCI <- apply(forcedMarriageModel$lambda[-c(1:50), ], 2, quantile, 0.025)
+forcedMarriageModelUpperCI <- apply(forcedMarriageModel$lambda[-c(1:50), ], 2, quantile, 0.975)
+forcedMarriageResults <- data.frame("ward" = forcedMarriage$wards$NAME,
+                                    "mean" = forcedMarriageModelMeans,
+                                    "lowerCI" = forcedMarriageModelLowerCI, 
+                                    "upperCI" = forcedMarriageModelUpperCI)
+forcedMarriageResults <- forcedMarriageResults[order(forcedMarriageResults$mean), ]
 
-    #View Results
-    forcedMarriageModelMeans <- colMeans(forcedMarriageModel$lambda[-c(1:50), ])
-    forcedMarriageModelLowerCI <- apply(forcedMarriageModel$lambda[-c(1:50), ], 2, quantile, 0.025)
-    forcedMarriageModelUpperCI <- apply(forcedMarriageModel$lambda[-c(1:50), ], 2, quantile, 0.975)
-    forcedMarriageResults <- data.frame("ward" = forcedMarriage$wards$NAME,
-                                        "mean" = forcedMarriageModelMeans,
-                                        "lowerCI" = forcedMarriageModelLowerCI,
-                                        "upperCI" = forcedMarriageModelUpperCI)
-    forcedMarriageResults <- forcedMarriageResults[order(forcedMarriageResults$mean), ]
-
-    plot(forcedMarriageResults$mean, xlab = "Ward", ylab = "Posterior Mean", ylim = c(-7.5, 7.5))
-    segments(x0 = 1:nrow(forcedMarriageResults), y0 = forcedMarriageResults$lowerCI,
-             y1 = forcedMarriageResults$upperCI)
+plot(forcedMarriageResults$mean, xlab = "Ward", ylab = "Posterior Mean", ylim = c(-7.5, 7.5))
+segments(x0 = 1:nrow(forcedMarriageResults), y0 = forcedMarriageResults$lowerCI, 
+         y1 = forcedMarriageResults$upperCI)
+```
 
 ## References
 
@@ -110,29 +116,46 @@ Yorkshire Police and Karma Nirvana.
 
 # Package index
 
-## All functions
+## Data sets
 
-- [`BBTm()`](BBTm.md) : Generalised Bradley-Terry model
-- [`BBTm.ties()`](BBTm.ties.md) : Bayesian inference for the
-  Bradley-Terry model with ties
-- [`comparisons_to_matrix()`](comparisons_to_matrix.md) : Construct Win
-  Matrix from Comparisons
-- [`darEsSalaam`](darEsSalaam.md) : Comparative Judgment on Deprivation
-  in Dar es Salaam, Tanzania
-- [`forcedMarriage`](forcedMarriage.md) : Forced Marriage in
-  Nottinghamshire
-- [`oxon.comparisons`](oxon.comparisons.md) : Honour Based Abuse in
-  Oxfordshire
-- [`parameter()`](parameter.md) : Extract parameter draws from a model
-  object
-- [`speedyBBTm()`](speedyBBTm.md) : Standard Bayesian Bradley-Terry
-  model
-- [`sy.comparisons`](sy.comparisons.md) : FGM in South Yorkshire
-- [`wimbledon`](wimbledon.md) : Wimbledon Men's Singles Championship
-  2019
+- [`darEsSalaam`](https://rowlandseymour.github.io/speedyBBT/reference/darEsSalaam.md)
+  : Comparative Judgment on Deprivation in Dar es Salaam, Tanzania
+- [`forcedMarriage`](https://rowlandseymour.github.io/speedyBBT/reference/forcedMarriage.md)
+  : Forced Marriage in Nottinghamshire
+- [`oxon.comparisons`](https://rowlandseymour.github.io/speedyBBT/reference/oxon.comparisons.md)
+  : Honour Based Abuse in Oxfordshire
+- [`sy.comparisons`](https://rowlandseymour.github.io/speedyBBT/reference/sy.comparisons.md)
+  : FGM in South Yorkshire
+- [`wimbledon`](https://rowlandseymour.github.io/speedyBBT/reference/wimbledon.md)
+  : Wimbledon Men's Singles Championship 2019
+
+## Model fitting functions
+
+- [`BBTm.ties()`](https://rowlandseymour.github.io/speedyBBT/reference/BBTm.ties.md)
+  : Bayesian inference for the Bradley-Terry model with ties
+- [`BBTm()`](https://rowlandseymour.github.io/speedyBBT/reference/BBTm.md)
+  : Generalised Bradley-Terry model
+- [`speedyBBTm()`](https://rowlandseymour.github.io/speedyBBT/reference/speedyBBTm.md)
+  : Standard Bayesian Bradley-Terry model
+
+## Helper functions
+
+- [`comparisons_to_matrix()`](https://rowlandseymour.github.io/speedyBBT/reference/comparisons_to_matrix.md)
+  : Construct win matrix from comparisons
+- [`construct.design.matrix.both.ways()`](https://rowlandseymour.github.io/speedyBBT/reference/construct.design.matrix.both.ways.md)
+  : Construct the Bradley–Terry design matrix for ties
+- [`construct.design.matrix.by.comparison()`](https://rowlandseymour.github.io/speedyBBT/reference/construct.design.matrix.by.comparison.md)
+  : Construct the comparison specific Bradley–Terry design matrix
+- [`construct.design.matrix()`](https://rowlandseymour.github.io/speedyBBT/reference/construct.design.matrix.md)
+  : Construct the Bradley–Terry design matrix
+- [`construct.generalised.design.matrix()`](https://rowlandseymour.github.io/speedyBBT/reference/construct.generalised.design.matrix.md)
+  : Construct the generalised Bradley–Terry design matrix
+- [`parameter()`](https://rowlandseymour.github.io/speedyBBT/reference/parameter.md)
+  : Extract parameter draws from a model object
 
 # Articles
 
 ### All vignettes
 
-- [Getting started with speedyBBT](speedyBBT.md):
+- [Getting started with
+  speedyBBT](https://rowlandseymour.github.io/speedyBBT/articles/speedyBBT.md):

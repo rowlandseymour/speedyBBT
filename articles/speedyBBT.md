@@ -71,15 +71,15 @@ prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 ```
 
 Next, you can fit the model using the
-[`speedyBBTm()`](../reference/speedyBBTm.md) function. You will need to
-specify the outcome variable, the items involved in each comparison, and
-the prior covariance matrix for the item qualities. You can also specify
-the number of MCMC iterations to run. This example uses the default
-values for the hyperparameters of the prior distribution, but you can
-also specify your own values if you have prior knowledge about the
-items’ rating using the `hyperparameter` argument. To match the plots in
-this vignette, you will need to use the same argument to `set.seed` as
-the one provided here.
+[`speedyBBTm()`](https://rowlandseymour.github.io/speedyBBT/reference/speedyBBTm.md)
+function. You will need to specify the outcome variable, the items
+involved in each comparison, and the prior covariance matrix for the
+item qualities. You can also specify the number of MCMC iterations to
+run. This example uses the default values for the hyperparameters of the
+prior distribution, but you can also specify your own values if you have
+prior knowledge about the items’ rating using the `hyperparameter`
+argument. To match the plots in this vignette, you will need to use the
+same argument to `set.seed` as the one provided here.
 
 ``` r
 
@@ -302,9 +302,9 @@ summary(forcedMarriageModel)
 ```
 
 You can run some MCMC diagnostics to check convergence. The
-[`speedyBBTm()`](../reference/speedyBBTm.md) function returns an MCMC
-object that can be used with the `coda` package for diagnostics. You can
-use the
+[`speedyBBTm()`](https://rowlandseymour.github.io/speedyBBT/reference/speedyBBTm.md)
+function returns an MCMC object that can be used with the `coda` package
+for diagnostics. You can use the
 [`effectiveSize()`](https://rdrr.io/pkg/coda/man/effectiveSize.html)
 function to calculate the estimated effective sample size for
 convergence. Another example diagnostic illustrated here is the Geweke

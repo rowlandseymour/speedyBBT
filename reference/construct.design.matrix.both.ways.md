@@ -1,8 +1,7 @@
-# Construct the Bradley–Terry design matrix for ties This is the design matrix for tied comparisons. Each permutation (rather than combination) is featured, i.e. both (i, j) and (j, i).
+# Construct the Bradley–Terry design matrix for ties
 
-Construct the Bradley–Terry design matrix for ties This is the design
-matrix for tied comparisons. Each permutation (rather than combination)
-is featured, i.e. both (i, j) and (j, i).
+This is the design matrix for tied comparisons. Each permutation (rather
+than combination) is featured, i.e. both (i, j) and (j, i).
 
 ## Usage
 
