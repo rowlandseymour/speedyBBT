@@ -47,4 +47,5 @@ example.formula <- ~ a + b + I(a^2)
 item1 <- c(1, 3, 2, 1)
 item2 <- c(3, 1, 1, 2)
 X <- construct.generalised.design.matrix(item1, item2, example.formula, example.df)
+#> Error in construct.generalised.design.matrix(item1, item2, example.formula,     example.df): could not find function "construct.generalised.design.matrix"
 ```

@@ -2,5 +2,4 @@
 
 ### All vignettes
 
-- [Getting started with
-  speedyBBT](https://rowlandseymour.github.io/speedyBBT/articles/speedyBBT.md):
+- [Getting started with speedyBBT](articles/speedyBBT.md):

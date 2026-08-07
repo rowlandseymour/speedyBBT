@@ -31,4 +31,5 @@ design matrix X
 object1 <- c(1, 3, 2, 1)
 object2 <- c(3, 1, 1, 2)
 X <- construct.design.matrix.by.comparison(object1, object2)
+#> Error in construct.design.matrix.by.comparison(object1, object2): could not find function "construct.design.matrix.by.comparison"
 ```

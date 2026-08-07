@@ -25,4 +25,5 @@ design matrix X
 # design matrix with 3 objects
 
 X <- construct.design.matrix(3)
+#> Error in construct.design.matrix(3): could not find function "construct.design.matrix"
 ```
