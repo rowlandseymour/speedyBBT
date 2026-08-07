@@ -1,4 +1,4 @@
-#' Construct Win Matrix from Comparisons
+#' Construct win matrix from comparisons
 #'
 #' This function constructs a win matrix from a data frame of comparisons. It is needed for the MCMC functions.
 #'
@@ -158,6 +158,7 @@ construct.design.matrix.by.comparison <- function(object1, object2) {
 
 
 #' Construct the Bradley--Terry design matrix for ties
+#'
 #' This is the design matrix for tied comparisons. Each permutation
 #' (rather than combination) is featured, i.e. both (i, j) and (j, i).
 #'
