@@ -1,4 +1,4 @@
-url: https://rowlandseymour.github.io/speedyBBT/
+url: https://www.rowlandseymour.com/speedyBBT/, https://github.com/rowlandseymour/speedyBBT
 template:
   bootstrap: 5
   math-rendering: mathjax
@@ -18,8 +18,4 @@ reference:
   - title: Helper functions
     contents:
       - comparisons_to_matrix
-      - construct.design.matrix.both.ways
-      - construct.design.matrix.by.comparison
-      - construct.design.matrix
-      - construct.generalised.design.matrix
       - parameter

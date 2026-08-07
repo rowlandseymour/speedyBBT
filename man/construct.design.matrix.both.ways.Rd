@@ -21,6 +21,5 @@ This is the design matrix for tied comparisons. Each permutation
 # design matrix with 3 objects
 
 X <- construct.design.matrix.both.ways(3)
-
 }
 \keyword{internal}
