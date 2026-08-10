@@ -59,7 +59,7 @@ discussion.
 
 Install the released version from CRAN:
 
-``` r
+```r
 install.packages("speedyBBT")
 # for development version
 # devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) 
