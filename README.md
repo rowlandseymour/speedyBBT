@@ -10,52 +10,35 @@
 coverage](https://codecov.io/gh/rowlandseymour/speedyBBT/graph/badge.svg)](https://app.codecov.io/gh/rowlandseymour/speedyBBT)
 <!-- badges: end -->
 
-## Overview
+# Overview
 
-`speedyBBT` is an R package for fitting Bradley-Terry models to pairwise
-comparison data using fast, fully Bayesian MCMC. Given a set of pairwise
-judgements – which of two wards has the higher rate of forced marriage,
-which of two tennis players won a match, which of two neighbourhoods
-looks more deprived – `speedyBBT` estimates a quality parameter for
-every item being compared, along with full posterior uncertainty.
+`speedyBBT` is an R package for fitting Bradley-Terry models to pairwise comparison data using fast, fully Bayesian MCMC. Given a set of pairwise judgements -- which of two wards has the higher rate of forced marriage, which of two tennis players won a match, which of two neighbourhoods looks more deprived -- `speedyBBT` estimates a quality parameter for every item being compared, along with full posterior uncertainty.
 
-Inference is carried out using a Pólya-Gamma data augmentation scheme,
-which makes sampling fast even for large numbers of items and
-comparisons. The package supports:
+Inference is carried out using a P\'olya-Gamma data augmentation scheme, which makes sampling fast even for large numbers of items and comparisons. The package supports:
 
-- the standard Bradley-Terry model (`speedyBBTm()`), optimised for speed
-  when there are no ties or comparison-specific effects;
-- ties, comparison-specific effects (e.g. home advantage), and
-  item-level covariates via a formula interface (`BBTm()`);
-- multivariate normal prior distributions on the item quality
-  parameters, so that structure between items (e.g. spatial adjacency)
-  can be encoded directly into the prior;
+- the standard Bradley-Terry model (`speedy_BBTm()`), optimised for speed when there are no ties or comparison-specific effects;
+- ties, comparison-specific effects (e.g. home advantage), and item-level covariates via a formula interface (`BBTm()`);
+- multivariate normal prior distributions on the item quality parameters, so that structure between items (e.g. spatial adjacency) can be encoded directly into the prior;
 - optional hyperparameter inference on the prior scale.
 
-The package can be used with data collected using the [Comparative
-Judgement
-Interface](https://github.com/HiddenHarmsHub/comparative-judgement-interface).
+The package can be used with data collected using the [Comparative Judgement Interface](https://github.com/HiddenHarmsHub/comparative-judgement-interface).
 
 ## Getting started
 
-If you’re new to `speedyBBT`, start with the [Getting started with
-speedyBBT](vignettes/speedyBBT.Rmd) vignette, which walks through
-fitting a model to real comparative-judgement data end to end.
+If you're new to `speedyBBT`, start with the [Getting started with speedyBBT](vignettes/speedyBBT.Rmd) vignette, which walks through fitting a model to real comparative-judgement data end to end. 
 
 ## Resources
 
-- [Report a bug or request a
-  feature](https://github.com/rowlandseymour/speedyBBT/issues)
+- [Report a bug or request a feature](https://github.com/rowlandseymour/speedyBBT/issues)
 - [Browse the source](https://github.com/rowlandseymour/speedyBBT)
 
-Questions and contributions are welcome; open an issue to start a
-discussion.
+Questions and contributions are welcome; open an issue to start a discussion.
 
 ## Installation
 
 Install the released version from CRAN:
 
-``` r
+```r
 install.packages("speedyBBT")
 # for development version
 # devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE)
