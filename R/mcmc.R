@@ -692,7 +692,7 @@ BBTm.no.formula <- function(
 #' @param player2 Vector of second players.
 #' @param formula Formula with no left-hand-side specifying the player specific
 #' effects.
-#' @param data Data.frame with a row corresponding to each player and  column corresponding
+#' @param data Data frame with a row corresponding to each player and a column corresponding
 #' to each covariate.
 #' @param player.prior.var (optional) Matrix specifying the prior covariance of
 #'  the player correlation parameters.
