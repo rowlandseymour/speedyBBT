@@ -287,7 +287,8 @@ BBTm.ties <- function(
 
   if (n.iter <= burn.in) {
     stop(
-      "Your burn in period is less than the total number of iterations. Please choose a shorter burn-in period or a larger number of total iterations."
+      "Your burn in period is greater than the total number of iterations. ",
+      "Please choose a shorter burn-in period or a larger number of total iterations."
     )
   }
 
