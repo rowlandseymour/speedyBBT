@@ -34,7 +34,7 @@
 #' If `lambda.initial` is ommitted, it is set to a vector of zeroes.
 #'
 #'
-#' @return  A `mcmc` object containing samples from the posterior distribution.
+#' @return  An ["mcmc"][coda::mcmc] object containing samples from the posterior distribution.
 #'
 #' @importFrom coda mcmc varnames
 #'
@@ -232,7 +232,7 @@ speedyBBTm <- function(
 #' If `lambda.initial` is omitted, it is set to a vector of zeroes.
 #'
 #'
-#' @return  A `coda::mcmc` object containing samples from the posterior distribution
+#' @return  A ["mcmc"][coda::mcmc] object containing samples from the posterior distribution
 #'
 #'
 #' @examples
@@ -492,7 +492,7 @@ BBTm.ties <- function(
 #' If `lambda.var` is omitted, it is set to N(0, 5^2).
 #'
 #'
-#' @return  A `coda::mcmc` object containing samples from the posterior distribution
+#' @return  A ["mcmc"][coda::mcmc] object containing samples from the posterior distribution
 #'
 #' @keywords internal
 #'
@@ -723,7 +723,7 @@ BBTm.no.formula <- function(
 #' it is set to 0.5.
 #'
 #'
-#' @return  A `coda::mcmc` object containing samples from the posterior distribution.
+#' @return  A ["mcmc"][coda::mcmc] object containing samples from the posterior distribution.
 #'
 #' @keywords internal
 #'
@@ -944,7 +944,7 @@ BBTm.with.formula <- function(
 #' it is set to 0.5.
 #'
 #'
-#' @return  A `coda::mcmc` object containing samples from the posterior distribution.
+#' @return  A ["mcmc"][coda::mcmc] object containing samples from the posterior distribution.
 #'
 #'
 #'
