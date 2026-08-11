@@ -18,52 +18,55 @@ BBTm.with.formula(
   n.iter = 1000,
   hyperparameter = TRUE,
   chi = 0.01,
-  psi = 0.01
+  psi = 0.01,
+  burn.in = 100
 )
 }
 \arguments{
-\item{outcome}{vector of outcomes. 1 if player2 is the winner,
-0 if player1 is the winner}
+\item{outcome}{Vector of outcomes. 1 if player2 is the winner,
+0 if player1 is the winner.}
 
-\item{player1}{vector of first players.}
+\item{player1}{Vector of first players.}
 
-\item{player2}{vector of second players.}
+\item{player2}{Vector of second players.}
 
-\item{formula}{formula with no left-hand-side specifying the player specific
-effects}
+\item{formula}{Formula with no left-hand-side specifying the player specific
+effects.}
 
-\item{data}{data.frame with a row corresponding to each player and  column corresponding
+\item{data}{Data.frame with a row corresponding to each player and  column corresponding
 to each covariate.}
 
-\item{advantage}{(optional) a vector with the value of the comparisons specific
-effect for each comparison}
+\item{advantage}{(optional) A vector with the value of the comparisons specific
+effect for each comparison.}
 
-\item{kappa.initial}{(optional) an initial value for the comparison specific
-value kappa}
+\item{kappa.initial}{(optional) An initial value for the comparison specific
+value kappa.}
 
-\item{kappa.var}{(optional) the prior variance of the he comparison specific
-value kappa}
+\item{kappa.var}{(optional) The prior variance of the comparison specific
+value kappa.}
 
-\item{player.prior.var}{(optional) matrix specifying the prior covariance of
-the player correlation parameters}
+\item{player.prior.var}{(optional) Matrix specifying the prior covariance of
+the player correlation parameters.}
 
-\item{beta.initial}{(optional) vector containing the values of the
-player specific  parameters for the first MCMC iteration}
+\item{beta.initial}{(optional) Vector containing the values of the
+player specific  parameters for the first MCMC iteration.}
 
-\item{n.iter}{number of MCMC samples to be drawn}
+\item{n.iter}{Number of MCMC samples to be drawn.}
 
-\item{hyperparameter}{boolean indicating if inference should be performed
+\item{hyperparameter}{Boolean indicating if inference should be performed
 for the prior variance hyperparameter. If TRUE the prior variance
 (main diagonal of the covariance matrix) must be set to 1.}
 
-\item{chi}{rate parameter for the inverse-gamma prior distribution on the
-hyperparameter}
+\item{chi}{Rate parameter for the inverse-gamma prior distribution on the
+hyperparameter.}
 
-\item{psi}{shape parameter for the inverse-gamma prior distribution on the
-hyperparameter}
+\item{psi}{Shape parameter for the inverse-gamma prior distribution on the
+hyperparameter.}
+
+\item{burn.in}{The number of iterations to use for a burn.in, default is 100.}
 }
 \value{
-A data frame containing samples from the posterior distribution
+A \code{coda::mcmc} object containing samples from the posterior distribution.
 }
 \description{
 This function fits the Bradley-Terry model with comparison  and player
