@@ -430,7 +430,7 @@ BBTm.ties <- function(
       thin = 1
     )
     coda::varnames(mcmc_out) <- c(
-      paste("lambda[", 1:(n.objects), "]", sep = ""),
+      paste("lambda[", 1:n.objects, "]", sep = ""),
       "theta",
       "alpha.sq"
     )

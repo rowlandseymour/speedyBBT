@@ -84,24 +84,21 @@ geweke.diag(forcedMarriageModel)
 You can use the `plot` function in `coda` or install `bayesplot` and `ggplot2` to get additional, colourful plots. For example, you can use the `mcmc_intervals()` function to create interval plots of the parameter posterior distributions and the `mcmc_dens()` function to create density plots of the MCMC samples. For more information, see the [**bayesplot** package documentation](https://mc-stan.org/bayesplot/).
 
 ```{r bayesplot_diagnostics, fig.width=8, fig.height=6}
-
 if (requireNamespace("bayesplot", quietly = TRUE)) {
-
   # Install bayesplot if not already installed
-# install.packages("bayesplot")
-# install.packages("ggplot2")
-library(bayesplot)
-library(ggplot2)
-# Trace plots
-    bayesplot::mcmc_intervals(forcedMarriageModel, pars = c("lambda[10]", "lambda[20]", "lambda[30]", "lambda[40]")) +
-  ggtitle("Posterior distributions with 95% credible intervals") +
-  ylab(expression(lambda[i])) +
-  xlab("Density")
-# Density plots
-bayesplot::mcmc_dens(forcedMarriageModel, pars = c("lambda[10]", "lambda[20]", "lambda[30]", "lambda[40]", "alpha.sq"))
-} else{
+  # install.packages("bayesplot")
+  # install.packages("ggplot2")
+  library(bayesplot)
+  library(ggplot2)
   # Trace plots
-plot(forcedMarriageModel[, paste0("lambda[", c(10, 20, 30, 40), "]")], main = "Trace plots for item quality parameters")
+  bayesplot::mcmc_intervals(forcedMarriageModel, pars = c("lambda[10]", "lambda[20]", "lambda[30]", "lambda[40]")) +
+    ggtitle("Posterior distributions with 95% credible intervals") +
+    ylab(expression(lambda[i])) +
+    xlab("Density")
+  # Density plots
+  bayesplot::mcmc_dens(forcedMarriageModel, pars = c("lambda[10]", "lambda[20]", "lambda[30]", "lambda[40]", "alpha.sq"))
+} else {
+  # Trace plots
+  plot(forcedMarriageModel[, paste0("lambda[", c(10, 20, 30, 40), "]")], main = "Trace plots for item quality parameters")
 }
-
 ```
