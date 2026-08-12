@@ -7,9 +7,9 @@ test_that("speedyBBTm produces results within tolerance", {
   # Fit model
   forcedMarriageModel <- speedyBBTm(
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
-    item1 = forcedMarriage$comparisons$win,
-    item2 = forcedMarriage$comparisons$lost,
-    item.prior.var = sigma,
+    player1 = forcedMarriage$comparisons$win,
+    player2 = forcedMarriage$comparisons$lost,
+    player.prior.var = sigma,
     n.iter = 2000
   )
 
@@ -47,8 +47,8 @@ test_that("BBTm produces results within tolerance", {
   # Fit model
   wimbledonModel <- BBTm(
     outcome = wimbledon$matches$outcome,
-    item1 = wimbledon$matches$winner,
-    item2 = wimbledon$matches$loser,
+    player1 = wimbledon$matches$winner,
+    player2 = wimbledon$matches$loser,
     advantage = wimbledon$matches$secondWeek,
     formula = ~ rank + points,
     data = wimbledon$players,
@@ -82,9 +82,9 @@ test_that("BBTm.no.formula produces results within tolerance", {
   # Fit model
   forcedMarriageModel <- BBTm(
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
-    item1 = forcedMarriage$comparisons$win,
-    item2 = forcedMarriage$comparisons$lost,
-    item.prior.var = sigma,
+    player1 = forcedMarriage$comparisons$win,
+    player2 = forcedMarriage$comparisons$lost,
+    player.prior.var = sigma,
     n.iter = 2000
   )
 
@@ -145,8 +145,8 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
     set.seed(423)
     wimbledonModel <- BBTm(
       outcome = wimbledon$matches$outcome,
-      player1 = wimbledon$matches$winner,
-      player2 = wimbledon$matches$loser,
+      item1 = wimbledon$matches$winner,
+      item2 = wimbledon$matches$loser,
       formula = ~ rank + points,
       data = wimbledon$players,
       n.iter = 4000,
