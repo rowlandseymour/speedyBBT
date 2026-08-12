@@ -170,6 +170,7 @@ speedyBBTm <- function(
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
+  close(pb)
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[(burn.in + 1):n.iter, ],
@@ -422,6 +423,8 @@ BBTm.ties <- function(
     lambda.matrix[, i] <- as.numeric(lambda)
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
+
+  pars.matrix <- cbind(t(lambda.matrix), theta.store, alpha.sq.store)
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 2)],
@@ -621,6 +624,7 @@ BBTm.no.formula <- function(
 
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
+  close(pb)
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector, kappa.vector)
@@ -850,6 +854,7 @@ BBTm.with.formula <- function(
     alpha.sq.vector[i] <- alpha.sq
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
+  close(pb)
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
     pars.matrix <- cbind(
