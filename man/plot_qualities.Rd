@@ -4,10 +4,10 @@
 \alias{plot_qualities}
 \title{Plot quality parameter posteriors}
 \usage{
-plot_qualities(item_names, model_output)
+plot_qualities(player_names, model_output)
 }
 \arguments{
-\item{item_names}{The names of the different items (or players or wards) being compared.}
+\item{player_names}{The names of the different items (or players or wards) being compared.}
 
 \item{model_output}{The model output object containing the draws.}
 }
@@ -17,7 +17,7 @@ of the quality parameter estimate.
 }
 \examples{
 
-items <- wimbledon$players$name
+players <- wimbledon$players$name
 
 wimbledonModel <- BBTm(
   outcome = wimbledon$matches$outcome,
@@ -29,6 +29,6 @@ wimbledonModel <- BBTm(
   n.iter = 200
 )
 
-plot_qualities(item_names = items, model_output = wimbledonModel)
+plot_qualities(player_names = players, model_output = wimbledonModel)
 
 }

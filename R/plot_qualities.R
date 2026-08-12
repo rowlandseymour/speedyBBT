@@ -3,12 +3,12 @@
 #' Generates a plot of the posterior mean and 95% credible interval
 #' of the quality parameter estimate.
 #'
-#' @param item_names The names of the different items (or players or wards) being compared.
+#' @param player_names The names of the different items (or players or wards) being compared.
 #' @param model_output The model output object containing the draws.
 #' @export
 #' @examples
 #'
-#' items <- wimbledon$players$name
+#' players <- wimbledon$players$name
 #'
 #' wimbledonModel <- BBTm(
 #'   outcome = wimbledon$matches$outcome,
@@ -20,11 +20,11 @@
 #'   n.iter = 200
 #' )
 #'
-#' plot_qualities(item_names = items, model_output = wimbledonModel)
+#' plot_qualities(player_names = players, model_output = wimbledonModel)
 #'
-plot_qualities <- function(item_names, model_output) {
+plot_qualities <- function(player_names, model_output) {
   # Posterior mean and 95% credible intervals (burn-in = 100)
-  param_draws <- model_output$lambda
+  param_draws <- parameter(model_output, "lambda")
   model_means <- colMeans(param_draws)
   modelLowerCI <- apply(
     param_draws,
@@ -39,7 +39,7 @@ plot_qualities <- function(item_names, model_output) {
     0.975
   )
   modelResults <- data.frame(
-    "item" = item_names,
+    "item" = player_names,
     "mean" = model_means,
     "lowerCI" = modelLowerCI,
     "upperCI" = modelUpperCI
@@ -63,7 +63,7 @@ plot_qualities <- function(item_names, model_output) {
   axis(
     1,
     at = 1:nrow(modelResults),
-    labels = item_names,
+    labels = player_names,
     las = 2
   )
 }
