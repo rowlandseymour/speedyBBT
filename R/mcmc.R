@@ -608,7 +608,9 @@ BBTm.no.formula <- function(
     Z <- Matrix::sparseMatrix(i = 1:n.comp, j = 1:n.comp, x = z)
 
     # Update lambda
-    V <- chol2inv(chol(Matrix::t(X) %*% Z %*% X + item.prior.var.inverse))
+    V <- chol2inv(chol(
+      Matrix::t(X) %*% Z %*% X + player.prior.var.inverse / alpha.sq
+    ))
     mu <- V %*% (Matrix::t(X) %*% (k - kappa * Z %*% advantage))
     V.chol <- chol(V)
     lambda <- as.numeric(t(V.chol) %*% stats::rnorm(n.objects, 0, 1) + mu)
