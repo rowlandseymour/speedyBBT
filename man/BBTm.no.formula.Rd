@@ -6,9 +6,9 @@
 \usage{
 BBTm.no.formula(
   outcome,
-  item1,
-  item2,
-  item.prior.var,
+  player1,
+  player2,
+  player.prior.var,
   lambda.initial,
   advantage = NULL,
   kappa.initial = NULL,
@@ -26,14 +26,8 @@ BBTm.no.formula(
 \item{outcome}{Vector of outcomes. 1 if item2 is the winner,
 0 if item1 is the winner.}
 
-\item{item1}{Vector of first items.}
-
-\item{item2}{Vector of second items.}
-
-\item{item.prior.var}{(optional) A matrix specifying the prior covariance of the items with one another.}
-
 \item{lambda.initial}{(optional) Vector containing the values of the
-item parameters for the first MCMC iteration.}
+player parameters for the first MCMC iteration.}
 
 \item{advantage}{(optional) A vector with the value of the comparisons specific
 effect for each comparison.}
@@ -63,6 +57,12 @@ hyperparameter.}
 \item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
 Default is \code{interactive()} therefore progress is shown if run interactively, but disabled
 in non-interactive contexts.}
+
+\item{item1}{Vector of first items.}
+
+\item{item2}{Vector of second items.}
+
+\item{item.prior.var}{(optional) A matrix specifying the prior covariance of the items with one another.}
 }
 \value{
 A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution

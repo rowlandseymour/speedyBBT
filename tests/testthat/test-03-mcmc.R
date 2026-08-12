@@ -106,8 +106,8 @@ test_that("BBTm produces results within tolerance when advantage = TRUE and hype
   # Fit model
   wimbledonModel <- BBTm(
     outcome = wimbledon$matches$outcome,
-    item1 = wimbledon$matches$winner,
-    item2 = wimbledon$matches$loser,
+    player1 = wimbledon$matches$winner,
+    player2 = wimbledon$matches$loser,
     advantage = wimbledon$matches$secondWeek,
     formula = ~ rank + points,
     data = wimbledon$players,
