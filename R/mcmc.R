@@ -138,8 +138,9 @@ speedyBBTm <- function(
   unnormalised.mu <- Matrix::t(X) %*% (y - n / 2)
   grand.covariance <- sum(player.prior.var)
 
-  # Set iteration counter
+  # Set iteration counter and close when the function exits
   pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+  on.exit(close(pb), add = TRUE)
 
   # MCMC loop
   for (i in 1:n.iter) {
@@ -366,6 +367,7 @@ BBTm.ties <- function(
   alpha.sq.store <- numeric(n.iter) # store results
 
   pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+  on.exit(close(pb), add = TRUE)
 
   # MCMC
   for (i in 1:n.iter) {
@@ -578,6 +580,7 @@ BBTm.no.formula <- function(
 
   # Set iteration counter
   pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+  on.exit(close(pb), add = TRUE)
 
   # MCMC loop
   for (i in 1:n.iter) {
@@ -809,6 +812,7 @@ BBTm.with.formula <- function(
   grand.covariance <- sum(player.prior.var)
 
   pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+  on.exit(close(pb), add = TRUE)
   for (i in 1:n.iter) {
     if (hyperparameter == TRUE) {
       alpha.sq <- 1 /
