@@ -8,7 +8,7 @@ test_that("speedyBBTm produces results within tolerance", {
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
     player1 = forcedMarriage$comparisons$win,
     player2 = forcedMarriage$comparisons$lost,
-    player.prior.var = sigma,
+    player.prior.var = prior.var,
     n.iter = 2000
   )
 
