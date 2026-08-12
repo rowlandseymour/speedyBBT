@@ -28,7 +28,7 @@ prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.va
 # Fit model
 # Using `n.iter = 3` here to reduce runtime, you will need more
 # iterations for inference.
-forcedMarriageModel <- speedy_BBTm(
+forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
   item1 = forcedMarriage$comparisons$win,
   item2 = forcedMarriage$comparisons$lost,
