@@ -142,9 +142,10 @@ speedyBBTm <- function(
   grand.covariance <- sum(player.prior.var)
 
   # Set iteration counter and close when the function exits
-  pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
-  on.exit(close(pb), add = TRUE)
-
+  if (verbose) {
+    pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+    on.exit(close(pb), add = TRUE)
+  }
   # MCMC loop
   for (i in 1:n.iter) {
     if (hyperparameter == TRUE) {
@@ -173,7 +174,6 @@ speedyBBTm <- function(
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
-      on.exit(close(pb), add = TRUE)
     }
   }
   iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
@@ -438,7 +438,6 @@ BBTm.ties <- function(
     lambda.matrix[i, ] <- as.numeric(lambda)
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
-      on.exit(close(pb), add = TRUE)
     }
   }
   pars.matrix <- cbind(lambda.matrix, theta.store, alpha.sq.store)
@@ -854,7 +853,10 @@ BBTm.with.formula <- function(
   alpha.sq.vector <- numeric(n.iter)
   grand.covariance <- sum(player.prior.var)
 
-  pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+  if (verbose) {
+    pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+    on.exit(close(pb), add = TRUE)
+  }
   for (i in 1:n.iter) {
     if (hyperparameter == TRUE) {
       alpha.sq <- 1 /
@@ -896,7 +898,6 @@ BBTm.with.formula <- function(
     alpha.sq.vector[i] <- alpha.sq
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
-      on.exit(close(pb), add = TRUE)
     }
   }
 
