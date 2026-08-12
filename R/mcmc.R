@@ -661,7 +661,6 @@ BBTm.no.formula <- function(
 
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
-      on.exit(close(pb), add = TRUE)
     }
   }
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
