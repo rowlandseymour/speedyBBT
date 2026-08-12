@@ -26,8 +26,8 @@ prior.var <- expm::expm(forcedMarriage$adjacencyMatrix)
 prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.var)^-0.5)
 
 # Fit model
-# Using `n.iter = 3, burn.in = 0` to reduce runtime
-# - you should use more iterations for reliable posterior estimates
+# Using `n.iter = 3` here to reduce runtime, you will need more
+# iterations for inference.
 forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
   item1 = forcedMarriage$comparisons$win,

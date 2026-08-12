@@ -88,9 +88,8 @@ construct.design.matrix <- function(n.objects) {
 #' # Generate comparisons of three items
 #' item1 <- c(1, 3, 2, 1)
 #' item2 <- c(3, 1, 1, 2)
-#' X <- construct_generalised_design_matrix(item1, item2, example.formula, example.df)
-#' @noRd
-construct_generalised_design_matrix <- function(
+#' X <- construct.generalised.design.matrix(item1, item2, example.formula, example.df)
+construct.generalised.design.matrix <- function(
   item1,
   item2,
   formula,
