@@ -84,7 +84,7 @@ test_that("BBTm.no.formula produces results within tolerance", {
   ])
 
   # Read in means
-  testMeansPath <- test_path("forcedMarriageModelMeans.csv")
+  testMeansPath <- test_path("forcedMarriageModelMeansNoFormula.csv")
   testMeans <- read.csv(testMeansPath)
 
   expect_equal(
@@ -109,7 +109,7 @@ test_that("BBTm.ties produces expected output from a single iteration", {
     outcome = darEsSalaam$comparisons$outcome,
     player1 = darEsSalaam$comparisons$subward1,
     player2 = darEsSalaam$comparisons$subward2,
-    player.prior.var = sigma,
+    player.prior.var = prior.var,
     hyperparameter = TRUE,
     rw.sd = 0.005,
     burn.in = 0,
