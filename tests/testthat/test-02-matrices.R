@@ -93,14 +93,14 @@ test_that("construct.generalised.design.matrix constructs correct design matrix"
   example.df <- data.frame("a" = c(1, 2, 3), "b" = c(2, 3, 1))
   example.formula <- ~ a + b
 
-  item1 <- c(1, 3, 2)
-  item2 <- c(3, 1, 1)
+  player1 <- c(1, 3, 2)
+  player2 <- c(3, 1, 1)
 
   expected_matrix <- matrix(c(-2, 1, 2, -1, 1, 1), ncol = 2, byrow = TRUE)
 
   result_matrix <- construct.generalised.design.matrix(
-    item1,
-    item2,
+    player1,
+    player2,
     example.formula,
     example.df
   )
@@ -111,14 +111,14 @@ test_that("construct.generalised.design.matrix constructs correct design matrix"
   example.df <- data.frame("a" = c(1, 2, 3), "b" = c(2, 3, 1))
   example.formula <- ~ a + b + I(a^2)
 
-  item1 <- c(1, 3)
-  item2 <- c(3, 2)
+  player1 <- c(1, 3)
+  player2 <- c(3, 2)
 
   expected_matrix <- matrix(c(-2, 1, -8, 1, -2, 5), ncol = 3, byrow = TRUE)
 
   result_matrix <- construct.generalised.design.matrix(
-    item1,
-    item2,
+    player1,
+    player2,
     example.formula,
     example.df
   )
@@ -129,32 +129,32 @@ test_that("construct.generalised.design.matrix constructs correct design matrix"
   example.df <- data.frame("a" = c(1, 2), "b" = c(2, 3))
   example.formula <- ~a
 
-  item1 <- c(1)
-  item2 <- c(2)
+  player1 <- c(1)
+  player2 <- c(2)
 
   expected_matrix <- matrix(c(-1), ncol = 1)
 
   result_matrix <- construct.generalised.design.matrix(
-    item1,
-    item2,
+    player1,
+    player2,
     example.formula,
     example.df
   )
 
   expect_equal(result_matrix, expected_matrix)
 
-  # Test case 4: Multiple comparisons with identical items
+  # Test case 4: Multiple comparisons with identical players
   example.df <- data.frame("a" = c(1, 1, 1), "b" = c(2, 2, 2))
   example.formula <- ~ a + b
 
-  item1 <- c(1, 2, 3)
-  item2 <- c(2, 3, 1)
+  player1 <- c(1, 2, 3)
+  player2 <- c(2, 3, 1)
 
   expected_matrix <- matrix(c(0, 0, 0, 0, 0, 0), ncol = 2, byrow = TRUE)
 
   result_matrix <- construct.generalised.design.matrix(
-    item1,
-    item2,
+    player1,
+    player2,
     example.formula,
     example.df
   )

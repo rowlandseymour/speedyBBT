@@ -35,9 +35,9 @@ sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
     
 #Fit model
 forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
-                                  item1 = forcedMarriage$comparisons$win, 
-                                  item= forcedMarriage$comparisons$lost, 
-                                  item.prior.var = sigma)
+                                  player1 = forcedMarriage$comparisons$win, 
+                                  player2 = forcedMarriage$comparisons$lost, 
+                                  player.prior.var = sigma)
 forcedMarriageModel$lambda  <- forcedMarriageModel$lambda - rowMeans(forcedMarriageModel$lambda)
 
 #View Trace Plots

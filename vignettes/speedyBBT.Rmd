@@ -58,9 +58,9 @@ Next, you can fit the model using the `speedyBBTm()` function. You will need to 
 set.seed(432)
 forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
-  item1 = forcedMarriage$comparisons$win,
-  item2 = forcedMarriage$comparisons$lost,
-  item.prior.var = sigma,
+  player1 = forcedMarriage$comparisons$win,
+  player2 = forcedMarriage$comparisons$lost,
+  player.prior.var = sigma,
   n.iter = 10000,
   burn.in = 100
 )
