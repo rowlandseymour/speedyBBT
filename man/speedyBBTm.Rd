@@ -6,10 +6,10 @@
 \usage{
 speedyBBTm(
   outcome = NULL,
-  item1 = NULL,
-  item2 = NULL,
+  player1 = NULL,
+  player2 = NULL,
   win.matrix = NULL,
-  item.prior.var = NULL,
+  player.prior.var = NULL,
   lambda.initial = NULL,
   n.iter = 1000,
   hyperparameter = TRUE,
@@ -21,21 +21,21 @@ speedyBBTm(
 )
 }
 \arguments{
-\item{outcome}{Vector of outcomes. 1 if item 2 is the winner,
-0 if item 1 is the winner.}
+\item{outcome}{Vector of outcomes. 1 if player 2 is the winner,
+0 if player 1 is the winner.}
 
-\item{item1}{Vector of first items.}
+\item{player1}{Vector of first players.}
 
-\item{item2}{Vector of second items.}
+\item{player2}{Vector of second players.}
 
 \item{win.matrix}{(optional) A win-loss matrix where the i,j th element is the number of
 times object i beat object j.}
 
-\item{item.prior.var}{(optional) A matrix specifying the prior covariance of
-the item correlation parameters.}
+\item{player.prior.var}{(optional) A matrix specifying the prior covariance of
+the player correlation parameters.}
 
 \item{lambda.initial}{(optional) A vector containing the values of the
-item correlation parameters for the first MCMC iteration.}
+player correlation parameters for the first MCMC iteration.}
 
 \item{n.iter}{The number of MCMC samples to be drawn.}
 
@@ -57,17 +57,17 @@ hyperparameter. Default is 0.01.}
 Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in non-interactive contexts.}
 }
 \value{
-A \code{mcmc} object containing samples from the posterior distribution.
+An \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.
 }
 \description{
 This function uses MCMC to sample from the posterior distribution of the
 standard Bradley--Terry model. Standard model means that there are no tied
-comparisons and no item or comparison specific variables. This provides a
+comparisons and no player or comparison specific variables. This provides a
 fast implementation of the standard model. A multivariate normal prior
-distribution on the item quality parameters can be specified.
+distribution on the player quality parameters can be specified.
 }
 \details{
-If \code{item.prior.var} is omitted, independent and identical
+If \code{player.prior.var} is omitted, independent and identical
 N(0, 1^2) prior distributions are placed on each object quality parameter.
 
 If \code{lambda.initial} is ommitted, it is set to a vector of zeroes.
@@ -88,7 +88,7 @@ forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
   item1 = forcedMarriage$comparisons$win,
   item2 = forcedMarriage$comparisons$lost,
-  item.prior.var = prior.var, n.iter = 3, burn.in = 0, verbose = FALSE
+  item.prior.var = sigma, n.iter = 3, burn.in = 0
 )
 
 # Plot results

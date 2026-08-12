@@ -2,18 +2,18 @@
 % Please edit documentation in R/mcmc.R
 \name{BBTm.with.formula}
 \alias{BBTm.with.formula}
-\title{Bayesian Bradley--Terry model with comparison- and item-specific effect and formula}
+\title{Bayesian Bradley--Terry model with comparison- and player-specific effect and formula}
 \usage{
 BBTm.with.formula(
   outcome,
-  item1,
-  item2,
+  player1,
+  player2,
   formula = NULL,
   data = NULL,
   advantage = NULL,
   kappa.initial = NULL,
   kappa.var = NULL,
-  item.prior.var = NULL,
+  player.prior.var = NULL,
   beta.initial = NULL,
   n.iter = 1000,
   hyperparameter = TRUE,
@@ -25,17 +25,17 @@ BBTm.with.formula(
 )
 }
 \arguments{
-\item{outcome}{Vector of outcomes. 1 if item2 is the winner,
-0 if item1 is the winner.}
+\item{outcome}{Vector of outcomes. 1 if player2 is the winner,
+0 if player1 is the winner.}
 
-\item{item1}{Vector of first items.}
+\item{player1}{Vector of first players.}
 
-\item{item2}{Vector of second items.}
+\item{player2}{Vector of second players.}
 
-\item{formula}{Formula with no left-hand-side specifying the item specific
+\item{formula}{Formula with no left-hand-side specifying the player specific
 effects.}
 
-\item{data}{Data.frame with a row corresponding to each item and  column corresponding
+\item{data}{Data.frame with a row corresponding to each player and  column corresponding
 to each covariate.}
 
 \item{advantage}{(optional) A vector with the value of the comparisons specific
@@ -47,11 +47,11 @@ value kappa.}
 \item{kappa.var}{(optional) The prior variance of the comparison specific
 value kappa.}
 
-\item{item.prior.var}{(optional) Matrix specifying the prior covariance of
-the item correlation parameters.}
+\item{player.prior.var}{(optional) Matrix specifying the prior covariance of
+the player correlation parameters.}
 
 \item{beta.initial}{(optional) Vector containing the values of the
-item specific  parameters for the first MCMC iteration.}
+player specific  parameters for the first MCMC iteration.}
 
 \item{n.iter}{Number of MCMC samples to be drawn.}
 
@@ -76,16 +76,16 @@ Default is \code{interactive()} therefore progress is shown if run interactively
 A \code{coda::mcmc} object containing samples from the posterior distribution.
 }
 \description{
-This function fits the Bradley-Terry model with comparison  and item
+This function fits the Bradley-Terry model with comparison  and player
 specific effects. Each comparison can be assigned a real value to allow for a
 specific effect for the comparison, such as bias, ordering or home/away effect.
-The value of this effect is denoted kappa. The item specific effects are
+The value of this effect is denoted kappa. The player specific effects are
 described through a formula and data.frame containing the value. The function
-places a normal prior distribution on both kappa and the item specific
+places a normal prior distribution on both kappa and the player specific
 parameters beta.
 }
 \details{
-If \code{item.prior.var} is omitted, independent and identical
+If \code{player.prior.var} is omitted, independent and identical
 N(0, 5^2) prior distributions are placed on each object quality parameter.
 
 If \code{beta.initial}is omitted, it is set to a vector of zeroes.
