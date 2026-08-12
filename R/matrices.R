@@ -92,7 +92,6 @@ construct.design.matrix <- function(n.objects) {
 #'
 #' @keywords internal
 #'
-#' @export
 construct.generalised.design.matrix <- function(
   player1,
   player2,
