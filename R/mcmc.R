@@ -422,6 +422,8 @@ BBTm.ties <- function(
     lambda.matrix[, i] <- as.numeric(lambda)
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
+
+  pars.matrix <- cbind(t(lambda.matrix), theta.store, alpha.sq.store)
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 2)],
