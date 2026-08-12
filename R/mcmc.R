@@ -524,8 +524,6 @@ BBTm.ties <- function(
 #'
 #' @keywords internal
 #'
-#' @export
-#'
 BBTm.no.formula <- function(
   outcome,
   player1,
