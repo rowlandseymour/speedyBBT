@@ -138,8 +138,9 @@ speedyBBTm <- function(
   unnormalised.mu <- Matrix::t(X) %*% (y - n / 2)
   grand.covariance <- sum(player.prior.var)
 
-  # Set iteration counter
+  # Set iteration counter and close when the function exits
   pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+  on.exit(close(pb), add = TRUE)
 
   # MCMC loop
   for (i in 1:n.iter) {
@@ -169,7 +170,6 @@ speedyBBTm <- function(
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
-  close(pb)
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[(burn.in + 1):n.iter, ],
@@ -366,6 +366,7 @@ BBTm.ties <- function(
   alpha.sq.store <- numeric(n.iter) # store results
 
   pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+  on.exit(close(pb), add = TRUE)
 
   # MCMC
   for (i in 1:n.iter) {
@@ -421,7 +422,6 @@ BBTm.ties <- function(
     lambda.matrix[, i] <- as.numeric(lambda)
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
-
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 2)],
@@ -577,6 +577,7 @@ BBTm.no.formula <- function(
 
   # Set iteration counter
   pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+  on.exit(close(pb), add = TRUE)
 
   # MCMC loop
   for (i in 1:n.iter) {
@@ -620,7 +621,6 @@ BBTm.no.formula <- function(
 
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
-  close(pb)
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector, kappa.vector)
@@ -808,6 +808,7 @@ BBTm.with.formula <- function(
   grand.covariance <- sum(player.prior.var)
 
   pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+  on.exit(close(pb), add = TRUE)
   for (i in 1:n.iter) {
     if (hyperparameter == TRUE) {
       alpha.sq <- 1 /
@@ -849,7 +850,6 @@ BBTm.with.formula <- function(
     alpha.sq.vector[i] <- alpha.sq
     utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
   }
-  close(pb)
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
     pars.matrix <- cbind(
