@@ -117,7 +117,7 @@ test_that("BBTm.no.formula produces results within tolerance", {
   ])
 
   # Read in means
-  testMeansPath <- test_path("forcedMarriageModelMeans.csv")
+  testMeansPath <- test_path("forcedMarriageModelMeansNoFormula.csv")
   testMeans <- read.csv(testMeansPath)
 
   expect_equal(
