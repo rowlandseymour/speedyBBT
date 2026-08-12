@@ -265,8 +265,9 @@ speedyBBTm <- function(
 #'   outcome = darEsSalaam$comparisons$outcome,
 #'   player1 = darEsSalaam$comparisons$subward1,
 #'   player2 = darEsSalaam$comparisons$subward2,
-#'   player.prior.var = sigma,
-#'   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0
+#'   player.prior.var = prior.var,
+#'   hyperparameter = TRUE,
+#'   rw.sd = 0.005, n.iter = 3, burn.in = 0, verbose = FALSE
 #' )
 #'
 #' # Get posterior means
@@ -378,7 +379,10 @@ BBTm.ties <- function(
   theta.store <- numeric(n.iter) # store results
   alpha.sq.store <- numeric(n.iter) # store results
 
-  pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+  if(verbose){
+    pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+    on.exit(close(pb), add = TRUE)
+  }
 
   # MCMC
   for (i in 1:n.iter) {
