@@ -43,6 +43,7 @@ comparisons_to_matrix <- function(n.objects, comparisons) {
 #' # design matrix with 3 objects
 #'
 #' X <- construct.design.matrix(3)
+#' @noRd
 construct.design.matrix <- function(n.objects) {
   all.pairs <- t(utils::combn(n.objects, 2))
   winners <- Matrix::sparseMatrix(
