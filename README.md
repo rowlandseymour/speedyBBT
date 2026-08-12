@@ -98,9 +98,8 @@ library(speedyBBT)
 forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
                                   player1 = forcedMarriage$comparisons$win, 
                                   player2 = forcedMarriage$comparisons$lost, 
-                                  player.prior.var = prior.var)
-lambda_draws  <- parameter(forcedMarriageModel, "lambda") 
-lambda_centered <- lambda_draws - rowMeans(lambda_draws)
+                                  player.prior.var = sigma)
+forcedMarriageModel$lambda  <- forcedMarriageModel$lambda - rowMeans(forcedMarriageModel$lambda)
 
 #View Trace Plots
 plot(lambda_centered[, 10], type = 'l',
