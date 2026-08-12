@@ -25,6 +25,8 @@ Useful links:
 Authors:
 \itemize{
   \item Rowland Seymour \email{r.g.seymour@bham.ac.uk} (\href{https://orcid.org/0000-0002-8739-3921}{ORCID}) [copyright holder]
+  \item Christine Stawitz \email{c.c.stawitz@bham.ac.uk} (\href{https://orcid.org/0000-0003-3122-4501}{ORCID})
+  \item Heather Turner (\href{https://orcid.org/0000-0002-1256-3375}{ORCID})
 }
 
 }
