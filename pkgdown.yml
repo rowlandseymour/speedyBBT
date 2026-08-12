@@ -3,7 +3,7 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   speedyBBT: speedyBBT.html
-last_built: 2026-08-12T14:56Z
+last_built: 2026-08-12T15:11Z
 urls:
   reference: https://www.rowlandseymour.com/speedyBBT/, https://github.com/rowlandseymour/speedyBBT/reference
   article: https://www.rowlandseymour.com/speedyBBT/, https://github.com/rowlandseymour/speedyBBT/articles

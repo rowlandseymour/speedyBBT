@@ -18,6 +18,9 @@
 - [`BBTm.ties()`](reference/BBTm.ties.md) : Bayesian inference for the
   Bradley-Terry model with ties
 - [`BBTm()`](reference/BBTm.md) : Generalised Bradley-Terry model
+- [`BBTm.with.formula()`](reference/BBTm.with.formula.md) : Bayesian
+  Bradley–Terry model with comparison- and player-specific effect and
+  formula
 - [`speedyBBTm()`](reference/speedyBBTm.md) : Standard Bayesian
   Bradley-Terry model
 
