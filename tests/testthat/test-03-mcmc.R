@@ -1,11 +1,11 @@
-test_that("speedy_BBTm produces results within tolerance", {
+test_that("speedyBBTm produces results within tolerance", {
   # Construct covariance matrix
   set.seed(905)
   expA <- expm::expm(forcedMarriage$adjacencyMatrix)
   prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
   # Fit model
-  forcedMarriageModel <- speedy_BBTm(
+  forcedMarriageModel <- speedyBBTm(
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
     item1 = forcedMarriage$comparisons$win,
     item2 = forcedMarriage$comparisons$lost,
@@ -71,7 +71,7 @@ test_that("BBTm produces results within tolerance", {
   )
 })
 
-test_that("BBTm_no_formula produces results within tolerance", {
+test_that("BBTm.no.formula produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
   set.seed(332)
@@ -107,7 +107,7 @@ test_that("BBTm_no_formula produces results within tolerance", {
   )
 })
 
-test_that("BBTm_ties produces expected output from a single iteration", {
+test_that("BBTm.ties produces expected output from a single iteration", {
   # Construct covariance matrix
   # Fit model
   mod_run <- function() {

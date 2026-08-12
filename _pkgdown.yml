@@ -12,9 +12,9 @@ reference:
       - wimbledon
   - title: Model fitting functions
     contents:
-      - BBTm_ties
+      - BBTm.ties
       - BBTm
-      - speedy_BBTm
+      - speedyBBTm
   - title: Helper functions
     contents:
       - comparisons_to_matrix
