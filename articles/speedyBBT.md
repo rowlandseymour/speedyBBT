@@ -8,8 +8,8 @@ library(coda)
 
 `speedyBBT` is a package for Bayesian Bradley-Terry modelling. It
 provides functions for fitting the Bradley-Terry model using Markov
-Chain Monte Carlo (MCMC) methods, allowing for inference on item
-abilities and hyperparameters. It uses latent Polya-Gamma variables to
+Chain Monte Carlo (MCMC) methods, allowing for inference on player
+abilities and hyperparameters. It uses latent P'olya-Gamma variables to
 facilitate efficient sampling.
 
 To fit a Bradley-Terry model using `speedyBBT`, you can first install
@@ -52,16 +52,19 @@ normal prior distribution of the item qualities. In this case, the
 forced marriage in that ward.
 
 The `speedyBBTm` function can be used to fit a Bradley-Terry model to
-the data. You can specify the outcome variable, the items involved in
-each comparison, and any prior information you have about the items’
-quality. The function will return an MCMC object containing samples from
-the posterior distribution of the item qualities. For this example, you
-can use the adjacency matrix provided with the package data and then use
-it to create a covariance matrix for the prior distribution of the item
-qualities. For your own data set, you will want to create an adjacency
-matrix with values that denote the similarity of different items to one
-another. For this example, the adjacency matrix ranks wards that are
-closer to one another as more similar.
+the data. To start with, you need to construct the prior distribution
+for the item qualities. This needs to be a Normal distribution. For this
+example, you can use the adjacency matrix provided with the package data
+and then use it to create a covariance matrix for the prior distribution
+of the item qualities. For your own data set, you will want to create an
+adjacency matrix with values that denote the similarity of different
+items to one another. For this example, the adjacency matrix ranks wards
+that are closer to one another as more similar. You can specify the
+outcome variable, the items involved in each comparison, and any prior
+information you have about the items’ rating. In this example, the items
+are the individual wards. The function will return an MCMC object
+containing samples from the posterior distribution of the item
+qualities.
 
 ``` r
 
@@ -87,12 +90,13 @@ the one provided here.
 set.seed(432)
 forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
-  item1 = forcedMarriage$comparisons$win,
-  item2 = forcedMarriage$comparisons$lost,
-  item.prior.var = prior.var,
+  player1 = forcedMarriage$comparisons$win,
+  player2 = forcedMarriage$comparisons$lost,
+  player.prior.var = prior.var,
   n.iter = 10000,
   burn.in = 100
 )
+#>   |                                                                              |                                                                      |   0%
 ```
 
 To view some preliminary information about the results, you can
@@ -302,9 +306,9 @@ summary(forcedMarriageModel)
 ```
 
 You can run some MCMC diagnostics to check convergence. The
-[`speedyBBTm()`](reference/speedyBBTm.md) function returns an MCMC
-object that can be used with the `coda` package for diagnostics. You can
-use the
+[`speedyBBTm()`](reference/speedyBBTm.md) function returns an
+[“mcmc”](https://cran.r-project.org/package=coda) object that can be
+used with the `coda` package for diagnostics. You can use the
 [`effectiveSize()`](https://rdrr.io/pkg/coda/man/effectiveSize.html)
 function to calculate the estimated effective sample size for
 convergence. Another example diagnostic illustrated here is the Geweke
@@ -370,11 +374,12 @@ geweke.diag(forcedMarriageModel)
 ```
 
 You can use the `plot` function in `coda` or install `bayesplot` and
-`gplot2` to get additional, colourful plots. For example, you can use
+`ggplot2` to get additional, colourful plots. For example, you can use
 the
-[`mcmc_trace()`](https://mc-stan.org/bayesplot/reference/MCMC-traces.html)
-function to create trace plots and the
-[`mcmc_dens_overlay()`](https://mc-stan.org/bayesplot/reference/MCMC-distributions.html)
+[`mcmc_intervals()`](https://mc-stan.org/bayesplot/reference/MCMC-intervals.html)
+function to create interval plots of the parameter posterior
+distributions and the
+[`mcmc_dens()`](https://mc-stan.org/bayesplot/reference/MCMC-distributions.html)
 function to create density plots of the MCMC samples. For more
 information, see the [**bayesplot** package
 documentation](https://mc-stan.org/bayesplot/).
@@ -398,11 +403,6 @@ if (requireNamespace("bayesplot", quietly = TRUE)) {
   # Trace plots
   plot(forcedMarriageModel[, paste0("lambda[", c(10, 20, 30, 40), "]")], main = "Trace plots for item quality parameters")
 }
-#> This is bayesplot version 1.15.0
-#> - Online documentation and vignettes at mc-stan.org/bayesplot
-#> - bayesplot theme set to bayesplot::theme_default()
-#>    * Does _not_ affect other ggplot2 plots
-#>    * See ?bayesplot_theme_set for details on theme setting
 ```
 
 ![](speedyBBT_files/figure-html/bayesplot_diagnostics-1.png)

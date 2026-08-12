@@ -27,7 +27,7 @@ design matrix X
 ``` r
 
 
-# Generate comparisons of three items
+# Generate comparisons of three players
 object1 <- c(1, 3, 2, 1)
 object2 <- c(3, 1, 1, 2)
 X <- construct.design.matrix.by.comparison(object1, object2)

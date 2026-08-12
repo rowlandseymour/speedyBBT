@@ -9,11 +9,11 @@
 Each comparison can be assigned a real value to allow for a specific effect
 for the comparison, such as bias, ordering or home/away effect. The value of
 this effect is denoted $kappa$. The function places a normal prior distribution
-on both kappa and the item quality parameters lambda."><meta property="og:description" content="This function fits the Bradley-Terry model with a comparison specific effect.
+on both kappa and the player quality parameters lambda."><meta property="og:description" content="This function fits the Bradley-Terry model with a comparison specific effect.
 Each comparison can be assigned a real value to allow for a specific effect
 for the comparison, such as bias, ordering or home/away effect. The value of
 this effect is denoted $kappa$. The function places a normal prior distribution
-on both kappa and the item quality parameters lambda."><meta property="og:image" content="https://www.rowlandseymour.com/speedyBBT/, https://github.com/rowlandseymour/speedyBBT/logo.png"></head><body>
+on both kappa and the player quality parameters lambda."><meta property="og:image" content="https://www.rowlandseymour.com/speedyBBT/, https://github.com/rowlandseymour/speedyBBT/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -52,16 +52,16 @@ on both kappa and the item quality parameters lambda."><meta property="og:image"
 Each comparison can be assigned a real value to allow for a specific effect
 for the comparison, such as bias, ordering or home/away effect. The value of
 this effect is denoted $kappa$. The function places a normal prior distribution
-on both kappa and the item quality parameters lambda.</p>
+on both kappa and the player quality parameters lambda.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">BBTm.no.formula</span><span class="op">(</span></span>
 <span>  <span class="va">outcome</span>,</span>
-<span>  <span class="va">item1</span>,</span>
-<span>  <span class="va">item2</span>,</span>
-<span>  <span class="va">item.prior.var</span>,</span>
+<span>  <span class="va">player1</span>,</span>
+<span>  <span class="va">player2</span>,</span>
+<span>  <span class="va">player.prior.var</span>,</span>
 <span>  <span class="va">lambda.initial</span>,</span>
 <span>  advantage <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  kappa.initial <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -81,26 +81,26 @@ on both kappa and the item quality parameters lambda.</p>
 
 
 <dl><dt id="arg-outcome">outcome<a class="anchor" aria-label="anchor" href="#arg-outcome"></a></dt>
-<dd><p>Vector of outcomes. 1 if item2 is the winner,
-0 if item1 is the winner.</p></dd>
+<dd><p>Vector of outcomes. 1 if player2 is the winner,
+0 if player1 is the winner.</p></dd>
 
 
-<dt id="arg-item-">item1<a class="anchor" aria-label="anchor" href="#arg-item-"></a></dt>
-<dd><p>Vector of first items.</p></dd>
+<dt id="arg-player-">player1<a class="anchor" aria-label="anchor" href="#arg-player-"></a></dt>
+<dd><p>Vector of first players.</p></dd>
 
 
-<dt id="arg-item-">item2<a class="anchor" aria-label="anchor" href="#arg-item-"></a></dt>
-<dd><p>Vector of second items.</p></dd>
+<dt id="arg-player-">player2<a class="anchor" aria-label="anchor" href="#arg-player-"></a></dt>
+<dd><p>Vector of second players.</p></dd>
 
 
-<dt id="arg-item-prior-var">item.prior.var<a class="anchor" aria-label="anchor" href="#arg-item-prior-var"></a></dt>
+<dt id="arg-player-prior-var">player.prior.var<a class="anchor" aria-label="anchor" href="#arg-player-prior-var"></a></dt>
 <dd><p>(optional) Matrix specifying the prior covariance of
-the item correlation parameters.</p></dd>
+the player correlation parameters.</p></dd>
 
 
 <dt id="arg-lambda-initial">lambda.initial<a class="anchor" aria-label="anchor" href="#arg-lambda-initial"></a></dt>
 <dd><p>(optional) Vector containing the values of the
-item parameters for the first MCMC iteration.</p></dd>
+player parameters for the first MCMC iteration.</p></dd>
 
 
 <dt id="arg-advantage">advantage<a class="anchor" aria-label="anchor" href="#arg-advantage"></a></dt>
@@ -150,11 +150,11 @@ Default is <code><a href="https://rdrr.io/r/base/interactive.html" class="extern
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code><a href="https://rdrr.io/pkg/coda/man/mcmc.html" class="external-link">coda::mcmc</a></code> object containing samples from the posterior distribution</p>
+    <p>A <a href="https://rdrr.io/pkg/coda/man/mcmc.html" class="external-link">"mcmc"</a> object containing samples from the posterior distribution</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>If <code>item.prior.var</code> is omitted, independent and identical
+    <p>If <code>player.prior.var</code> is omitted, independent and identical
 N(0, 5^2) prior distributions are placed on each object quality parameter.</p>
 <p>If <code>lambda.initial</code> is omitted, it is set to a vector of zeroes.</p>
 <p>If <code>lambda.var</code> is omitted, it is set to N(0, 5^2).</p>

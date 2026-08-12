@@ -36,29 +36,32 @@ prior.var <- expm::expm(forcedMarriage$adjacencyMatrix)
 prior.var <- diag(diag(prior.var)^-0.5) %*% prior.var %*% diag(diag(prior.var)^-0.5)
 
 # Fit model
-# Using `n.iter = 3` here to reduce runtime, you will need more
-# iterations for inference.
+# Using `n.iter = 3, burn.in = 0` to reduce runtime
+# - you should use more iterations for reliable posterior estimates
 forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
-  item1 = forcedMarriage$comparisons$win,
-  item2 = forcedMarriage$comparisons$lost,
-  item.prior.var = prior.var, n.iter = 3, burn.in = 1, verbose = FALSE
+  player1 = forcedMarriage$comparisons$win,
+  player2 = forcedMarriage$comparisons$lost,
+  player.prior.var = prior.var, n.iter = 3, burn.in = 0
 )
+#>   |                                                                              |                                                                      |   0%
 
 parameter(forcedMarriageModel, "lambda", c(10, 20, 30, 40))
 #> Markov Chain Monte Carlo (MCMC) output:
 #> Start = 1 
-#> End = 2 
+#> End = 3 
 #> Thinning interval = 1 
-#>       lambda[10] lambda[20]  lambda[30] lambda[40]
-#> [1,] -0.09374755  0.1027251 -0.04062443 0.09454545
-#> [2,] -0.07072649  0.1863024 -0.01130213 0.09976397
+#>       lambda[10] lambda[20]   lambda[30] lambda[40]
+#> [1,] -0.04560956 0.03875247  0.004930672 0.04058178
+#> [2,] -0.09374755 0.10272514 -0.040624428 0.09454545
+#> [3,] -0.07072649 0.18630237 -0.011302126 0.09976397
 parameter(forcedMarriageModel, "alpha.sq")
 #> Markov Chain Monte Carlo (MCMC) output:
 #> Start = 1 
-#> End = 2 
+#> End = 3 
 #> Thinning interval = 1 
 #>          alpha.sq
-#> [1,] 0.0005719452
-#> [2,] 0.0012691716
+#> [1,] 0.0003000174
+#> [2,] 0.0005719452
+#> [3,] 0.0012691716
 ```

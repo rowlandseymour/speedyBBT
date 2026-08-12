@@ -1,26 +1,26 @@
-# Bayesian Bradley–Terry model with comparison- and item-specific effect and formula
+# Bayesian Bradley–Terry model with comparison- and player-specific effect and formula
 
-This function fits the Bradley-Terry model with comparison and item
+This function fits the Bradley-Terry model with comparison and player
 specific effects. Each comparison can be assigned a real value to allow
 for a specific effect for the comparison, such as bias, ordering or
-home/away effect. The value of this effect is denoted kappa. The item
+home/away effect. The value of this effect is denoted kappa. The player
 specific effects are described through a formula and data.frame
 containing the value. The function places a normal prior distribution on
-both kappa and the item specific parameters beta.
+both kappa and the player specific parameters beta.
 
 ## Usage
 
 ``` r
 BBTm.with.formula(
   outcome,
-  item1,
-  item2,
+  player1,
+  player2,
   formula = NULL,
   data = NULL,
   advantage = NULL,
   kappa.initial = NULL,
   kappa.var = NULL,
-  item.prior.var = NULL,
+  player.prior.var = NULL,
   beta.initial = NULL,
   n.iter = 1000,
   hyperparameter = TRUE,
@@ -36,24 +36,24 @@ BBTm.with.formula(
 
 - outcome:
 
-  Vector of outcomes. 1 if item2 is the winner, 0 if item1 is the
+  Vector of outcomes. 1 if player2 is the winner, 0 if player1 is the
   winner.
 
-- item1:
+- player1:
 
-  Vector of first items.
+  Vector of first players.
 
-- item2:
+- player2:
 
-  Vector of second items.
+  Vector of second players.
 
 - formula:
 
-  Formula with no left-hand-side specifying the item specific effects.
+  Formula with no left-hand-side specifying the player specific effects.
 
 - data:
 
-  Data.frame with a row corresponding to each item and column
+  Data frame with a row corresponding to each player and a column
   corresponding to each covariate.
 
 - advantage:
@@ -69,14 +69,14 @@ BBTm.with.formula(
 
   (optional) The prior variance of the comparison specific value kappa.
 
-- item.prior.var:
+- player.prior.var:
 
-  (optional) Matrix specifying the prior covariance of the item
+  (optional) Matrix specifying the prior covariance of the player
   correlation parameters.
 
 - beta.initial:
 
-  (optional) Vector containing the values of the item specific
+  (optional) Vector containing the values of the player specific
   parameters for the first MCMC iteration.
 
 - n.iter:
@@ -118,12 +118,12 @@ BBTm.with.formula(
 
 ## Value
 
-A [`coda::mcmc`](https://rdrr.io/pkg/coda/man/mcmc.html) object
-containing samples from the posterior distribution.
+A ["mcmc"](https://rdrr.io/pkg/coda/man/mcmc.html) object containing
+samples from the posterior distribution.
 
 ## Details
 
-If `item.prior.var` is omitted, independent and identical N(0, 5^2)
+If `player.prior.var` is omitted, independent and identical N(0, 5^2)
 prior distributions are placed on each object quality parameter.
 
 If `beta.initial`is omitted, it is set to a vector of zeroes.

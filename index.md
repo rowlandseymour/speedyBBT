@@ -1,16 +1,51 @@
 # speedyBBT
 
-## Efficient Bayesian Inference for the Bradley–Terry Model
+# Overview
 
-📦 The `speedyBBT` R package allows you to perform fast and efficient
-Bayesian inference for the Bradley–Terry model. The package estimates
-the object qualities using a data augmentation method with Polya-Gamma
-prior distributions. This makes carrying out a Bayesian analysis of
-comparative judgement data quick and easy.
+`speedyBBT` is an R package for fitting Bradley-Terry models to pairwise
+comparison data using fast, fully Bayesian MCMC. Given a set of pairwise
+judgements – which of two wards has the higher rate of forced marriage,
+which of two tennis players won a match, which of two neighbourhoods
+looks more deprived – `speedyBBT` estimates a quality parameter for
+every item being compared, along with full posterior uncertainty.
+
+Inference is carried out using a P'olya-Gamma data augmentation scheme,
+which makes sampling fast even for large numbers of items and
+comparisons. The package supports:
+
+- the standard Bradley-Terry model
+  ([`speedyBBTm()`](reference/speedyBBTm.md)), optimised for speed when
+  there are no ties or comparison-specific effects;
+- ties, comparison-specific effects (e.g. home advantage), and
+  item-level covariates via a formula interface
+  ([`BBTm()`](reference/BBTm.md));
+- multivariate normal prior distributions on the item quality
+  parameters, so that structure between items (e.g. spatial adjacency)
+  can be encoded directly into the prior;
+- optional hyperparameter inference on the prior scale.
+
+The package can be used with data collected using the [Comparative
+Judgement
+Interface](https://github.com/HiddenHarmsHub/comparative-judgement-interface).
+
+## Getting started
+
+If you’re new to `speedyBBT`, start with the [Getting started with
+speedyBBT](vignettes/speedyBBT.Rmd) vignette, which walks through
+fitting a model to real comparative-judgement data end to end.
+
+## Resources
+
+- [Report a bug or request a
+  feature](https://github.com/rowlandseymour/speedyBBT/issues)
+- [Browse the source](https://github.com/rowlandseymour/speedyBBT)
+
+Questions and contributions are welcome; open an issue to start a
+discussion.
 
 ## Installation
 
-You can install `speedyBBT` by calling the following commands:
+Install the released version from CRAN:
 
 ``` r
 
@@ -42,9 +77,9 @@ prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
     
 #Fit model
 forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
-                                  item1 = forcedMarriage$comparisons$win, 
-                                  item= forcedMarriage$comparisons$lost, 
-                                  item.prior.var = prior.var)
+                                  player1 = forcedMarriage$comparisons$win, 
+                                  player2 = forcedMarriage$comparisons$lost, 
+                                  player.prior.var = prior.var)
 forcedMarriageModel$lambda  <- forcedMarriageModel$lambda - rowMeans(forcedMarriageModel$lambda)
 
 #View Trace Plots
@@ -76,9 +111,14 @@ segments(x0 = 1:nrow(forcedMarriageResults), y0 = forcedMarriageResults$lowerCI,
 
 ## References
 
-- R. G. Seymour, A. Nyarko-Agyei, H. R. McCabe,K. Severn,D.Sirl, T.
-  Kypraios, A. Taylor. (in press). Comparative Judgement Modeling to Map
-  Forced Marriage at Local Levels. Annals of Applied Statistics.
+- [J. Jiang, J. Marsh, and R. G. Seymour. 2026. A reduced basis
+  decomposition approach to efficient data collection in pairwise
+  comparison studies. Computational
+  Statistics.](https://doi.org/10.1007/s00180-026-01737-3)
+- [R. G. Seymour, A. Nyarko-Agyei, H. R. McCabe,K. Severn,D.Sirl, T.
+  Kypraios, A. Taylor. 2025. Comparative Judgement Modeling to Map
+  Forced Marriage at Local Levels. Annals of Applied
+  Statistics](doi.org/10.1214/24-AOAS1966).
 - [R. G. Seymour, D. Sirl, S. Preston, and J. Goulding. 2023.
   Multi-Level Spatial Comparative Judgement Models to Map Deprivation.
   Proceedings of the Joint Statistical Meeting
@@ -90,11 +130,13 @@ segments(x0 = 1:nrow(forcedMarriageResults), y0 = forcedMarriageResults$lowerCI,
 
 ## Acknowledgements
 
-This work is supported by the a UKRI Future Leaders Fellowship
-\[MR/X034992/1\], the Engineering and Physical Sciences Research Council
-\[grant numbers EP/T003928/1, EP/R513283/1\], the Economic and Social
-Sciences Research Council \[ES/V015370/1\] and the Research England
-Policy Support Fund.
+This work is supported by a UKRI Future Leaders Fellowship
+\[MR/X034992/1\].
+
+Previously, it has been supported by the Engineering and Physical
+Sciences Research Council \[grant numbers EP/T003928/1, EP/R513283/1\],
+the Economic and Social Sciences Research Council \[ES/V015370/1\] and
+the Research England Policy Support Fund.
 
 The Dar es Salaam comparative judgement dataset was collected by
 Madeleine Ellis, James Goulding, Bertrand Perrat, Gavin Smith and Gregor

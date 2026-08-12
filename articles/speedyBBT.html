@@ -71,13 +71,13 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rowlandseymour/speedyBBT" class="external-link">speedyBBT</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.rowlandseymour.com/speedyBBT" class="external-link">speedyBBT</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">coda</span><span class="op">)</span></span></code></pre></div>
 <p><code>speedyBBT</code> is a package for Bayesian Bradley-Terry
 modelling. It provides functions for fitting the Bradley-Terry model
 using Markov Chain Monte Carlo (MCMC) methods, allowing for inference on
-item abilities and hyperparameters. It uses latent Polya-Gamma variables
-to facilitate efficient sampling.</p>
+player abilities and hyperparameters. It uses latent P'olya-Gamma
+variables to facilitate efficient sampling.</p>
 <p>To fit a Bradley-Terry model using <code>speedyBBT</code>, you can
 first install the package from CRAN or install the development version
 from GitHub.</p>
@@ -108,17 +108,19 @@ normal prior distribution of the item qualities. In this case, the
 “items” are wards in Nottinghamshire and their “quality” is the risk of
 forced marriage in that ward.</p>
 <p>The <code>speedyBBTm</code> function can be used to fit a
-Bradley-Terry model to the data. You can specify the outcome variable,
-the items involved in each comparison, and any prior information you
-have about the items’ quality. The function will return an MCMC object
-containing samples from the posterior distribution of the item
-qualities. For this example, you can use the adjacency matrix provided
-with the package data and then use it to create a covariance matrix for
-the prior distribution of the item qualities. For your own data set, you
-will want to create an adjacency matrix with values that denote the
-similarity of different items to one another. For this example, the
-adjacency matrix ranks wards that are closer to one another as more
-similar.</p>
+Bradley-Terry model to the data. To start with, you need to construct
+the prior distribution for the item qualities. This needs to be a Normal
+distribution. For this example, you can use the adjacency matrix
+provided with the package data and then use it to create a covariance
+matrix for the prior distribution of the item qualities. For your own
+data set, you will want to create an adjacency matrix with values that
+denote the similarity of different items to one another. For this
+example, the adjacency matrix ranks wards that are closer to one another
+as more similar. You can specify the outcome variable, the items
+involved in each comparison, and any prior information you have about
+the items’ rating. In this example, the items are the individual wards.
+The function will return an MCMC object containing samples from the
+posterior distribution of the item qualities.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Construct covariance matrix</span></span>
 <span><span class="va">expA</span> <span class="op">&lt;-</span> <span class="fu">expm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/expm/man/expm.html" class="external-link">expm</a></span><span class="op">(</span><span class="va">forcedMarriage</span><span class="op">$</span><span class="va">adjacencyMatrix</span><span class="op">)</span></span>
@@ -138,12 +140,13 @@ vignette, you will need to use the same argument to
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">432</span><span class="op">)</span></span>
 <span><span class="va">forcedMarriageModel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/speedyBBTm.html">speedyBBTm</a></span><span class="op">(</span></span>
 <span>  outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">win</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  item1 <span class="op">=</span> <span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">win</span>,</span>
-<span>  item2 <span class="op">=</span> <span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">lost</span>,</span>
-<span>  item.prior.var <span class="op">=</span> <span class="va">prior.var</span>,</span>
+<span>  player1 <span class="op">=</span> <span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">win</span>,</span>
+<span>  player2 <span class="op">=</span> <span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">lost</span>,</span>
+<span>  player.prior.var <span class="op">=</span> <span class="va">prior.var</span>,</span>
 <span>  n.iter <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  burn.in <span class="op">=</span> <span class="fl">100</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%</span></span></code></pre></div>
 <p>To view some preliminary information about the results, you can
 calculate the means of the item quality parameters from the MCMC samples
 and summarise them. This will give you an idea of the estimated
@@ -347,9 +350,9 @@ qualities of the items based on the comparisons in the dataset.</p>
 <span><span class="co">#&gt; lambda[76] -1.79294 -1.293103 -1.03083 -0.7735 -0.26492</span></span>
 <span><span class="co">#&gt; alpha.sq    6.55084 10.173957 12.79813 16.0894 25.08241</span></span></code></pre></div>
 <p>You can run some MCMC diagnostics to check convergence. The
-<code><a href="../reference/speedyBBTm.html">speedyBBTm()</a></code> function returns an MCMC object that can be
-used with the <code>coda</code> package for diagnostics. You can use the
-<code><a href="https://rdrr.io/pkg/coda/man/effectiveSize.html" class="external-link">effectiveSize()</a></code> function to calculate the estimated
+<code><a href="../reference/speedyBBTm.html">speedyBBTm()</a></code> function returns an <a href="https://cran.r-project.org/package=coda" class="external-link">“mcmc”</a> object that
+can be used with the <code>coda</code> package for diagnostics. You can
+use the <code><a href="https://rdrr.io/pkg/coda/man/effectiveSize.html" class="external-link">effectiveSize()</a></code> function to calculate the estimated
 effective sample size for convergence. Another example diagnostic
 illustrated here is the Geweke diagnostic, calculated using the
 <code>gewecke.diag()</code> function from <code>coda</code>. This
@@ -410,11 +413,12 @@ package documentation</a>.</p>
 <span><span class="co">#&gt; lambda[71] lambda[72] lambda[73] lambda[74] lambda[75] lambda[76]   alpha.sq </span></span>
 <span><span class="co">#&gt;    1.07669    0.46429   -0.14278    0.74269   -0.19824    0.23183   -1.25064</span></span></code></pre></div>
 <p>You can use the <code>plot</code> function in <code>coda</code> or
-install <code>bayesplot</code> and <code>gplot2</code> to get
+install <code>bayesplot</code> and <code>ggplot2</code> to get
 additional, colourful plots. For example, you can use the
-<code><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html" class="external-link">mcmc_trace()</a></code> function to create trace plots and the
-<code><a href="https://mc-stan.org/bayesplot/reference/MCMC-distributions.html" class="external-link">mcmc_dens_overlay()</a></code> function to create density plots of the
-MCMC samples. For more information, see the <a href="https://mc-stan.org/bayesplot/" class="external-link"><strong>bayesplot</strong> package
+<code><a href="https://mc-stan.org/bayesplot/reference/MCMC-intervals.html" class="external-link">mcmc_intervals()</a></code> function to create interval plots of the
+parameter posterior distributions and the <code><a href="https://mc-stan.org/bayesplot/reference/MCMC-distributions.html" class="external-link">mcmc_dens()</a></code>
+function to create density plots of the MCMC samples. For more
+information, see the <a href="https://mc-stan.org/bayesplot/" class="external-link"><strong>bayesplot</strong> package
 documentation</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"bayesplot"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -433,12 +437,7 @@ documentation</a>.</p>
 <span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>  <span class="co"># Trace plots</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"lambda["</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span>, <span class="st">"]"</span><span class="op">)</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"Trace plots for item quality parameters"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="co">#&gt; This is bayesplot version 1.15.0</span></span>
-<span><span class="co">#&gt; - Online documentation and vignettes at mc-stan.org/bayesplot</span></span>
-<span><span class="co">#&gt; - bayesplot theme set to bayesplot::theme_default()</span></span>
-<span><span class="co">#&gt;    * Does _not_ affect other ggplot2 plots</span></span>
-<span><span class="co">#&gt;    * See ?bayesplot_theme_set for details on theme setting</span></span></code></pre></div>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="speedyBBT_files/figure-html/bayesplot_diagnostics-1.png" class="r-plt" alt="" width="768"></p>
   </main>
 </div>

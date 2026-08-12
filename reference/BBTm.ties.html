@@ -7,11 +7,11 @@
   };
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Bayesian inference for the Bradley-Terry model with ties — BBTm.ties"><meta name="description" content="This function uses MCMC to sample from the posterior distribution of the
 Bradley–Terry model with ties.A multivariate normal prior
-distribution on the item quality parameters can be specified. An exponential
+distribution on the player quality parameters can be specified. An exponential
 prior distribution is placed on the tie parameter theta, and a Metropolis-
 Hasting random walk algorithm is used to update this parameter."><meta property="og:description" content="This function uses MCMC to sample from the posterior distribution of the
 Bradley–Terry model with ties.A multivariate normal prior
-distribution on the item quality parameters can be specified. An exponential
+distribution on the player quality parameters can be specified. An exponential
 prior distribution is placed on the tie parameter theta, and a Metropolis-
 Hasting random walk algorithm is used to update this parameter."><meta property="og:image" content="https://www.rowlandseymour.com/speedyBBT/, https://github.com/rowlandseymour/speedyBBT/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -50,7 +50,7 @@ Hasting random walk algorithm is used to update this parameter."><meta property=
     <div class="ref-description section level2">
     <p>This function uses MCMC to sample from the posterior distribution of the
 Bradley–Terry model with ties.A multivariate normal prior
-distribution on the item quality parameters can be specified. An exponential
+distribution on the player quality parameters can be specified. An exponential
 prior distribution is placed on the tie parameter theta, and a Metropolis-
 Hasting random walk algorithm is used to update this parameter.</p>
     </div>
@@ -60,9 +60,9 @@ Hasting random walk algorithm is used to update this parameter.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">BBTm.ties</span><span class="op">(</span></span>
 <span>  <span class="va">n.objects</span>,</span>
 <span>  <span class="va">outcome</span>,</span>
-<span>  <span class="va">item1</span>,</span>
-<span>  <span class="va">item2</span>,</span>
-<span>  item.prior.var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">player1</span>,</span>
+<span>  <span class="va">player2</span>,</span>
+<span>  player.prior.var <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  theta.initial <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  lambda.initial <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n.iter <span class="op">=</span> <span class="fl">1000</span>,</span>
@@ -86,21 +86,21 @@ Hasting random walk algorithm is used to update this parameter.</p>
 
 
 <dt id="arg-outcome">outcome<a class="anchor" aria-label="anchor" href="#arg-outcome"></a></dt>
-<dd><p>Vector of outcomes. 0 if item 1 is the winner,
-1 if item 2 is the winner, and 2 if it is a tie.</p></dd>
+<dd><p>Vector of outcomes. 0 if player 1 is the winner,
+1 if player 2 is the winner, and 2 if it is a tie.</p></dd>
 
 
-<dt id="arg-item-">item1<a class="anchor" aria-label="anchor" href="#arg-item-"></a></dt>
-<dd><p>Vector of first items.</p></dd>
+<dt id="arg-player-">player1<a class="anchor" aria-label="anchor" href="#arg-player-"></a></dt>
+<dd><p>Vector of first players.</p></dd>
 
 
-<dt id="arg-item-">item2<a class="anchor" aria-label="anchor" href="#arg-item-"></a></dt>
-<dd><p>Vector of second items.</p></dd>
+<dt id="arg-player-">player2<a class="anchor" aria-label="anchor" href="#arg-player-"></a></dt>
+<dd><p>Vector of second players.</p></dd>
 
 
-<dt id="arg-item-prior-var">item.prior.var<a class="anchor" aria-label="anchor" href="#arg-item-prior-var"></a></dt>
+<dt id="arg-player-prior-var">player.prior.var<a class="anchor" aria-label="anchor" href="#arg-player-prior-var"></a></dt>
 <dd><p>(optional) Matrix specifying the prior covariance of
-the item correlation parameters.</p></dd>
+the player correlation parameters.</p></dd>
 
 
 <dt id="arg-theta-initial">theta.initial<a class="anchor" aria-label="anchor" href="#arg-theta-initial"></a></dt>
@@ -110,7 +110,7 @@ the first MCMC iteration.</p></dd>
 
 <dt id="arg-lambda-initial">lambda.initial<a class="anchor" aria-label="anchor" href="#arg-lambda-initial"></a></dt>
 <dd><p>(optional) Vector containing the values of the
-item parameters for the first MCMC iteration.</p></dd>
+player parameters for the first MCMC iteration.</p></dd>
 
 
 <dt id="arg-n-iter">n.iter<a class="anchor" aria-label="anchor" href="#arg-n-iter"></a></dt>
@@ -158,11 +158,11 @@ Default is <code><a href="https://rdrr.io/r/base/interactive.html" class="extern
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code><a href="https://rdrr.io/pkg/coda/man/mcmc.html" class="external-link">coda::mcmc</a></code> object containing samples from the posterior distribution</p>
+    <p>A <a href="https://rdrr.io/pkg/coda/man/mcmc.html" class="external-link">"mcmc"</a> object containing samples from the posterior distribution</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>If <code>item.prior.var</code> is omitted, independent and identical
+    <p>If <code>player.prior.var</code> is omitted, independent and identical
 N(0, 5^2) prior distributions are placed on each object quality parameter.</p>
 <p>If <code>lambda.initial</code> is omitted, it is set to a vector of zeroes.</p>
     </div>
@@ -184,10 +184,11 @@ N(0, 5^2) prior distributions are placed on each object quality parameter.</p>
 <span class="r-in"><span><span class="va">darTiedModel</span> <span class="op">&lt;-</span> <span class="fu">BBTm.ties</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n.objects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">darEsSalaam</span><span class="op">$</span><span class="va">adjacencyMatrix</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  outcome <span class="op">=</span> <span class="va">darEsSalaam</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">outcome</span>,</span></span>
-<span class="r-in"><span>  item1 <span class="op">=</span> <span class="va">darEsSalaam</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">subward1</span>,</span></span>
-<span class="r-in"><span>  item2 <span class="op">=</span> <span class="va">darEsSalaam</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">subward2</span>,</span></span>
-<span class="r-in"><span>  item.prior.var <span class="op">=</span> <span class="va">prior.var</span>,</span></span>
-<span class="r-in"><span>  hyperparameter <span class="op">=</span> <span class="cn">TRUE</span>, rw.sd <span class="op">=</span> <span class="fl">0.005</span>, n.iter <span class="op">=</span> <span class="fl">3</span>, burn.in <span class="op">=</span> <span class="fl">0</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  player1 <span class="op">=</span> <span class="va">darEsSalaam</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">subward1</span>,</span></span>
+<span class="r-in"><span>  player2 <span class="op">=</span> <span class="va">darEsSalaam</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">subward2</span>,</span></span>
+<span class="r-in"><span>  player.prior.var <span class="op">=</span> <span class="va">prior.var</span>,</span></span>
+<span class="r-in"><span>  hyperparameter <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  rw.sd <span class="op">=</span> <span class="fl">0.005</span>, n.iter <span class="op">=</span> <span class="fl">3</span>, burn.in <span class="op">=</span> <span class="fl">0</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get posterior means</span></span></span>
