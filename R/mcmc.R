@@ -55,9 +55,9 @@
 #' # iterations for inference.
 #' forcedMarriageModel <- speedyBBTm(
 #'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
-#'   item1 = forcedMarriage$comparisons$win,
-#'   item2 = forcedMarriage$comparisons$lost,
-#'   item.prior.var = sigma, n.iter = 3, burn.in = 0
+#'   player1 = forcedMarriage$comparisons$win,
+#'   player2 = forcedMarriage$comparisons$lost,
+#'   player.prior.var = sigma, n.iter = 3, burn.in = 0
 #' )
 #'
 #' # Plot results
@@ -107,9 +107,8 @@ speedyBBTm <- function(
 
   # Get inverse of prior covariance matrix
   # If not set, the prior is iid N(0,1^2)
-  if (is.null(item.prior.var)) {
-    item.prior.var <- diag(n.objects)
-    item.prior.var <- diag(n.objects)
+  if (is.null(player.prior.var)) {
+    player.prior.var <- diag(n.objects)
   }
   player.prior.var.inverse <- solve(player.prior.var)
 
@@ -174,10 +173,8 @@ speedyBBTm <- function(
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+      on.exit(close(pb), add = TRUE)
     }
-  }
-  if (verbose) {
-    close(pb)
   }
   iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
   if (hyperparameter == TRUE) {
@@ -437,10 +434,8 @@ BBTm.ties <- function(
     lambda.matrix[i, ] <- as.numeric(lambda)
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+      on.exit(close(pb), add = TRUE)
     }
-  }
-  if (verbose) {
-    close(pb)
   }
   pars.matrix <- cbind(lambda.matrix, theta.store, alpha.sq.store)
 
@@ -562,8 +557,8 @@ BBTm.no.formula <- function(
 
   # Get inverse of prior covariance matrix
   # If not set, the prior is iid N(0, 5^2)
-  if (is.null(item.prior.var)) {
-    item.prior.var <- 5^2 * diag(n.objects)
+  if (is.null(player.prior.var)) {
+    player.prior.var <- 5^2 * diag(n.objects)
   }
   player.prior.var.inverse <- solve(player.prior.var)
 
@@ -655,9 +650,7 @@ BBTm.no.formula <- function(
 
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
-    }
-    if (verbose) {
-      close(pb)
+      on.exit(close(pb), add = TRUE)
     }
   }
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
@@ -894,11 +887,12 @@ BBTm.with.formula <- function(
     alpha.sq.vector[i] <- alpha.sq
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+      on.exit(close(pb), add = TRUE)
     }
   }
-  if (verbose) {
-    close(pb)
-  }
+
+  iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
+
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
     pars.matrix <- cbind(
