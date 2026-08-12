@@ -379,7 +379,7 @@ BBTm.ties <- function(
   theta.store <- numeric(n.iter) # store results
   alpha.sq.store <- numeric(n.iter) # store results
 
-  if(verbose){
+  if (verbose) {
     pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
     on.exit(close(pb), add = TRUE)
   }
@@ -557,7 +557,7 @@ BBTm.no.formula <- function(
   loser <- ifelse(outcome == 0, player2, player1)
 
   # Get y_ij
-  y <- 1 - outcome
+  y <- outcome
   k <- y - 0.5
 
   # Construct the design matrix
