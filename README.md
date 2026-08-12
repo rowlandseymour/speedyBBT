@@ -36,6 +36,55 @@ Install the released version from CRAN:
 
 ```r
 install.packages("speedyBBT")
+#devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) #for development version
+```
+
+## Usage
+
+The code chunks below show how to use the package to fit the Bradley--Terry model to a data set relating to forced marriage. Judges were shown pairs of wards and asked which had a higher rate of forced marriage. We can use the `speedyBBTm` function to draw samples for the full conditional distributions for the ward quality parameters. We place a multivariate normal prior distribution on the ward quality parameters. The covariance matrix of this prior distribution is constructed using a network representation of the wards in Nottinghamshire.
+
+``` r
+#View Data
+data("forcedMarriage", package = "speedyBBT")
+head(forcedMarriage$comparisons)
+
+
+#Construct covariance matrix
+expA  <- expm::expm(forcedMarriage$adjacencyMatrix)
+prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+    
+#Fit model
+forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
+                                  item1 = forcedMarriage$comparisons$win, 
+                                  item= forcedMarriage$comparisons$lost, 
+                                  item.prior.var = prior.var)
+forcedMarriageModel$lambda  <- forcedMarriageModel$lambda - rowMeans(forcedMarriageModel$lambda)
+
+#View Trace Plots
+plot(forcedMarriageModel$lambda[, 10], type = 'l',
+     xlab = "Iteration", ylab = expression(lambda[10]))
+plot(forcedMarriageModel$lambda[, 20], type = 'l', 
+     xlab = "Iteration", ylab = expression(lambda[20]))
+plot(forcedMarriageModel$lambda[, 30], type = 'l', 
+     xlab = "Iteration", ylab = expression(lambda[30]))
+plot(forcedMarriageModel$lambda[, 40], type = 'l', 
+     xlab = "Iteration", ylab = expression(lambda[40]))
+
+plot(forcedMarriageModel$alpha.sq, type = 'l')
+
+#View Results
+forcedMarriageModelMeans <- colMeans(forcedMarriageModel$lambda[-c(1:50), ])
+forcedMarriageModelLowerCI <- apply(forcedMarriageModel$lambda[-c(1:50), ], 2, quantile, 0.025)
+forcedMarriageModelUpperCI <- apply(forcedMarriageModel$lambda[-c(1:50), ], 2, quantile, 0.975)
+forcedMarriageResults <- data.frame("ward" = forcedMarriage$wards$NAME,
+                                    "mean" = forcedMarriageModelMeans,
+                                    "lowerCI" = forcedMarriageModelLowerCI, 
+                                    "upperCI" = forcedMarriageModelUpperCI)
+forcedMarriageResults <- forcedMarriageResults[order(forcedMarriageResults$mean), ]
+
+plot(forcedMarriageResults$mean, xlab = "Ward", ylab = "Posterior Mean", ylim = c(-7.5, 7.5))
+segments(x0 = 1:nrow(forcedMarriageResults), y0 = forcedMarriageResults$lowerCI, 
+         y1 = forcedMarriageResults$upperCI)
 ```
 
 ## References
