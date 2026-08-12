@@ -9,7 +9,7 @@ library(coda)
 `speedyBBT` is a package for Bayesian Bradley-Terry modelling. It
 provides functions for fitting the Bradley-Terry model using Markov
 Chain Monte Carlo (MCMC) methods, allowing for inference on player
-abilities and hyperparameters. It uses latent P'olya-Gamma variables to
+abilities and hyperparameters. It uses latent Pólya-Gamma variables to
 facilitate efficient sampling.
 
 To fit a Bradley-Terry model using `speedyBBT`, you can first install
