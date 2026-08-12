@@ -64,7 +64,7 @@ hyperparameter.}
 Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in non-interactive contexts.}
 }
 \value{
-A \code{coda::mcmc} object containing samples from the posterior distribution
+A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution
 }
 \description{
 This function fits the Bradley-Terry model with a comparison specific effect.
