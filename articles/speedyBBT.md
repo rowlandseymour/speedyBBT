@@ -96,7 +96,6 @@ forcedMarriageModel <- speedyBBTm(
   n.iter = 10000,
   burn.in = 100
 )
-#>   |                                                                              |                                                                      |   0%
 ```
 
 To view some preliminary information about the results, you can

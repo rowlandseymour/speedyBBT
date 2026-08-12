@@ -156,7 +156,6 @@ wimbledonModel <- BBTm(
   data = wimbledon$players,
   n.iter = 1000, verbose = FALSE
 )
-#>   |                                                                              |                                                                      |   0%
 
 # Plot posterior distributions
 hist(parameter(wimbledonModel, "kappa"), main = "", xlab = expression(kappa), freq = FALSE)

@@ -9,7 +9,7 @@ which of two tennis players won a match, which of two neighbourhoods
 looks more deprived – `speedyBBT` estimates a quality parameter for
 every item being compared, along with full posterior uncertainty.
 
-Inference is carried out using a P'olya-Gamma data augmentation scheme,
+Inference is carried out using a Pólya-Gamma data augmentation scheme,
 which makes sampling fast even for large numbers of items and
 comparisons. The package supports:
 

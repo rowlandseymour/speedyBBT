@@ -44,7 +44,6 @@ forcedMarriageModel <- speedyBBTm(
   player2 = forcedMarriage$comparisons$lost,
   player.prior.var = prior.var, n.iter = 3, burn.in = 0
 )
-#>   |                                                                              |                                                                      |   0%
 
 parameter(forcedMarriageModel, "lambda", c(10, 20, 30, 40))
 #> Markov Chain Monte Carlo (MCMC) output:

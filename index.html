@@ -71,7 +71,7 @@
 <h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h1>
 <p><code>speedyBBT</code> is an R package for fitting Bradley-Terry models to pairwise comparison data using fast, fully Bayesian MCMC. Given a set of pairwise judgements – which of two wards has the higher rate of forced marriage, which of two tennis players won a match, which of two neighbourhoods looks more deprived – <code>speedyBBT</code> estimates a quality parameter for every item being compared, along with full posterior uncertainty.</p>
-<p>Inference is carried out using a P'olya-Gamma data augmentation scheme, which makes sampling fast even for large numbers of items and comparisons. The package supports:</p>
+<p>Inference is carried out using a Pólya-Gamma data augmentation scheme, which makes sampling fast even for large numbers of items and comparisons. The package supports:</p>
 <ul>
 <li>the standard Bradley-Terry model (<code><a href="reference/speedyBBTm.html">speedyBBTm()</a></code>), optimised for speed when there are no ties or comparison-specific effects;</li>
 <li>ties, comparison-specific effects (e.g. home advantage), and item-level covariates via a formula interface (<code><a href="reference/BBTm.html">BBTm()</a></code>);</li>
