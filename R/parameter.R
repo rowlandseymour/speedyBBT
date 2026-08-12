@@ -62,7 +62,7 @@ check_model <- function(model_output, parameter_name) {
     stop(
       "This model object does not contain estimates of the ",
       parameter_name,
-      " parameter. Please run a model using the `speedy_BBTm` function."
+      " parameter. Please run a model using the `speedyBBTm` function."
     )
   }
 }
