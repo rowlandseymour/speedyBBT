@@ -11,7 +11,7 @@ test_that("plot_abilities creates expected plot", {
     n.iter = 200
   )
   quality_plot <- plot_qualities(
-    item_names = items,
+    player_names = items,
     model_output = wimbledonModel
   )
   vdiffr::expect_doppelganger("Wimbledon qualities", quality_plot)

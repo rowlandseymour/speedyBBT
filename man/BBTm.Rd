@@ -45,7 +45,7 @@ player specific  parameters for the first MCMC iteration.}
 \item{formula}{Formula with no left-hand-side specifying the player specific
 effects.}
 
-\item{data}{Data.frame with a row corresponding to each player and  column corresponding
+\item{data}{Data frame with a row corresponding to each player and a column corresponding
 to each covariate.}
 
 \item{advantage}{(optional) A vector with the value of the comparisons specific
@@ -70,7 +70,7 @@ hyperparameter.}
 \item{burn.in}{The number of iterations to use for a burn.in, default is 100.}
 }
 \value{
-A \code{coda::mcmc} object containing samples from the posterior distribution.
+A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.
 }
 \description{
 This function fits the Bradley-Terry model with comparison  and player
