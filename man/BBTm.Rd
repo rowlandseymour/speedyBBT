@@ -37,7 +37,7 @@ BBTm(
 \item{item2}{Vector of second items.}
 
 \item{lambda.initial}{(optional) Vector containing the values of the
-item parameters for the first MCMC iteration.}
+player parameters for the first MCMC iteration.}
 
 \item{item.prior.var}{(optional) A matrix specifying the prior covariance of the items with one another.}
 
@@ -48,7 +48,7 @@ item parameters for the first MCMC iteration.}
 \item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{player.prior.var} argument is no longer supported, please use \code{item.prior.var} instead}
 
 \item{beta.initial}{(optional) Vector containing the values of the
-item specific  parameters for the first MCMC iteration.}
+player specific  parameters for the first MCMC iteration.}
 
 \item{n.iter}{Number of MCMC samples to be drawn.}
 
@@ -89,16 +89,16 @@ non-interactive contexts.}
 A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.
 }
 \description{
-This function fits the Bradley-Terry model with comparison  and item
+This function fits the Bradley-Terry model with comparison  and player
 specific effects. Each comparison can be assigned a real value to allow for a
 specific effect for the comparison, such as bias, ordering or home/away effect.
-The value of this effect is denoted kappa. The item specific effects are
+The value of this effect is denoted kappa. The player specific effects are
 described through a formula and data.frame containing the value. The function
-places a normal prior distribution on both kappa and the item specific
+places a normal prior distribution on both kappa and the player specific
 parameters beta.
 }
 \details{
-If \code{item.prior.var} is omitted, independent and identical
+If \code{player.prior.var} is omitted, independent and identical
 N(0, 5^2) prior distributions are placed on each object quality parameter.
 
 If \code{beta.initial}is omitted, it is set to a vector of zeroes.
@@ -116,8 +116,8 @@ it is set to 0.5.
 # Allow an effect for a match being in the first or second week.
 wimbledonModel <- BBTm(
   outcome = wimbledon$matches$outcome,
-  item2 = wimbledon$matches$loser,
-  item1 = wimbledon$matches$winner,
+  player2 = wimbledon$matches$loser,
+  player1 = wimbledon$matches$winner,
   advantage = wimbledon$matches$secondWeek,
   formula = ~ rank + points,
   data = wimbledon$players,

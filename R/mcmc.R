@@ -2,9 +2,9 @@
 #'
 #' This function uses MCMC to sample from the posterior distribution of the
 #' standard Bradley--Terry model. Standard model means that there are no tied
-#' comparisons and no item or comparison specific variables. This provides a
+#' comparisons and no player or comparison specific variables. This provides a
 #' fast implementation of the standard model. A multivariate normal prior
-#' distribution on the item quality parameters can be specified.
+#' distribution on the player quality parameters can be specified.
 #'
 #'
 #'
@@ -19,7 +19,7 @@
 #' @param win.matrix (optional) A win-loss matrix where the i,j th element is the number of
 #' times object i beat object j.
 #' @param lambda.initial (optional) A vector containing the values of the
-#'  item correlation parameters for the first MCMC iteration.
+#'  player correlation parameters for the first MCMC iteration.
 #' @param n.iter The number of MCMC samples to be drawn.
 #' @param hyperparameter A boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
@@ -34,7 +34,7 @@
 #' Default is `interactive()` therefore progress is shown if run interactively, but disabled in
 #' non-interactive contexts.
 #'
-#' @details If `item.prior.var` is omitted, independent and identical
+#' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 1^2) prior distributions are placed on each object quality parameter.
 #'
 #' If `lambda.initial` is ommitted, it is set to a vector of zeroes.
@@ -120,8 +120,8 @@ speedyBBTm <- function(
     n.items <- max(c(item1, item2))
 
     # Get winner and loser of each comparison
-    winner <- ifelse(outcome == 1, item2, item1)
-    loser <- ifelse(outcome == 0, item2, item1)
+    winner <- ifelse(outcome == 1, player2, player1)
+    loser <- ifelse(outcome == 0, player2, player1)
 
     # Turn each comparison (except ties) into a win/loss matrix
     win.matrix <- comparisons_to_matrix(n.items, data.frame(winner, loser))
@@ -143,7 +143,7 @@ speedyBBTm <- function(
   if (is.null(item.prior.var)) {
     item.prior.var <- diag(n.items)
   }
-  item.prior.var.inverse <- solve(item.prior.var)
+  player.prior.var.inverse <- solve(player.prior.var)
 
   # Set initial values for lambda
   if (is.null(lambda.initial)) {
@@ -179,7 +179,7 @@ speedyBBTm <- function(
 
   # Set commonly required constants
   unnormalised.mu <- Matrix::t(X) %*% (y - n / 2)
-  grand.covariance <- sum(item.prior.var)
+  grand.covariance <- sum(player.prior.var)
 
   # Set iteration counter and close when the function exits
   if (verbose) {
@@ -200,7 +200,7 @@ speedyBBTm <- function(
     z <- BayesLogit::rpg(non.zero.n, n, as.numeric(X %*% lambda))
     Z <- Matrix::sparseMatrix(i = 1:non.zero.n, j = 1:non.zero.n, x = z)
     V <- base::chol2inv(base::chol(
-      Matrix::t(X) %*% Z %*% X + item.prior.var.inverse / alpha.sq
+      Matrix::t(X) %*% Z %*% X + player.prior.var.inverse / alpha.sq
     ))
     mu <- V %*% unnormalised.mu
     V.chol <- base::chol(V)
@@ -246,7 +246,7 @@ speedyBBTm <- function(
 #'
 #' This function uses MCMC to sample from the posterior distribution of the
 #' Bradley--Terry model with ties.A multivariate normal prior
-#' distribution on the item quality parameters can be specified. An exponential
+#' distribution on the player quality parameters can be specified. An exponential
 #' prior distribution is placed on the tie parameter theta, and a Metropolis-
 #' Hasting random walk algorithm is used to update this parameter.
 #'
@@ -262,7 +262,7 @@ speedyBBTm <- function(
 #' @param theta.initial (optional) Value of the tied parameter there for
 #' the first MCMC iteration.
 #' @param lambda.initial (optional) Vector containing the values of the
-#'  item parameters for the first MCMC iteration.
+#'  player parameters for the first MCMC iteration.
 #' @param n.iter Number of MCMC samples to be drawn.
 #' @param hyperparameter Boolean indicating if inference should be performed
 #'  for the prior variance hyperparameter. If TRUE the prior variance
@@ -282,7 +282,7 @@ speedyBBTm <- function(
 #' non-interactive contexts.
 
 #'
-#' @details If `item.prior.var` is omitted, independent and identical
+#' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
 #'
 #' If `lambda.initial` is omitted, it is set to a vector of zeroes.
@@ -389,13 +389,13 @@ BBTm.ties <- function(
   # Order pairs into winner/loser
   winner <- ifelse(
     outcome[outcome != 2] == 1,
-    item2[outcome != 2],
-    item1[outcome != 2]
+    player2[outcome != 2],
+    player1[outcome != 2]
   )
   loser <- ifelse(
     outcome[outcome != 2] == 0,
-    item2[outcome != 2],
-    item1[outcome != 2]
+    player2[outcome != 2],
+    player1[outcome != 2]
   )
 
   # Turn each comparison (except ties) into a win/loss matrix
@@ -403,8 +403,8 @@ BBTm.ties <- function(
 
   tie.matrix <- matrix(0, n.items, n.items)
   for (j in which(outcome == 2)) {
-    tie.matrix[item1[j], item2[j]] <- tie.matrix[item1[j], item2[j]] + 1
-    tie.matrix[item2[j], item1[j]] <- tie.matrix[item2[j], item1[j]] + 1
+    tie.matrix[player1[j], player2[j]] <- tie.matrix[player1[j], player2[j]] + 1
+    tie.matrix[player2[j], player1[j]] <- tie.matrix[player2[j], player1[j]] + 1
   }
 
   X <- construct.design.matrix.both.ways(n.items)
@@ -413,7 +413,7 @@ BBTm.ties <- function(
   if (is.null(item.prior.var)) {
     item.prior.var <- 5^2 * diag(n.items)
   }
-  item.prior.var.inverse <- solve(item.prior.var)
+  player.prior.var.inverse <- solve(player.prior.var)
 
   # Set initial values for lambda
   if (is.null(lambda.initial)) {
@@ -434,7 +434,7 @@ BBTm.ties <- function(
     tie.matrix[lower.tri(tie.matrix)]
   )
 
-  # Remove pairs of items that were never compared
+  # Remove pairs of players that were never compared
   kappa <- (y + t) / 2
   non.zero.kappa <- length(kappa[kappa != 0])
   X <- X[which(kappa != 0), ]
@@ -451,7 +451,7 @@ BBTm.ties <- function(
   ones <- rep(1, non.zero.kappa)
   kappa <- (y + t) / 2
   alpha.sq <- 1
-  grand.covariance <- sum(item.prior.var)
+  grand.covariance <- sum(player.prior.var)
 
   # Create empty storage vessels
   lambda.matrix <- matrix(0, n.iter, n.items) # store results
@@ -485,7 +485,7 @@ BBTm.ties <- function(
 
     # Update lambda
     V <- chol2inv(chol(
-      Matrix::t(X) %*% Z %*% X + item.prior.var.inverse / alpha.sq
+      Matrix::t(X) %*% Z %*% X + player.prior.var.inverse / alpha.sq
     ))
     mu <- V %*% (Matrix::t(X) %*% (kappa + theta * Z %*% ones))
     V.chol <- chol(V)
@@ -567,7 +567,7 @@ BBTm.ties <- function(
 #' @param item2 Vector of second items.
 #' @param item.prior.var (optional) A matrix specifying the prior covariance of the items with one another.
 #' @param lambda.initial (optional) Vector containing the values of the
-#'  item parameters for the first MCMC iteration.
+#'  player parameters for the first MCMC iteration.
 #' @param n.iter Number of MCMC samples to be drawn.
 #' @param advantage (optional) A vector with the value of the comparisons specific
 #'  effect for each comparison.
@@ -605,9 +605,9 @@ BBTm.ties <- function(
 #'
 BBTm.no.formula <- function(
   outcome,
-  item1,
-  item2,
-  item.prior.var,
+  player1,
+  player2,
+  player.prior.var,
   lambda.initial,
   advantage = NULL,
   kappa.initial = NULL,
@@ -629,22 +629,22 @@ BBTm.no.formula <- function(
   n.comp <- length(outcome)
 
   # Get winner and loser of each comparison
-  winner <- ifelse(outcome == 1, item2, item1)
-  loser <- ifelse(outcome == 0, item2, item1)
+  winner <- ifelse(outcome == 1, player2, player1)
+  loser <- ifelse(outcome == 0, player2, player1)
 
   # Get y_ij
   y <- 1 - outcome
   k <- y - 0.5
 
   # Construct the design matrix
-  X <- construct.design.matrix.by.comparison(item1, item2)
+  X <- construct.design.matrix.by.comparison(player1, player2)
 
   # Get inverse of prior covariance matrix
   # If not set, the prior is iid N(0, 5^2)
   if (is.null(item.prior.var)) {
     item.prior.var <- 5^2 * diag(n.items)
   }
-  item.prior.var.inverse <- solve(item.prior.var)
+  player.prior.var.inverse <- solve(player.prior.var)
 
   # Set initial values for lambda
   if (is.null(lambda.initial)) {
@@ -686,7 +686,7 @@ BBTm.no.formula <- function(
   alpha.sq.vector <- numeric(n.iter)
 
   # Set commonly required constants
-  grand.covariance <- sum(item.prior.var)
+  grand.covariance <- sum(player.prior.var)
 
   # Set iteration counter
   if (verbose) {
@@ -713,9 +713,7 @@ BBTm.no.formula <- function(
     Z <- Matrix::sparseMatrix(i = 1:n.comp, j = 1:n.comp, x = z)
 
     # Update lambda
-    V <- chol2inv(chol(
-      Matrix::t(X) %*% Z %*% X + item.prior.var.inverse / alpha.sq
-    ))
+    V <- chol2inv(chol(Matrix::t(X) %*% Z %*% X + item.prior.var.inverse))
     mu <- V %*% (Matrix::t(X) %*% (k - kappa * Z %*% advantage))
     V.chol <- chol(V)
     lambda <- as.numeric(t(V.chol) %*% stats::rnorm(n.items, 0, 1) + mu)
@@ -793,12 +791,12 @@ BBTm.no.formula <- function(
 }
 
 
-#' Bayesian Bradley--Terry model with comparison- and item-specific effect and formula
+#' Bayesian Bradley--Terry model with comparison- and player-specific effect and formula
 #'
-#' This function fits the Bradley-Terry model with comparison  and item
+#' This function fits the Bradley-Terry model with comparison  and player
 #' specific effects. Each comparison can be assigned a real value to allow for a
 #' specific effect for the comparison, such as bias, ordering or home/away effect.
-#' The value of this effect is denoted kappa. The item specific effects are
+#' The value of this effect is denoted kappa. The player specific effects are
 #' described through a formula and data.frame containing the value. The function
 #' places a normal prior distribution on both kappa and the item specific
 #' parameters beta. This function is for advanced users who would like more control over
@@ -819,7 +817,7 @@ BBTm.no.formula <- function(
 #' @param data Data frame with a row corresponding to each item and a column corresponding
 #' to each covariate.
 #' @param beta.initial (optional) Vector containing the values of the
-#'  item specific  parameters for the first MCMC iteration.
+#'  player specific  parameters for the first MCMC iteration.
 #' @param n.iter Number of MCMC samples to be drawn.
 #' @param advantage (optional) A vector with the value of the comparisons specific
 #'  effect for each comparison.
@@ -841,7 +839,7 @@ BBTm.no.formula <- function(
 #' non-interactive contexts.
 
 #'
-#' @details If `item.prior.var` is omitted, independent and identical
+#' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
 #'
 #' If `beta.initial`is omitted, it is set to a vector of zeroes.
@@ -920,12 +918,12 @@ BBTm.with.formula <- function(
   formula.model <- stats::model.frame(formula, data)
 
   # Get inverse of prior covariance matrix
-  if (is.null(item.prior.var) & hyperparameter == FALSE) {
-    item.prior.var <- 5^2 * diag(dim(X)[2]) # fix prior to be N( 0, 5^2)
-  } else if (is.null(item.prior.var)) {
-    item.prior.var <- diag(dim(X)[2])
+  if (is.null(player.prior.var) & hyperparameter == FALSE) {
+    player.prior.var <- 5^2 * diag(dim(X)[2]) # fix prior to be N( 0, 5^2)
+  } else if (is.null(player.prior.var)) {
+    player.prior.var <- diag(dim(X)[2])
   }
-  item.prior.var.inverse <- solve(item.prior.var)
+  player.prior.var.inverse <- solve(player.prior.var)
 
   # Determine if inference is required for advantages
   if (is.null(advantage)) {
@@ -965,7 +963,7 @@ BBTm.with.formula <- function(
   beta.matrix <- matrix(0, n.iter, n.betas)
   lambda.matrix <- matrix(0, n.iter, n.items)
   alpha.sq.vector <- numeric(n.iter)
-  grand.covariance <- sum(item.prior.var)
+  grand.covariance <- sum(player.prior.var)
 
   if (verbose) {
     pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
@@ -977,7 +975,7 @@ BBTm.with.formula <- function(
         stats::rgamma(
           1,
           chi + dim(X)[2] / 2,
-          0.5 * t(beta) %*% item.prior.var.inverse %*% beta + psi
+          0.5 * t(beta) %*% player.prior.var.inverse %*% beta + psi
         )
     }
 
@@ -989,7 +987,7 @@ BBTm.with.formula <- function(
     )
     Z <- Matrix::sparseMatrix(i = 1:n.comp, j = 1:n.comp, x = z)
     V <- base::chol2inv(base::chol(
-      Matrix::t(X) %*% Z %*% X + item.prior.var.inverse / alpha.sq
+      Matrix::t(X) %*% Z %*% X + player.prior.var.inverse / alpha.sq
     ))
     mu <- V %*% (Matrix::t(X) %*% (k - kappa * Z %*% advantage))
     V.chol <- base::chol(V)
@@ -1089,23 +1087,23 @@ BBTm.with.formula <- function(
 
 #' Generalised Bradley-Terry model
 #'
-#' This function fits the Bradley-Terry model with comparison  and item
+#' This function fits the Bradley-Terry model with comparison  and player
 #' specific effects. Each comparison can be assigned a real value to allow for a
 #' specific effect for the comparison, such as bias, ordering or home/away effect.
-#' The value of this effect is denoted kappa. The item specific effects are
+#' The value of this effect is denoted kappa. The player specific effects are
 #' described through a formula and data.frame containing the value. The function
-#' places a normal prior distribution on both kappa and the item specific
+#' places a normal prior distribution on both kappa and the player specific
 #' parameters beta.
 #'
 #'
 #' @inheritParams BBTm.with.formula
 #'
 #' @param lambda.initial (optional) Vector containing the values of the
-#'  item parameters for the first MCMC iteration.
+#'  player parameters for the first MCMC iteration.
 #'
 #'
 #'
-#' @details If `item.prior.var` is omitted, independent and identical
+#' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
 #'
 #' If `beta.initial`is omitted, it is set to a vector of zeroes.
@@ -1128,8 +1126,8 @@ BBTm.with.formula <- function(
 #' # Allow an effect for a match being in the first or second week.
 #' wimbledonModel <- BBTm(
 #'   outcome = wimbledon$matches$outcome,
-#'   item2 = wimbledon$matches$loser,
-#'   item1 = wimbledon$matches$winner,
+#'   player2 = wimbledon$matches$loser,
+#'   player1 = wimbledon$matches$winner,
 #'   advantage = wimbledon$matches$secondWeek,
 #'   formula = ~ rank + points,
 #'   data = wimbledon$players,
