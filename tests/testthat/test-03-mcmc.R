@@ -72,7 +72,7 @@ test_that("BBTm.no.formula produces results within tolerance", {
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
     player1 = forcedMarriage$comparisons$win,
     player2 = forcedMarriage$comparisons$lost,
-    player.prior.var = sigma,
+    player.prior.var = prior.var,
     n.iter = 2000
   )
 
@@ -84,7 +84,7 @@ test_that("BBTm.no.formula produces results within tolerance", {
   ])
 
   # Read in means
-  testMeansPath <- test_path("forcedMarriageModelMeansNoFormula.csv")
+  testMeansPath <- test_path("forcedMarriageModelMeans.csv")
   testMeans <- read.csv(testMeansPath)
 
   expect_equal(

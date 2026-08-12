@@ -439,6 +439,8 @@ BBTm.ties <- function(
   }
   pars.matrix <- cbind(lambda.matrix, theta.store, alpha.sq.store)
 
+  iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
+
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[iters_to_save, 1:(n.objects + 2)],
@@ -541,6 +543,8 @@ BBTm.no.formula <- function(
   # get number of objects in study
   n.objects <- max(c(player1, player2))
 
+  iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
+
   # get number of comparisons
   n.comp <- length(outcome)
 
@@ -605,8 +609,10 @@ BBTm.no.formula <- function(
   grand.covariance <- sum(player.prior.var)
 
   # Set iteration counter
-  pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
-
+  if (verbose) {
+    pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+    on.exit(close(pb), add = TRUE)
+  }
   # MCMC loop
   for (i in 1:n.iter) {
     if (hyperparameter == TRUE) {
@@ -650,7 +656,6 @@ BBTm.no.formula <- function(
 
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
-      on.exit(close(pb), add = TRUE)
     }
   }
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
