@@ -30,10 +30,10 @@ To fit a Bradley-Terry model using `speedyBBT`, you can first install the packag
 # remotes::install_github("rowlandseymour/speedyBBT")
 ```
 
-You can learn more about the package functions and how to use them from the documentation which can be accessed using `?function_name` in R. For example, to learn about the `speedy_BBTm` function, you can run:
+You can learn more about the package functions and how to use them from the documentation which can be accessed using `?function_name` in R. For example, to learn about the `speedyBBTm` function, you can run:
 
 ```{r help_function}
-?speedy_BBTm
+?speedyBBTm
 ```
 
 The package includes some example datasets that you can use to practice fitting models. These datasets are automatically loaded when you install the package. To view the `forcedMarriage` dataset, you can run:
@@ -51,12 +51,12 @@ expA <- expm::expm(forcedMarriage$adjacencyMatrix)
 prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 ```
 
-Next, you can fit the model using the `speedy_BBTm()` function. You will need to specify the outcome variable, the items involved in each comparison, and the prior covariance matrix for the item qualities. You can also specify the number of MCMC iterations to run. This example uses the default values for the hyperparameters of the prior distribution, but you can also specify your own values if you have prior knowledge about the items' rating using the `hyperparameter` argument. To match the plots in this vignette, you will need to use the same argument to `set.seed` as the one provided here. 
+Next, you can fit the model using the `speedyBBTm()` function. You will need to specify the outcome variable, the items involved in each comparison, and the prior covariance matrix for the item qualities. You can also specify the number of MCMC iterations to run. This example uses the default values for the hyperparameters of the prior distribution, but you can also specify your own values if you have prior knowledge about the items' rating using the `hyperparameter` argument. To match the plots in this vignette, you will need to use the same argument to `set.seed` as the one provided here. 
 
 ```{r fit_model}
 # Fit model
 set.seed(432)
-forcedMarriageModel <- speedy_BBTm(
+forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
   item1 = forcedMarriage$comparisons$win,
   item2 = forcedMarriage$comparisons$lost,
