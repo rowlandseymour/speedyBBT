@@ -12,7 +12,7 @@
 
 Inference is carried out using a P\'olya-Gamma data augmentation scheme, which makes sampling fast even for large numbers of items and comparisons. The package supports:
 
-- the standard Bradley-Terry model (`speedy_BBTm()`), optimised for speed when there are no ties or comparison-specific effects;
+- the standard Bradley-Terry model (`speedyBBTm()`), optimised for speed when there are no ties or comparison-specific effects;
 - ties, comparison-specific effects (e.g. home advantage), and item-level covariates via a formula interface (`BBTm()`);
 - multivariate normal prior distributions on the item quality parameters, so that structure between items (e.g. spatial adjacency) can be encoded directly into the prior;
 - optional hyperparameter inference on the prior scale.
@@ -57,7 +57,7 @@ prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
                                   player1 = forcedMarriage$comparisons$win, 
                                   player2 = forcedMarriage$comparisons$lost, 
-                                  player.prior.var = sigma)
+                                  player.prior.var = prior.var)
 forcedMarriageModel$lambda  <- forcedMarriageModel$lambda - rowMeans(forcedMarriageModel$lambda)
 
 #View Trace Plots
