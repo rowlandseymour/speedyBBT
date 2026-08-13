@@ -76,8 +76,7 @@ test_that("BBTm.no.formula produces results within tolerance", {
     n.iter = 2000
   )
 
-  lambda_draws <- colMeans(forcedMarriageModel[
-    ,
+  lambda_draws <- colMeans(forcedMarriageModel[,
     grep(
       "lambda",
       varnames(forcedMarriageModel)
@@ -96,7 +95,98 @@ test_that("BBTm.no.formula produces results within tolerance", {
   )
 })
 
-test_that("BBTm.ties produces expected output from a single iteration", {
+test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces results within tolerance", {
+  set.seed(42)
+  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+
+  model <- BBTm.no.formula(
+    outcome = rep(1, length(forcedMarriage$comparisons$win)),
+    player1 = forcedMarriage$comparisons$win,
+    player2 = forcedMarriage$comparisons$lost,
+    player.prior.var = prior.var,
+    lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
+    n.iter = 1000,
+    burn.in = 100,
+    hyperparameter = FALSE,
+    verbose = FALSE
+  )
+
+  model_means <- colMeans(model)
+  testMeansPath <- test_path("bbtNoFormulaAlphaSqOnlyMeans.csv")
+  testMeans <- read.csv(testMeansPath)
+
+  expect_equal(
+    sum(abs(testMeans - model_means)) /
+      nrow(forcedMarriage$adjacencyMatrix),
+    0,
+    tolerance = 1e-1
+  )
+})
+
+test_that("BBTm.no.formula with advantage and hyperparameter=FALSE produces results within tolerance", {
+  set.seed(42)
+  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+  advantage <- rep(1, length(forcedMarriage$comparisons$win))
+
+  model <- BBTm.no.formula(
+    outcome = rep(1, length(forcedMarriage$comparisons$win)),
+    player1 = forcedMarriage$comparisons$win,
+    player2 = forcedMarriage$comparisons$lost,
+    player.prior.var = prior.var,
+    lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
+    advantage = advantage,
+    n.iter = 10,
+    burn.in = 1,
+    hyperparameter = FALSE,
+    verbose = FALSE
+  )
+
+  model_means <- colMeans(model)
+  testMeansPath <- test_path("bbtNoFormulaKappaMeans.csv")
+  testMeans <- read.csv(testMeansPath)
+
+  expect_equal(
+    sum(abs(testMeans - model_means)) /
+      nrow(forcedMarriage$adjacencyMatrix),
+    0,
+    tolerance = 1
+  )
+})
+
+test_that("BBTm.no.formula with advantage and hyperparameter=TRUE produces results within tolerance", {
+  set.seed(42)
+  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+  advantage <- rep(1, length(forcedMarriage$comparisons$win))
+
+  model <- BBTm.no.formula(
+    outcome = rep(1, length(forcedMarriage$comparisons$win)),
+    player1 = forcedMarriage$comparisons$win,
+    player2 = forcedMarriage$comparisons$lost,
+    player.prior.var = prior.var,
+    lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
+    advantage = advantage,
+    n.iter = 10,
+    burn.in = 1,
+    hyperparameter = TRUE,
+    verbose = FALSE
+  )
+
+  model_means <- colMeans(model)
+  testMeansPath <- test_path("bbtNoFormulaAlphaSqKappaMeans.csv")
+  testMeans <- read.csv(testMeansPath)
+
+  expect_equal(
+    sum(abs(testMeans - model_means)) /
+      nrow(forcedMarriage$adjacencyMatrix),
+    0,
+    tolerance = 1
+  )
+})
+
+test_that("BBTm.ties produces expected output from two iterations", {
   # Construct covariance matrix
   # Fit model
   set.seed(123)
