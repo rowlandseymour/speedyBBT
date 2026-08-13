@@ -28,6 +28,7 @@ Imports:
     base,
     BayesLogit,
     coda,
+    lifecycle,
     Matrix,
     stats,
     utils
@@ -46,3 +47,4 @@ URL: https://www.rowlandseymour.com/speedyBBT, https://github.com/rowlandseymour
 BugReports: https://github.com/rowlandseymour/speedyBBT/issues
 Config/roxygen2/version: 8.0.0
 VignetteBuilder: knitr
+RoxygenNote: 8.0.0
