@@ -82,7 +82,8 @@ specific effect for the comparison, such as bias, ordering or home/away effect.
 The value of this effect is denoted kappa. The player specific effects are
 described through a formula and data.frame containing the value. The function
 places a normal prior distribution on both kappa and the player specific
-parameters beta.
+parameters beta. This function is for advanced users who would like more control over
+their model inputs, novice users should look to \code{\link[=BBTm]{BBTm()}} for a simpler interface.
 }
 \details{
 If \code{player.prior.var} is omitted, independent and identical
