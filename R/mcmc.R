@@ -27,6 +27,9 @@
 #' @param chi (Optional) The rate parameter for the inverse-gamma prior distribution on the
 #'  hyperparameter. Default is 0.01.
 #' @param burn.in (optional) The number of iterations to discard as burn-in. Default is 100.
+#' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
+#' @param verbose (optional) A boolean indicating if progress should be printed to the console.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 1^2) prior distributions are placed on each object quality parameter.
@@ -44,8 +47,8 @@
 #' ## Forced Marriage in Nottinghamshire ##
 #' ########################################
 #' # Construct covariance matrix based on spatial information
-#' sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
-#' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
+#' prior.var <- expm::expm(forcedMarriage$adjacencyMatrix)
+#' prior.var <- diag(diag(prior.var)^-0.5) %*% prior.var %*% diag(diag(prior.var)^-0.5)
 #'
 #' # Fit model
 #' # Using `n.iter = 3` here to reduce runtime, you will need more
@@ -54,14 +57,12 @@
 #'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
 #'   player1 = forcedMarriage$comparisons$win,
 #'   player2 = forcedMarriage$comparisons$lost,
-#'   player.prior.var = sigma, n.iter = 3, burn.in = 0
+#'   player.prior.var = prior.var, n.iter = 3, burn.in = 0
 #' )
 #'
 #' # Plot results
-#' oldpar <- par(mfrow = c(2, 2))
 #'
-#' plot(forcedMarriageModel[, paste0("lambda[", c(10, 20, 30, 40), "]")], xlab = "Iteration", ylab = expression(lambda[i]))
-#' par(oldpar)
+#' plot(forcedMarriageModel[, "lambda[1]"], xlab = "Iteration", ylab = expression(lambda[i]))
 #' }
 #' @export
 #'
@@ -76,7 +77,9 @@ speedyBBTm <- function(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 ) {
   if (is.null(win.matrix)) {
     # Create win matrix
@@ -139,9 +142,10 @@ speedyBBTm <- function(
   grand.covariance <- sum(player.prior.var)
 
   # Set iteration counter and close when the function exits
-  pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
-  on.exit(close(pb), add = TRUE)
-
+  if (verbose) {
+    pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+    on.exit(close(pb), add = TRUE)
+  }
   # MCMC loop
   for (i in 1:n.iter) {
     if (hyperparameter == TRUE) {
@@ -168,15 +172,17 @@ speedyBBTm <- function(
     lambda.matrix[i, ] <- lambda
     alpha.sq.vector[i] <- alpha.sq
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
-    utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    if (verbose) {
+      utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    }
   }
-  close(pb)
+  iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+      x = pars.matrix[iters_to_save, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
       paste0("lambda[", 1:n.objects, "]"),
@@ -184,10 +190,10 @@ speedyBBTm <- function(
     )
   } else {
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, 1:n.objects],
+      x = pars.matrix[iters_to_save, 1:n.objects],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- paste0("lambda[", 1:n.objects, "]")
   }
@@ -227,6 +233,10 @@ speedyBBTm <- function(
 #' @param theta.rate (optional) The rate parameter of the exponential prior
 #' distribution placed on theta.
 #' @param burn.in (optional) The number of iterations to use as a burn-in period. Default is 100.
+#' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
+#' @param verbose (optional) A boolean indicating if progress should be printed to the console.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
+
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -243,8 +253,8 @@ speedyBBTm <- function(
 #' ## Seymour et al (2022)                   ##
 #' ############################################
 #' # Construct covariance matrix based on spatial informartion
-#' sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
-#' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
+#' prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+#' prior.var <- diag(diag(prior.var)^-0.5) %*% prior.var %*% diag(diag(prior.var)^-0.5)
 #'
 #'
 #' # Fit BT model with ties
@@ -255,8 +265,9 @@ speedyBBTm <- function(
 #'   outcome = darEsSalaam$comparisons$outcome,
 #'   player1 = darEsSalaam$comparisons$subward1,
 #'   player2 = darEsSalaam$comparisons$subward2,
-#'   player.prior.var = sigma,
-#'   hyperparameter = TRUE, rw.sd = 0.005, n.iter = 3, burn.in = 0
+#'   player.prior.var = prior.var,
+#'   hyperparameter = TRUE,
+#'   rw.sd = 0.005, n.iter = 3, burn.in = 0, verbose = FALSE
 #' )
 #'
 #' # Get posterior means
@@ -282,7 +293,9 @@ BBTm.ties <- function(
   psi = 0.01,
   rw.sd = 0.1,
   theta.rate = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 ) {
   # get number of objects in study
   n.objects <- max(c(player1, player2))
@@ -366,8 +379,10 @@ BBTm.ties <- function(
   theta.store <- numeric(n.iter) # store results
   alpha.sq.store <- numeric(n.iter) # store results
 
-  pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
-  on.exit(close(pb), add = TRUE)
+  if (verbose) {
+    pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+    on.exit(close(pb), add = TRUE)
+  }
 
   # MCMC
   for (i in 1:n.iter) {
@@ -421,16 +436,20 @@ BBTm.ties <- function(
     theta.store[i] <- theta
     alpha.sq.store[i] <- alpha.sq
     lambda.matrix[i, ] <- as.numeric(lambda)
-    utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    if (verbose) {
+      utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    }
   }
   pars.matrix <- cbind(lambda.matrix, theta.store, alpha.sq.store)
 
+  iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
+
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 2)],
+      x = pars.matrix[iters_to_save, 1:(n.objects + 2)],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
       paste("lambda[", 1:n.objects, "]", sep = ""),
@@ -439,10 +458,10 @@ BBTm.ties <- function(
     )
   } else {
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, 1:(n.objects + 1)],
+      x = pars.matrix[iters_to_save, 1:(n.objects + 1)],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
       paste0("lambda[", 1:n.objects, "]"),
@@ -486,6 +505,10 @@ BBTm.ties <- function(
 #' @param chi Rate parameter for the inverse-gamma prior distribution on the
 #'  hyperparameter.
 #' @param burn.in Number of iterations to use as a burn-in period. Default is 100.
+#' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
+#' @param verbose (optional) A boolean indicating if progress should be printed to the console.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
+
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -501,8 +524,6 @@ BBTm.ties <- function(
 #'
 #' @keywords internal
 #'
-#' @export
-#'
 BBTm.no.formula <- function(
   outcome,
   player1,
@@ -516,10 +537,14 @@ BBTm.no.formula <- function(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 ) {
   # get number of objects in study
   n.objects <- max(c(player1, player2))
+
+  iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
 
   # get number of comparisons
   n.comp <- length(outcome)
@@ -529,7 +554,7 @@ BBTm.no.formula <- function(
   loser <- ifelse(outcome == 0, player2, player1)
 
   # Get y_ij
-  y <- 1 - outcome
+  y <- outcome
   k <- y - 0.5
 
   # Construct the design matrix
@@ -585,9 +610,10 @@ BBTm.no.formula <- function(
   grand.covariance <- sum(player.prior.var)
 
   # Set iteration counter
-  pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
-  on.exit(close(pb), add = TRUE)
-
+  if (verbose) {
+    pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+    on.exit(close(pb), add = TRUE)
+  }
   # MCMC loop
   for (i in 1:n.iter) {
     if (hyperparameter == TRUE) {
@@ -629,17 +655,18 @@ BBTm.no.formula <- function(
     lambda.matrix[i, ] <- lambda
     alpha.sq.vector[i] <- alpha.sq
 
-    utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    if (verbose) {
+      utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    }
   }
-  close(pb)
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector, kappa.vector)
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+      x = pars.matrix[iters_to_save, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
       paste0("lambda[", 1:n.objects, "]"),
@@ -650,10 +677,10 @@ BBTm.no.formula <- function(
     pars.matrix <- cbind(lambda.matrix, kappa.vector)
     # Output only kappa
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+      x = pars.matrix[iters_to_save, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
       paste0("lambda[", 1:n.objects, "]"),
@@ -663,10 +690,10 @@ BBTm.no.formula <- function(
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     # Output only alpha.sq
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+      x = pars.matrix[iters_to_save, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
       paste0("lambda[", 1:n.objects, "]"),
@@ -675,10 +702,10 @@ BBTm.no.formula <- function(
   } else {
     pars.matrix <- lambda.matrix
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+      x = pars.matrix[iters_to_save, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- paste0("lambda[", 1:n.objects, "]")
   }
@@ -694,7 +721,8 @@ BBTm.no.formula <- function(
 #' The value of this effect is denoted kappa. The player specific effects are
 #' described through a formula and data.frame containing the value. The function
 #' places a normal prior distribution on both kappa and the player specific
-#' parameters beta.
+#' parameters beta. This function is for advanced users who would like more control over
+#' their model inputs, novice users should look to [BBTm()] for a simpler interface.
 #'
 #'
 #'
@@ -725,6 +753,10 @@ BBTm.no.formula <- function(
 #' @param chi Rate parameter for the inverse-gamma prior distribution on the
 #'  hyperparameter.
 #' @param burn.in The number of iterations to use for a burn.in, default is 100.
+#' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
+#' @param verbose (optional) A boolean indicating if progress should be printed to the console.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
+
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 5^2) prior distributions are placed on each object quality parameter.
@@ -756,7 +788,9 @@ BBTm.with.formula <- function(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 ) {
   # get number of objects in study
   n.objects <- max(c(player1, player2))
@@ -818,8 +852,10 @@ BBTm.with.formula <- function(
   alpha.sq.vector <- numeric(n.iter)
   grand.covariance <- sum(player.prior.var)
 
-  pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
-  on.exit(close(pb), add = TRUE)
+  if (verbose) {
+    pb <- utils::txtProgressBar(min = 0, max = n.iter, style = 3)
+    on.exit(close(pb), add = TRUE)
+  }
   for (i in 1:n.iter) {
     if (hyperparameter == TRUE) {
       alpha.sq <- 1 /
@@ -859,9 +895,13 @@ BBTm.with.formula <- function(
     beta.matrix[i, ] <- t(beta)
     lambda.matrix[i, ] <- lambda
     alpha.sq.vector[i] <- alpha.sq
-    utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    if (verbose) {
+      utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
+    }
   }
-  close(pb)
+
+  iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
+
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
     # Output alpha.sq and kappa
     pars.matrix <- cbind(
@@ -872,10 +912,10 @@ BBTm.with.formula <- function(
     )
     # Output only kappa
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+      x = pars.matrix[iters_to_save, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
       paste0("beta[", 1:n.betas, "]"),
@@ -888,10 +928,10 @@ BBTm.with.formula <- function(
     pars.matrix <- cbind(beta.matrix, lambda.matrix, kappa.vector)
     # Output only kappa
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+      x = pars.matrix[iters_to_save, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
       paste0("beta[", 1:n.betas, "]"),
@@ -904,10 +944,10 @@ BBTm.with.formula <- function(
     pars.matrix <- cbind(beta.matrix, lambda.matrix, alpha.sq.vector)
     # Output only kappa
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+      x = pars.matrix[iters_to_save, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
       paste0("lambda[", 1:n.objects, "]"),
@@ -917,10 +957,10 @@ BBTm.with.formula <- function(
     pars.matrix <- cbind(beta.matrix, lambda.matrix)
     # Output only kappa
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[(burn.in + 1):n.iter, ],
+      x = pars.matrix[iters_to_save, ],
       start = burn.in + 1,
       end = n.iter,
-      thin = 1
+      thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
       paste0("beta[", 1:n.betas, "]"),
@@ -977,7 +1017,7 @@ BBTm.with.formula <- function(
 #'   advantage = wimbledon$matches$secondWeek,
 #'   formula = ~ rank + points,
 #'   data = wimbledon$players,
-#'   n.iter = 1000
+#'   n.iter = 1000, verbose = FALSE
 #' )
 #'
 #' # Plot posterior distributions
@@ -1001,7 +1041,9 @@ BBTm <- function(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 ) {
   if (!is.null(lambda.initial) & !is.null(beta.initial)) {
     stop("Cannot set initial values for both lambda and beta")
@@ -1023,7 +1065,9 @@ BBTm <- function(
       hyperparameter,
       chi,
       psi,
-      burn.in
+      burn.in,
+      n.thin,
+      verbose
     )
   } else {
     output <- BBTm.no.formula(
@@ -1039,7 +1083,9 @@ BBTm <- function(
       hyperparameter,
       chi,
       psi,
-      burn.in
+      burn.in,
+      n.thin,
+      verbose
     )
   }
   return(output)

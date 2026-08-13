@@ -1,4 +1,4 @@
-#' Construct Win Matrix from Comparisons
+#' Construct win matrix from comparisons
 #'
 #' This function constructs a win matrix from a data frame of comparisons. It is needed for the MCMC functions.
 #'
@@ -13,7 +13,6 @@
 #'
 #' # Create matrix from comparisons
 #' win.matrix <- comparisons_to_matrix(3, comparisons)
-#'
 #' @export
 comparisons_to_matrix <- function(n.objects, comparisons) {
   win.matrix <- matrix(0, n.objects, n.objects) # construct empty matrix
@@ -44,10 +43,7 @@ comparisons_to_matrix <- function(n.objects, comparisons) {
 #' # design matrix with 3 objects
 #'
 #' X <- construct.design.matrix(3)
-#'
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 construct.design.matrix <- function(n.objects) {
   all.pairs <- t(utils::combn(n.objects, 2))
   winners <- Matrix::sparseMatrix(
@@ -95,8 +91,7 @@ construct.design.matrix <- function(n.objects) {
 #' X <- construct.generalised.design.matrix(player1, player2, example.formula, example.df)
 #'
 #' @keywords internal
-#'
-#' @export
+#' @noRd
 construct.generalised.design.matrix <- function(
   player1,
   player2,
@@ -133,10 +128,7 @@ construct.generalised.design.matrix <- function(
 #' object1 <- c(1, 3, 2, 1)
 #' object2 <- c(3, 1, 1, 2)
 #' X <- construct.design.matrix.by.comparison(object1, object2)
-#'
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 construct.design.matrix.by.comparison <- function(object1, object2) {
   K <- length(object1)
   n.objects <- max(c(object1, object2))
@@ -158,6 +150,7 @@ construct.design.matrix.by.comparison <- function(object1, object2) {
 
 
 #' Construct the Bradley--Terry design matrix for ties
+#'
 #' This is the design matrix for tied comparisons. Each permutation
 #' (rather than combination) is featured, i.e. both (i, j) and (j, i).
 #'
@@ -171,8 +164,7 @@ construct.design.matrix.by.comparison <- function(object1, object2) {
 #' # design matrix with 3 objects
 #'
 #' X <- construct.design.matrix.both.ways(3)
-#'
-#' @export
+#' @noRd
 construct.design.matrix.both.ways <- function(n.objects) {
   all.pairs <- t(utils::combn(n.objects, 2))
   a <- c(all.pairs[, 1], all.pairs[, 2])

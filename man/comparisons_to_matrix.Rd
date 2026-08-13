@@ -2,7 +2,7 @@
 % Please edit documentation in R/matrices.R
 \name{comparisons_to_matrix}
 \alias{comparisons_to_matrix}
-\title{Construct Win Matrix from Comparisons}
+\title{Construct win matrix from comparisons}
 \usage{
 comparisons_to_matrix(n.objects, comparisons)
 }
@@ -24,5 +24,4 @@ comparisons <- data.frame("winner" = c(1, 3, 2, 2), "loser" = c(3, 1, 1, 3))
 
 # Create matrix from comparisons
 win.matrix <- comparisons_to_matrix(3, comparisons)
-
 }
