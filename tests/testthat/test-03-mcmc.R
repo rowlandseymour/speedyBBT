@@ -27,6 +27,17 @@ test_that("speedyBBTm produces results within tolerance", {
     0,
     tolerance = 1e-1
   )
+
+  forcedMarriageModelMeanAlphaSq <- mean(forcedMarriageModel[, grep(
+    "alpha.sq",
+    varnames(forcedMarriageModel)
+  )])
+
+  expect_equal(
+    abs(13.6185 - forcedMarriageModelMeanAlphaSq),
+    0,
+    tolerance = 1e-1
+  )
 })
 
 
@@ -41,6 +52,65 @@ test_that("BBTm produces results within tolerance", {
     formula = ~ rank + points,
     data = wimbledon$players,
     n.iter = 4000
+  )
+
+  wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
+    -c(1:50),
+  ])
+
+  # Read in means
+  testMeansPath <- test_path("wimbledonModelMeans.csv")
+  testMeans <- read.csv(testMeansPath)
+
+  # Compare within tolerance
+  expect_equal(
+    sum(abs(testMeans - wimbledonModelMeans)) / 128,
+    0,
+    tolerance = 1e-1
+  )
+})
+
+test_that("BBTm produces results within tolerance when hyperparameter = FALSE", {
+  # Construct covariance matrix
+  # Fit model
+  wimbledonModel <- BBTm(
+    outcome = wimbledon$matches$outcome,
+    player1 = wimbledon$matches$winner,
+    player2 = wimbledon$matches$loser,
+    advantage = wimbledon$matches$secondWeek,
+    formula = ~ rank + points,
+    data = wimbledon$players,
+    n.iter = 4000,
+    hyperparameter = FALSE
+  )
+
+  wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
+    -c(1:50),
+  ])
+
+  # Read in means
+  testMeansPath <- test_path("wimbledonModelMeans.csv")
+  testMeans <- read.csv(testMeansPath)
+
+  # Compare within tolerance
+  expect_equal(
+    sum(abs(testMeans - wimbledonModelMeans)) / 128,
+    0,
+    tolerance = 1e-1
+  )
+})
+
+test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = FALSE", {
+  # Construct covariance matrix
+  # Fit model
+  wimbledonModel <- BBTm(
+    outcome = wimbledon$matches$outcome,
+    player1 = wimbledon$matches$winner,
+    player2 = wimbledon$matches$loser,
+    formula = ~ rank + points,
+    data = wimbledon$players,
+    n.iter = 4000,
+    hyperparameter = FALSE
   )
 
   wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
@@ -218,6 +288,20 @@ test_that("BBTm.ties produces expected output from two iterations", {
   # Compare within tolerance
   expect_equal(
     sum(abs(testMeans - lambda.mean)) / n.objects,
+    0,
+    tolerance = 1e-1
+  )
+
+  theta.mean <- mean(parameter(darTiedModel, "theta"))
+  alpha.sq.mean <- mean(parameter(darTiedModel, "alpha.sq"))
+  expect_equal(
+    abs(0.4883739 - theta.mean),
+    0,
+    tolerance = 1e-1
+  )
+
+  expect_equal(
+    abs(9.278275E-05 - alpha.sq.mean),
     0,
     tolerance = 1e-1
   )
