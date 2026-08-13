@@ -27,16 +27,16 @@ BBTm.ties(
 )
 }
 \arguments{
-\item{n.objects}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{n.objects} argument is no longer supported, the number of items is calculated automatically}
+\item{n.objects}{The number of objects in the study.}
 
 \item{outcome}{Vector of outcomes. 0 if item 1 is the winner,
 1 if item 2 is the winner, and 2 if it is a tie.}
 
-\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{player1} argument is no longer supported, please use \code{item1} instead}
+\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player1 argument is no longer supported, please use item1}
 
-\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{player2} argument is no longer supported, please use \code{item2} instead}
+\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player2 argument is no longer supported, please use item2 instead}
 
-\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{player.prior.var} argument is no longer supported, please use \code{item.prior.var} instead}
+\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player.prior.var argument is no longer supported, please use item.prior.var instead}
 
 \item{item1}{Vector of first items.}
 
@@ -48,7 +48,7 @@ BBTm.ties(
 the first MCMC iteration.}
 
 \item{lambda.initial}{(optional) Vector containing the values of the
-player parameters for the first MCMC iteration.}
+item parameters for the first MCMC iteration.}
 
 \item{n.iter}{Number of MCMC samples to be drawn.}
 
@@ -82,12 +82,12 @@ A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribu
 \description{
 This function uses MCMC to sample from the posterior distribution of the
 Bradley--Terry model with ties.A multivariate normal prior
-distribution on the player quality parameters can be specified. An exponential
+distribution on the item quality parameters can be specified. An exponential
 prior distribution is placed on the tie parameter theta, and a Metropolis-
 Hasting random walk algorithm is used to update this parameter.
 }
 \details{
-If \code{player.prior.var} is omitted, independent and identical
+If \code{item.prior.var} is omitted, independent and identical
 N(0, 5^2) prior distributions are placed on each object quality parameter.
 
 If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
