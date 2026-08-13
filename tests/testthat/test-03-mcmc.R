@@ -7,9 +7,9 @@ test_that("speedyBBTm produces results within tolerance", {
   # Fit model
   forcedMarriageModel <- speedyBBTm(
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
-    player1 = forcedMarriage$comparisons$win,
-    player2 = forcedMarriage$comparisons$lost,
-    player.prior.var = prior.var,
+    item1 = forcedMarriage$comparisons$win,
+    item2 = forcedMarriage$comparisons$lost,
+    item.prior.var = prior.var,
     n.iter = 2000
   )
 
@@ -41,14 +41,35 @@ test_that("speedyBBTm produces results within tolerance", {
   )
 })
 
+test_that("speedyBBTm produces a warning but still runs when a deprecated argument is used", {
+  # Construct covariance matrix
+  set.seed(905)
+  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+
+  # Fit model
+  expect_warning(
+    forcedMarriageModel <- speedyBBTm(
+      outcome = rep(1, length(forcedMarriage$comparisons$win)),
+      player1 = forcedMarriage$comparisons$win,
+      player2 = forcedMarriage$comparisons$lost,
+      player.prior.var = prior.var,
+      n.iter = 1,
+      burn.in = 0
+    )
+  )
+
+  expect_equal(length(forcedMarriageModel), 2)
+})
+
 
 test_that("BBTm produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
   wimbledonModel <- BBTm(
     outcome = wimbledon$matches$outcome,
-    player1 = wimbledon$matches$winner,
-    player2 = wimbledon$matches$loser,
+    item1 = wimbledon$matches$winner,
+    item2 = wimbledon$matches$loser,
     advantage = wimbledon$matches$secondWeek,
     formula = ~ rank + points,
     data = wimbledon$players,
