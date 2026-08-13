@@ -91,7 +91,7 @@ construct.design.matrix <- function(n.objects) {
 #' X <- construct.generalised.design.matrix(player1, player2, example.formula, example.df)
 #'
 #' @keywords internal
-#'
+#' @noRd
 construct.generalised.design.matrix <- function(
   player1,
   player2,
@@ -128,6 +128,7 @@ construct.generalised.design.matrix <- function(
 #' object1 <- c(1, 3, 2, 1)
 #' object2 <- c(3, 1, 1, 2)
 #' X <- construct.design.matrix.by.comparison(object1, object2)
+#' @noRd
 construct.design.matrix.by.comparison <- function(object1, object2) {
   K <- length(object1)
   n.objects <- max(c(object1, object2))
@@ -163,6 +164,7 @@ construct.design.matrix.by.comparison <- function(object1, object2) {
 #' # design matrix with 3 objects
 #'
 #' X <- construct.design.matrix.both.ways(3)
+#' @noRd
 construct.design.matrix.both.ways <- function(n.objects) {
   all.pairs <- t(utils::combn(n.objects, 2))
   a <- c(all.pairs[, 1], all.pairs[, 2])
