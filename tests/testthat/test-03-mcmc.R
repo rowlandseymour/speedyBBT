@@ -132,6 +132,37 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
   )
 })
 
+test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE", {
+  # Construct covariance matrix
+  # Fit model
+  set.seed(423)
+  wimbledonModel <- BBTm(
+    outcome = wimbledon$matches$outcome,
+    player1 = wimbledon$matches$winner,
+    player2 = wimbledon$matches$loser,
+    formula = ~ rank + points,
+    advantage = wimbledon$matches$secondWeek,
+    data = wimbledon$players,
+    n.iter = 4000,
+    hyperparameter = FALSE
+  )
+
+  wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
+    -c(1:50),
+  ])
+
+  # Read in means
+  testMeansPath <- test_path("wimbledonModelMeans.csv")
+  testMeans <- read.csv(testMeansPath)
+
+  # Compare within tolerance
+  expect_equal(
+    sum(abs(testMeans - wimbledonModelMeans)) / 128,
+    0,
+    tolerance = 1
+  )
+})
+
 test_that("BBTm.no.formula produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
@@ -305,6 +336,50 @@ test_that("BBTm.ties produces expected output from two iterations", {
 
   expect_equal(
     abs(9.278275E-05 - alpha.sq.mean),
+    0,
+    tolerance = 1e-1
+  )
+})
+
+test_that("BBTm.ties produces expected output from two iterations when hyperparameter = FALSE", {
+  # Construct covariance matrix
+  # Fit model
+  set.seed(123)
+  prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+  prior.var <- diag(diag(prior.var)^-0.5) %*%
+    prior.var %*%
+    diag(diag(prior.var)^-0.5)
+  n.objects <- nrow(darEsSalaam$adjacencyMatrix)
+  darTiedModel <- BBTm.ties(
+    n.objects = n.objects,
+    outcome = darEsSalaam$comparisons$outcome,
+    player1 = darEsSalaam$comparisons$subward1,
+    player2 = darEsSalaam$comparisons$subward2,
+    player.prior.var = prior.var,
+    hyperparameter = FALSE,
+    rw.sd = 0.005,
+    burn.in = 0,
+    n.iter = 2
+  )
+  # Get posterior means
+  centered_lambda <- parameter(darTiedModel, "lambda") -
+    colMeans(parameter(darTiedModel, "lambda"))
+  lambda.mean <- rowMeans(centered_lambda)
+
+  # Read in means
+  testMeansPath <- test_path("darTiedModelMeansShortNoHyper.csv")
+  testMeans <- read.csv(testMeansPath)
+
+  # Compare within tolerance
+  expect_equal(
+    sum(abs(testMeans - lambda.mean)) / n.objects,
+    0,
+    tolerance = 1e-1
+  )
+
+  theta.mean <- mean(parameter(darTiedModel, "theta"))
+  expect_equal(
+    abs(0.4883739 - theta.mean),
     0,
     tolerance = 1e-1
   )
