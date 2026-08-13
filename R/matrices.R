@@ -66,10 +66,10 @@ construct.design.matrix <- function(n.objects) {
 #' Construct the generalised Bradley--Terry design matrix
 #'
 #'
-#' @param player1 vector containing the labels of player1
-#' @param player2 vector containing the labels of player2
-#' @param formula right-hand-side only formula for the player specific covariates
-#' @param data dataframe containing the values of the player specific covariates
+#' @param item1 vector containing the labels of item1
+#' @param item2 vector containing the labels of item2
+#' @param formula right-hand-side only formula for the item specific covariates
+#' @param data dataframe containing the values of the item specific covariates
 #' @return design matrix X
 #'
 #' @keywords internal
@@ -85,16 +85,16 @@ construct.design.matrix <- function(n.objects) {
 #' # Generate formula
 #' example.formula <- ~ a + b + I(a^2)
 #'
-#' # Generate comparisons of three players
-#' player1 <- c(1, 3, 2, 1)
-#' player2 <- c(3, 1, 1, 2)
-#' X <- construct.generalised.design.matrix(player1, player2, example.formula, example.df)
+#' # Generate comparisons of three items
+#' item1 <- c(1, 3, 2, 1)
+#' item2 <- c(3, 1, 1, 2)
+#' X <- construct.generalised.design.matrix(item1, item2, example.formula, example.df)
 #'
 #' @keywords internal
 #' @noRd
 construct.generalised.design.matrix <- function(
-  player1,
-  player2,
+  item1,
+  item2,
   formula,
   data
 ) {
@@ -102,10 +102,10 @@ construct.generalised.design.matrix <- function(
   formula.model <- stats::model.frame(formula, data)
 
   n.objects <- dim(data)[1]
-  K <- length(player1)
+  K <- length(item1)
   all.pairs <- t(utils::combn(n.objects, 2))
 
-  X <- as.matrix(formula.model[player1, ] - formula.model[player2, ]) # Computer lambda_i - lambda_j
+  X <- as.matrix(formula.model[item1, ] - formula.model[item2, ]) # Computer lambda_i - lambda_j
   dimnames(X) <- c(NULL, NULL) # Remove dimension names
 
   return(X)
@@ -124,7 +124,7 @@ construct.generalised.design.matrix <- function(
 #' @examples
 #'
 #'
-#' # Generate comparisons of three players
+#' # Generate comparisons of three items
 #' object1 <- c(1, 3, 2, 1)
 #' object2 <- c(3, 1, 1, 2)
 #' X <- construct.design.matrix.by.comparison(object1, object2)

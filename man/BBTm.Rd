@@ -6,10 +6,10 @@
 \usage{
 BBTm(
   outcome,
-  player1,
-  player2,
+  item1,
+  item2,
   lambda.initial = NULL,
-  player.prior.var = NULL,
+  item.prior.var = NULL,
   beta.initial = NULL,
   n.iter = 1000,
   formula = NULL,
@@ -26,28 +26,27 @@ BBTm(
 )
 }
 \arguments{
-\item{outcome}{Vector of outcomes. 1 if player2 is the winner,
-0 if player1 is the winner.}
+\item{outcome}{Vector of outcomes. 1 if item2 is the winner,
+0 if item1 is the winner.}
 
-\item{player1}{Vector of first players.}
+\item{item1}{Vector of first items.}
 
-\item{player2}{Vector of second players.}
+\item{item2}{Vector of second items.}
 
 \item{lambda.initial}{(optional) Vector containing the values of the
-player parameters for the first MCMC iteration.}
+item parameters for the first MCMC iteration.}
 
-\item{player.prior.var}{(optional) Matrix specifying the prior covariance of
-the player correlation parameters.}
+\item{item.prior.var}{(optional) A matrix specifying the prior covariance of the items with one another.}
 
 \item{beta.initial}{(optional) Vector containing the values of the
-player specific  parameters for the first MCMC iteration.}
+item specific  parameters for the first MCMC iteration.}
 
 \item{n.iter}{Number of MCMC samples to be drawn.}
 
 \item{formula}{Formula with no left-hand-side specifying the player specific
 effects.}
 
-\item{data}{Data frame with a row corresponding to each player and a column corresponding
+\item{data}{Data frame with a row corresponding to each item and a column corresponding
 to each covariate.}
 
 \item{advantage}{(optional) A vector with the value of the comparisons specific
@@ -80,16 +79,16 @@ Default is \code{interactive()} therefore progress is shown if run interactively
 A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.
 }
 \description{
-This function fits the Bradley-Terry model with comparison  and player
+This function fits the Bradley-Terry model with comparison  and item
 specific effects. Each comparison can be assigned a real value to allow for a
 specific effect for the comparison, such as bias, ordering or home/away effect.
-The value of this effect is denoted kappa. The player specific effects are
+The value of this effect is denoted kappa. The item specific effects are
 described through a formula and data.frame containing the value. The function
-places a normal prior distribution on both kappa and the player specific
+places a normal prior distribution on both kappa and the item specific
 parameters beta.
 }
 \details{
-If \code{player.prior.var} is omitted, independent and identical
+If \code{item.prior.var} is omitted, independent and identical
 N(0, 5^2) prior distributions are placed on each object quality parameter.
 
 If \code{beta.initial}is omitted, it is set to a vector of zeroes.
@@ -102,13 +101,13 @@ it is set to 0.5.
 #####################
 ## Wimbledon 2019 ##
 ####################
-# Fit model where the quality of each player depends on their rank
+# Fit model where the quality of each item depends on their rank
 # and the number of points they had immediately before the tournament.
 # Allow an effect for a match being in the first or second week.
 wimbledonModel <- BBTm(
   outcome = wimbledon$matches$outcome,
-  player2 = wimbledon$matches$loser,
-  player1 = wimbledon$matches$winner,
+  item2 = wimbledon$matches$loser,
+  item1 = wimbledon$matches$winner,
   advantage = wimbledon$matches$secondWeek,
   formula = ~ rank + points,
   data = wimbledon$players,

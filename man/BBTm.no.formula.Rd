@@ -6,9 +6,9 @@
 \usage{
 BBTm.no.formula(
   outcome,
-  player1,
-  player2,
-  player.prior.var,
+  item1,
+  item2,
+  item.prior.var,
   lambda.initial,
   advantage = NULL,
   kappa.initial = NULL,
@@ -23,18 +23,17 @@ BBTm.no.formula(
 )
 }
 \arguments{
-\item{outcome}{Vector of outcomes. 1 if player2 is the winner,
-0 if player1 is the winner.}
+\item{outcome}{Vector of outcomes. 1 if item2 is the winner,
+0 if item1 is the winner.}
 
-\item{player1}{Vector of first players.}
+\item{item1}{Vector of first items.}
 
-\item{player2}{Vector of second players.}
+\item{item2}{Vector of second items.}
 
-\item{player.prior.var}{(optional) Matrix specifying the prior covariance of
-the player correlation parameters.}
+\item{item.prior.var}{(optional) A matrix specifying the prior covariance of the items with one another.}
 
 \item{lambda.initial}{(optional) Vector containing the values of the
-player parameters for the first MCMC iteration.}
+item parameters for the first MCMC iteration.}
 
 \item{advantage}{(optional) A vector with the value of the comparisons specific
 effect for each comparison.}
@@ -62,6 +61,12 @@ hyperparameter.}
 
 \item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
 Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in non-interactive contexts.}
+
+\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player1 argument is no longer supported, please use item1}
+
+\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player2 argument is no longer supported, please use item2 instead}
+
+\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player.prior.var argument is no longer supported, please use item.prior.var instead}
 }
 \value{
 A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution
@@ -71,11 +76,11 @@ This function fits the Bradley-Terry model with a comparison specific effect.
 Each comparison can be assigned a real value to allow for a specific effect
 for the comparison, such as bias, ordering or home/away effect. The value of
 this effect is denoted $kappa$. The function places a normal prior distribution
-on both kappa and the player quality parameters lambda.
+on both kappa and the item quality parameters lambda.
 }
 \details{
-If \code{player.prior.var} is omitted, independent and identical
-N(0, 5^2) prior distributions are placed on each object quality parameter.
+If \code{item.prior.var} is omitted, independent and identical
+N(0, 5^2) prior distributions are placed on each item quality parameter.
 
 If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 

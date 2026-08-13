@@ -2,18 +2,21 @@
 % Please edit documentation in R/mcmc.R
 \name{BBTm.with.formula}
 \alias{BBTm.with.formula}
-\title{Bayesian Bradley--Terry model with comparison- and player-specific effect and formula}
+\title{Bayesian Bradley--Terry model with comparison- and item-specific effect and formula}
 \usage{
 BBTm.with.formula(
   outcome,
-  player1,
-  player2,
+  player1 = deprecated(),
+  player2 = deprecated(),
+  player.prior.var = deprecated(),
+  item1,
+  item2,
   formula = NULL,
   data = NULL,
   advantage = NULL,
   kappa.initial = NULL,
   kappa.var = NULL,
-  player.prior.var = NULL,
+  item.prior.var = NULL,
   beta.initial = NULL,
   n.iter = 1000,
   hyperparameter = TRUE,
@@ -25,17 +28,23 @@ BBTm.with.formula(
 )
 }
 \arguments{
-\item{outcome}{Vector of outcomes. 1 if player2 is the winner,
-0 if player1 is the winner.}
+\item{outcome}{Vector of outcomes. 1 if item2 is the winner,
+0 if item1 is the winner.}
 
-\item{player1}{Vector of first players.}
+\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player1 argument is no longer supported, please use item1}
 
-\item{player2}{Vector of second players.}
+\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player2 argument is no longer supported, please use item2 instead}
+
+\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player.prior.var argument is no longer supported, please use item.prior.var instead}
+
+\item{item1}{Vector of first items.}
+
+\item{item2}{Vector of second items.}
 
 \item{formula}{Formula with no left-hand-side specifying the player specific
 effects.}
 
-\item{data}{Data frame with a row corresponding to each player and a column corresponding
+\item{data}{Data frame with a row corresponding to each item and a column corresponding
 to each covariate.}
 
 \item{advantage}{(optional) A vector with the value of the comparisons specific
@@ -47,11 +56,10 @@ value kappa.}
 \item{kappa.var}{(optional) The prior variance of the comparison specific
 value kappa.}
 
-\item{player.prior.var}{(optional) Matrix specifying the prior covariance of
-the player correlation parameters.}
+\item{item.prior.var}{(optional) A matrix specifying the prior covariance of the items with one another.}
 
 \item{beta.initial}{(optional) Vector containing the values of the
-player specific  parameters for the first MCMC iteration.}
+item specific  parameters for the first MCMC iteration.}
 
 \item{n.iter}{Number of MCMC samples to be drawn.}
 
@@ -76,17 +84,17 @@ Default is \code{interactive()} therefore progress is shown if run interactively
 A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.
 }
 \description{
-This function fits the Bradley-Terry model with comparison  and player
+This function fits the Bradley-Terry model with comparison  and item
 specific effects. Each comparison can be assigned a real value to allow for a
 specific effect for the comparison, such as bias, ordering or home/away effect.
-The value of this effect is denoted kappa. The player specific effects are
+The value of this effect is denoted kappa. The item specific effects are
 described through a formula and data.frame containing the value. The function
-places a normal prior distribution on both kappa and the player specific
+places a normal prior distribution on both kappa and the item specific
 parameters beta. This function is for advanced users who would like more control over
 their model inputs, novice users should look to \code{\link[=BBTm]{BBTm()}} for a simpler interface.
 }
 \details{
-If \code{player.prior.var} is omitted, independent and identical
+If \code{item.prior.var} is omitted, independent and identical
 N(0, 5^2) prior distributions are placed on each object quality parameter.
 
 If \code{beta.initial}is omitted, it is set to a vector of zeroes.
