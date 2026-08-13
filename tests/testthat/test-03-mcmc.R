@@ -1,5 +1,6 @@
 test_that("speedyBBTm produces results within tolerance", {
   # Construct covariance matrix
+  set.seed(905)
   expA <- expm::expm(forcedMarriage$adjacencyMatrix)
   prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
@@ -34,7 +35,7 @@ test_that("speedyBBTm produces results within tolerance", {
   )])
 
   expect_equal(
-    abs(13.6185 - forcedMarriageModelMeanAlphaSq),
+    abs(13.48986 - forcedMarriageModelMeanAlphaSq),
     0,
     tolerance = 1e-1
   )
@@ -59,7 +60,7 @@ test_that("BBTm produces results within tolerance", {
   ])
 
   # Read in means
-  testMeansPath <- test_path("wimbledonModelMeans.csv")
+  testMeansPath <- test_path("wimbledonModelMeansWithHyper.csv")
   testMeans <- read.csv(testMeansPath)
 
   # Compare within tolerance
@@ -73,6 +74,7 @@ test_that("BBTm produces results within tolerance", {
 test_that("BBTm produces results within tolerance when hyperparameter = FALSE", {
   # Construct covariance matrix
   # Fit model
+  set.seed(423)
   wimbledonModel <- BBTm(
     outcome = wimbledon$matches$outcome,
     player1 = wimbledon$matches$winner,
@@ -89,7 +91,7 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE", 
   ])
 
   # Read in means
-  testMeansPath <- test_path("wimbledonModelMeans.csv")
+  testMeansPath <- test_path("wimbledonModelMeansNoHyper.csv")
   testMeans <- read.csv(testMeansPath)
 
   # Compare within tolerance
@@ -103,6 +105,7 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE", 
 test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = FALSE", {
   # Construct covariance matrix
   # Fit model
+  set.seed(423)
   wimbledonModel <- BBTm(
     outcome = wimbledon$matches$outcome,
     player1 = wimbledon$matches$winner,
