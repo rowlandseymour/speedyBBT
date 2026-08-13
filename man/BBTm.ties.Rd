@@ -48,7 +48,7 @@ BBTm.ties(
 the first MCMC iteration.}
 
 \item{lambda.initial}{(optional) Vector containing the values of the
-player parameters for the first MCMC iteration.}
+item parameters for the first MCMC iteration.}
 
 \item{n.iter}{Number of MCMC samples to be drawn.}
 
@@ -82,12 +82,12 @@ A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribu
 \description{
 This function uses MCMC to sample from the posterior distribution of the
 Bradley--Terry model with ties.A multivariate normal prior
-distribution on the player quality parameters can be specified. An exponential
+distribution on the item quality parameters can be specified. An exponential
 prior distribution is placed on the tie parameter theta, and a Metropolis-
 Hasting random walk algorithm is used to update this parameter.
 }
 \details{
-If \code{player.prior.var} is omitted, independent and identical
+If \code{item.prior.var} is omitted, independent and identical
 N(0, 5^2) prior distributions are placed on each object quality parameter.
 
 If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
