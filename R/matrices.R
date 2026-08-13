@@ -91,7 +91,7 @@ construct.design.matrix <- function(n.objects) {
 #' X <- construct.generalised.design.matrix(player1, player2, example.formula, example.df)
 #'
 #' @keywords internal
-#'
+#' @noRd
 construct.generalised.design.matrix <- function(
   player1,
   player2,
