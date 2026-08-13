@@ -941,7 +941,7 @@ BBTm.with.formula <- function(
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
     # Output only alpha.sq
 
-    pars.matrix <- cbind(beta.matrix, lambda.matrix, alpha.sq.vector)
+    pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     # Output only kappa
     mcmc_out <- coda::as.mcmc(
       x = pars.matrix[iters_to_save, ],
