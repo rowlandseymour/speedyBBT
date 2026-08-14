@@ -61,7 +61,7 @@ forcedMarriageModel <- speedyBBTm(
   item1 = forcedMarriage$comparisons$win,
   item2 = forcedMarriage$comparisons$lost,
   item.prior.var = prior.var,
-  n.iter = 1000,
+  n.iter = 10000,
   burn.in = 100
 )
 ```
