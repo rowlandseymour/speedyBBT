@@ -1,0 +1,193 @@
+---
+title: "Player and comparison-specific effects, and ties, in Bradley-Terry models"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with speedyBBT}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning = FALSE}
+library(speedyBBT)
+library(coda)
+```
+
+## Bradley-Terry model with player and comparison specific effects
+
+In some studies, there may be specific covariates associated with each player or comparison. We model the probability that player $i$ beat player $j$ in comparison $k$ through
+
+$$ logit(π_{ijk}) = (x_i − x_j)^Tβ + κa_k. $$
+To account for player specific effects in this comparisons, player $i$ is associated with a set of $P$ explanatory variables $x_i = {x_{i1}, \ldots, x_{iP} }, which can be combined with the parameter
+vector $\beta = {β1, \ldots, βP } $through a linear predictor to give the quality for player $i$, $λ_i = x^Ti\beta$.
+The variable $a_k \varepsilon R$ describes the comparison specific effect for comparison $k$. One common
+comparison specific effect is a home/away effect, for example in football leagues where the
+home team has ad advantage. To allow for a home/away effect, we let $a_k = 1$ if player $i$ has
+the advantage in comparison $k$, $a_k = −1$ if player $$j$ has the advantage, and $a_k = 0$ if neither players have an advantage.
+As this model allows for comparison specific effects, we reformulate the likelihood function for the standard model to consider the likelihood contribution for each of the $K$ comparisons.
+The likelihood function is therefore given by
+
+\eqarray{
+    \pi(β, α2, κ | y, a1, . . . , ak) =
+\prod_{k=1}^K \pi_{ijk}^{y_{ijk}} (1 - \pi_{ijk})^{1 - y_{ijk}}
+}
+The prior distributions for this model are similar to the standard model and given by
+\eqnarray{
+α2 ∼ inv − Γ(χ, ψ)
+β ∼ MVN(μ, α2Σ)
+κ ∼ N(0, τ 2)
+z ∼ PG(1, 0)
+}
+
+## 2019 Wimbledon Championship
+We demonstrate the speedyBBT package on data from the 2019 Wimbledon Men’s Singles
+Championship. This consists of 128 players playing 127 matches. We include two covariates
+for each player, their rank in the ATP league table and the number of points received so far
+in the ATP 2019 tour prior to Wimbledon starting. The quality parameter for player i is
+modelled by
+λi = β1xrank,i + β2xpoints,i
+We include a comparison specific effect by setting
+ak =
+(
+0 if match k took place in week 1
+1 if match k took place in week 2
+. This is to allow for player fatigue and wear of the grass courts between weeks. We fit the
+model by calling
+```{r wimbledon}
+data(wimbledon, package = speedyBBT)
+
+# Fit BT model with covariates and comparison-specific effect
+wimbledonModel <- BBTm(
+  outcome = wimbledon$matches$outcome,
+  item1 = wimbledon$matches$winner,
+  item2 = wimbledon$matches$loser,
+  advantage = wimbledon$matches$secondWeek,
+  formula = ~ rank + points,
+  data = wimbledon$players,
+  n.iter = 4000,
+  burn.in = 100
+)
+```
+
+Using a burn-in period of 100 iterations, the posterior distributions for the model parameters
+are given by:
+
+```{r wimbledon_results}
+
+# Posterior histograms (burn-in = 100)
+hist(
+  parameter(wimbledonModel, "kappa"),
+  main = "",
+  xlab = expression(kappa),
+  freq = FALSE,
+  breaks = 14
+)
+```
+
+The posterior median for the effect of a match being in the second week is around 6. 
+```{r wimbledon_results2}
+hist(
+  parameter(wimbledonModel, "beta", indices_to_extract = 1),
+  main = "",
+  xlab = expression(beta[1]),
+  freq = FALSE
+)
+hist(
+  parameter(wimbledonModel, "beta", indices_to_extract = 2),
+  main = "",
+  xlab = expression(beta[2]),
+  freq = FALSE
+)
+hist(
+  0.5 * log(parameter(wimbledonModel, "alpha.sq")),
+  main = "",
+  xlab = expression(log(alpha)),
+  freq = FALSE
+)
+```
+
+
+The function also outputs samples for the player quality parameters λ and we can use these to rank the players. The top 5 players in this tournament, with Djokovic being estimated as the best, is computed by:
+```{r best_players}
+
+par(mfrow = c(2, 2))
+for (i in seq_len(length(wimbledon$players$name))) {
+  hist(
+    parameter(wimbledonModel, "lambda", indices_to_extract = i),
+    main = "",
+    xlab = paste("lambda[", wimbledon$players$name[i], "]", sep = ""),
+    freq = FALSE
+  )
+
+  plot(
+    parameter(wimbledonModel, "lambda", indices_to_extract = i),
+    type = 'l',
+    xlab = "Iteration",
+    ylab = paste("lambda[", wimbledon$players$name[i], "]", sep = "")
+  )
+}
+
+
+# Top 5 players by posterior mean quality
+lambda.mean <- colMeans(parameter(wimbledonModel, "lambda", indices_to_extract = 1:5))
+wimbledonResults <- data.frame(
+  "Name" = tail(wimbledon$players$name[order(lambda.mean)]),
+  "Posterior mean quality" = tail(sort(lambda.mean))
+)
+
+# Not in main branch yet
+#plot_qualities(wimbledonModel, wimbledon$players$name)
+```
+
+```{r tied_model, eval = FALSE}
+
+###############################################################################
+# Section 4.1: Deprivation in Dar es Salaam — Bradley-Terry with Ties
+###############################################################################
+
+# Inspect comparison data
+head(darEsSalaam$comparisons)
+
+# Construct prior covariance matrix
+prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+prior.var <- diag(diag(prior.var)^-0.5) %*%
+  prior.var %*%
+  diag(diag(prior.var)^-0.5)
+
+# Fit tied BT model
+darTiedModel <- BBTm.ties(
+  outcome = darEsSalaam$comparisons$outcome,
+  item1 = darEsSalaam$comparisons$subward1,
+  item2 = darEsSalaam$comparisons$subward2,
+  item.prior.var = prior.var,
+  hyperparameter = TRUE,
+  rw.sd = 0.005,
+  n.iter = 5000,
+  burn.in = 100
+)
+
+# Trace plot and histogram for threshold parameter theta
+par(mfrow = c(1, 2))
+plot(
+  parameter(darTiedModel, "theta"),
+  type = 'l',
+  xlab = "Iteration",
+  ylab = expression(theta)
+)
+hist(
+  parameter(darTiedModel, "theta"),
+  main = "",
+  xlab = expression(theta),
+  freq = FALSE
+)
+
+# Posterior mean and 95% credible interval for theta
+mean(parameter(darTiedModel, "theta"))
+quantile(parameter(darTiedModel, "theta"), c(0.025, 0.975))
+```
