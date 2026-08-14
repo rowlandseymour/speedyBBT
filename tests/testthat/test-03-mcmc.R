@@ -76,8 +76,7 @@ test_that("BBTm.no.formula produces results within tolerance", {
     n.iter = 2000
   )
 
-  lambda_draws <- colMeans(forcedMarriageModel[
-    ,
+  lambda_means <- colMeans(forcedMarriageModel[,
     grep(
       "lambda",
       varnames(forcedMarriageModel)
@@ -89,7 +88,7 @@ test_that("BBTm.no.formula produces results within tolerance", {
   testMeans <- read.csv(testMeansPath)
 
   expect_equal(
-    sum(abs(testMeans - lambda_draws)) /
+    sum(abs(testMeans - lambda_means)) /
       nrow(forcedMarriage$adjacencyMatrix),
     0,
     tolerance = 1e-1
