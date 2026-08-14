@@ -301,6 +301,38 @@ test_that("BBTM.with.formula produces a warning but still runs when you use depr
   )
 })
 
+test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE", {
+  # Construct covariance matrix
+  # Fit model
+  set.seed(423)
+  wimbledonModel <- BBTm(
+    outcome = wimbledon$matches$outcome,
+    item1 = wimbledon$matches$winner,
+    item2 = wimbledon$matches$loser,
+    formula = ~ rank + points,
+    advantage = wimbledon$matches$secondWeek,
+    data = wimbledon$players,
+    n.iter = 4000,
+    hyperparameter = FALSE
+  )
+
+  wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
+    -c(1:50),
+  ])
+
+  # Read in means
+  testMeansPath <- test_path("wimbledonModelMeans.csv")
+  testMeans <- read.csv(testMeansPath)
+
+  # Compare within tolerance
+  expect_equal(
+    sum(abs(testMeans - wimbledonModelMeans)) / 128,
+    0,
+    tolerance = 1
+  )
+})
+
+
 test_that("BBTm.no.formula produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
