@@ -54,12 +54,12 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
       player1 = forcedMarriage$comparisons$win,
       player2 = forcedMarriage$comparisons$lost,
       player.prior.var = prior.var,
-      n.iter = 1,
+      n.iter = 2,
       burn.in = 0
     )
   )
 
-  expect_equal(length(forcedMarriageModel), 2)
+  expect_s3_class(forcedMarriageModel, 'mcmc')
 })
 
 
@@ -183,6 +183,7 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
     tolerance = 1
   )
 })
+
 
 test_that("BBTm.no.formula produces results within tolerance", {
   # Construct covariance matrix
