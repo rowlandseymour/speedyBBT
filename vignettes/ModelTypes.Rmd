@@ -33,34 +33,33 @@ the advantage in comparison $k$, $a_k = −1$ if player $$j$ has the advantage, 
 As this model allows for comparison specific effects, we reformulate the likelihood function for the standard model to consider the likelihood contribution for each of the $K$ comparisons.
 The likelihood function is therefore given by
 
-\eqarray{
-    \pi(β, α2, κ | y, a1, . . . , ak) =
+$$
+\pi(β, α2, κ | y, a1, . . . , ak) =
 \prod_{k=1}^K \pi_{ijk}^{y_{ijk}} (1 - \pi_{ijk})^{1 - y_{ijk}}
-}
+$$
+
 The prior distributions for this model are similar to the standard model and given by
-\eqnarray{
+
+\begin{eqnarray}
 α2 ∼ inv − Γ(χ, ψ)
 β ∼ MVN(μ, α2Σ)
 κ ∼ N(0, τ 2)
 z ∼ PG(1, 0)
-}
+\end{eqnarray}
 
 ## 2019 Wimbledon Championship
-We demonstrate the speedyBBT package on data from the 2019 Wimbledon Men’s Singles
-Championship. This consists of 128 players playing 127 matches. We include two covariates
-for each player, their rank in the ATP league table and the number of points received so far
-in the ATP 2019 tour prior to Wimbledon starting. The quality parameter for player i is
-modelled by
-λi = β1xrank,i + β2xpoints,i
-We include a comparison specific effect by setting
-ak =
-(
-0 if match k took place in week 1
-1 if match k took place in week 2
-. This is to allow for player fatigue and wear of the grass courts between weeks. We fit the
-model by calling
+
+We demonstrate the `speedyBBT` package on data from the 2019 Wimbledon Men’s Singles Championship. This consists of 128 players playing 127 matches. We include two covariates for each player, their rank in the ATP league table and the number of points received so far in the ATP 2019 tour prior to Wimbledon starting. The quality parameter for player $i$ is
+modelled by $$\lambda_i = \beta_1x_{rank,i} + \beta_2x_{points,i}$$ We include a comparison specific effect by setting
+$$a_k = \begin{cases}
+0 & \text{if match } k \text{ took place in week 1} \\
+1 & \text{if match } k \text{ took place in week 2}
+\end{cases}$$
+
+This is to allow for player fatigue and wear of the grass courts between weeks. We fit the model by calling
+
 ```{r wimbledon}
-data(wimbledon, package = speedyBBT)
+data(wimbledon, package = "speedyBBT")
 
 # Fit BT model with covariates and comparison-specific effect
 wimbledonModel <- BBTm(
@@ -75,8 +74,7 @@ wimbledonModel <- BBTm(
 )
 ```
 
-Using a burn-in period of 100 iterations, the posterior distributions for the model parameters
-are given by:
+Using a burn-in period of 100 iterations, the posterior distributions for the model parameters are given by:
 
 ```{r wimbledon_results}
 
@@ -91,6 +89,7 @@ hist(
 ```
 
 The posterior median for the effect of a match being in the second week is around 6. 
+
 ```{r wimbledon_results2}
 hist(
   parameter(wimbledonModel, "beta", indices_to_extract = 1),
@@ -114,6 +113,7 @@ hist(
 
 
 The function also outputs samples for the player quality parameters λ and we can use these to rank the players. The top 5 players in this tournament, with Djokovic being estimated as the best, is computed by:
+
 ```{r best_players}
 
 par(mfrow = c(2, 2))
@@ -145,49 +145,34 @@ wimbledonResults <- data.frame(
 #plot_qualities(wimbledonModel, wimbledon$players$name)
 ```
 
-```{r tied_model, eval = FALSE}
+## Bradley–Terry with Ties
+Many comparative judgement studies feature tied comparisons. This could be a sporting league where matches result in ties, or social studies where judges are say the players have approximately equal qualities. We follow Caron and Doucet (2012) and introduce a threshold
+parameter $θ ≥ 0$, the probability of player $i$ beating $j$ is specified through
+$$logit(π_{ij}) = λ_i − λ_j + θ$$
+Small values of $θ$ means that there is a high threshold in the relative difference resulting in a tie. This yields the probabilities of a win and a tie as:
 
-###############################################################################
-# Section 4.1: Deprivation in Dar es Salaam — Bradley-Terry with Ties
-###############################################################################
+\begin{eqnarray}
+π_{ij} &=& \frac{e^{\lambda_i}}{e^{\lambda_i} + e^{\lambda_j} + e^{\theta}} \\
+π_{i=j} &=& \frac{(e^{2\theta} - 1)e^{\lambda_i + \lambda_j}}{(e^{\lambda_i} + e^{\lambda_j} + e^{\theta})(e^{\lambda_i + \theta} + e^{\lambda_j})}
+\end{eqnarray}
 
-# Inspect comparison data
-head(darEsSalaam$comparisons)
+As in the other routines, it places a multivariate normal prior distribution on the player quality
+parameters $λ$ and an inverse-gamma prior distribution on the variance hyperparameter of the
+multivariate normal distribution. We place an exponential distribution on the threshold
+parameter $θ$.
+$$α2 ∼ inv − Γ(χ, ψ)$$
+$$λ ∼ MVN(μ, Σ)$$
+$$z ∼ PG(1, 0)$$
+$$θ ∼ Exp(τ )$$
 
-# Construct prior covariance matrix
-prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
-prior.var <- diag(diag(prior.var)^-0.5) %*%
-  prior.var %*%
-  diag(diag(prior.var)^-0.5)
+In the MCMC algorithm, all parameters except for $θ$ are updated by drawing from their full conditional distribution. The the threshold parameter $θ$ is updated using a Metropolis-Hastings random walk algorithm, where new values of $θ$ are proposed from a normal distribution with mean the current value of theta and variance $ν^2$. A full description of the underlying
+statistical framework can be found in Seymour and Hernandez (2024).
 
-# Fit tied BT model
-darTiedModel <- BBTm.ties(
-  outcome = darEsSalaam$comparisons$outcome,
-  item1 = darEsSalaam$comparisons$subward1,
-  item2 = darEsSalaam$comparisons$subward2,
-  item.prior.var = prior.var,
-  hyperparameter = TRUE,
-  rw.sd = 0.005,
-  n.iter = 5000,
-  burn.in = 100
-)
+```{r tied_model}
 
-# Trace plot and histogram for threshold parameter theta
-par(mfrow = c(1, 2))
-plot(
-  parameter(darTiedModel, "theta"),
-  type = 'l',
-  xlab = "Iteration",
-  ylab = expression(theta)
-)
-hist(
-  parameter(darTiedModel, "theta"),
-  main = "",
-  xlab = expression(theta),
-  freq = FALSE
-)
-
-# Posterior mean and 95% credible interval for theta
-mean(parameter(darTiedModel, "theta"))
-quantile(parameter(darTiedModel, "theta"), c(0.025, 0.975))
 ```
+## References
+
+Caron F, Doucet A (2012). “Efficient Bayesian Inference for Generalized Bradley–Terry Models.” Journal of Computational and Graphical Statistics, 21(1), 174–196. doi:10.1080/10618600.2012.638220.
+
+Seymour RG, Hernandez F (2024). “Scalable Bayesian Inference for  Bradley–Terry Models with Ties: An Application to Honour Based Abuse.” 2405.13399, URL https://arxiv.org/abs/2405.13399. 
