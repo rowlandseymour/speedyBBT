@@ -54,12 +54,12 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
       player1 = forcedMarriage$comparisons$win,
       player2 = forcedMarriage$comparisons$lost,
       player.prior.var = prior.var,
-      n.iter = 1,
+      n.iter = 2,
       burn.in = 0
     )
   )
 
-  expect_equal(length(forcedMarriageModel), 2)
+  expect_s3_class(forcedMarriageModel, 'mcmc')
 })
 
 
@@ -148,6 +148,38 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
     tolerance = 1e-1
   )
 })
+
+test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE", {
+  # Construct covariance matrix
+  # Fit model
+  set.seed(423)
+  wimbledonModel <- BBTm(
+    outcome = wimbledon$matches$outcome,
+    item1 = wimbledon$matches$winner,
+    item2 = wimbledon$matches$loser,
+    formula = ~ rank + points,
+    advantage = wimbledon$matches$secondWeek,
+    data = wimbledon$players,
+    n.iter = 4000,
+    hyperparameter = FALSE
+  )
+
+  wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
+    -c(1:50),
+  ])
+
+  # Read in means
+  testMeansPath <- test_path("wimbledonModelMeans.csv")
+  testMeans <- read.csv(testMeansPath)
+
+  # Compare within tolerance
+  expect_equal(
+    sum(abs(testMeans - wimbledonModelMeans)) / 128,
+    0,
+    tolerance = 1
+  )
+})
+
 
 test_that("BBTm.no.formula produces results within tolerance", {
   # Construct covariance matrix
