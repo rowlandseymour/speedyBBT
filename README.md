@@ -55,9 +55,9 @@ prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
     
 #Fit model
 forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
-                                  player1 = forcedMarriage$comparisons$win, 
-                                  player2 = forcedMarriage$comparisons$lost, 
-                                  player.prior.var = prior.var)
+                                  item1 = forcedMarriage$comparisons$win, 
+                                  item2 = forcedMarriage$comparisons$lost, 
+                                  item.prior.var = prior.var)
 forcedMarriageModel$lambda  <- forcedMarriageModel$lambda - rowMeans(forcedMarriageModel$lambda)
 
 #View Trace Plots

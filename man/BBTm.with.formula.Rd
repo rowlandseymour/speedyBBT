@@ -6,9 +6,6 @@
 \usage{
 BBTm.with.formula(
   outcome,
-  player1 = deprecated(),
-  player2 = deprecated(),
-  player.prior.var = deprecated(),
   item1,
   item2,
   formula = NULL,
@@ -17,6 +14,9 @@ BBTm.with.formula(
   kappa.initial = NULL,
   kappa.var = NULL,
   item.prior.var = NULL,
+  player1 = deprecated(),
+  player2 = deprecated(),
+  player.prior.var = deprecated(),
   beta.initial = NULL,
   n.iter = 1000,
   hyperparameter = TRUE,
@@ -30,12 +30,6 @@ BBTm.with.formula(
 \arguments{
 \item{outcome}{Vector of outcomes. 1 if item2 is the winner,
 0 if item1 is the winner.}
-
-\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player1 argument is no longer supported, please use item1}
-
-\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player2 argument is no longer supported, please use item2 instead}
-
-\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player.prior.var argument is no longer supported, please use item.prior.var instead}
 
 \item{item1}{Vector of first items.}
 
@@ -57,6 +51,12 @@ value kappa.}
 value kappa.}
 
 \item{item.prior.var}{(optional) A matrix specifying the prior covariance of the items with one another.}
+
+\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player1 argument is no longer supported, please use item1}
+
+\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player2 argument is no longer supported, please use item2 instead}
+
+\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player.prior.var argument is no longer supported, please use item.prior.var instead}
 
 \item{beta.initial}{(optional) Vector containing the values of the
 item specific  parameters for the first MCMC iteration.}
