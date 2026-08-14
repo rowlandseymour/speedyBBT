@@ -30,9 +30,9 @@ prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.va
 # - you should use more iterations for reliable posterior estimates
 forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
-  player1 = forcedMarriage$comparisons$win,
-  player2 = forcedMarriage$comparisons$lost,
-  player.prior.var = prior.var, n.iter = 3, burn.in = 0
+  item1 = forcedMarriage$comparisons$win,
+  item2 = forcedMarriage$comparisons$lost,
+  item.prior.var = prior.var, n.iter = 3, burn.in = 0
 )
 
 parameter(forcedMarriageModel, "lambda", c(10, 20, 30, 40))
