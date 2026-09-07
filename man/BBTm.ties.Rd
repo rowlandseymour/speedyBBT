@@ -65,7 +65,8 @@ distribution placed on theta.}
 \item{n.thin}{(optional) The number of iterations to thin the MCMC samples by. Default is 1.}
 
 \item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
-Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in non-interactive contexts.}
+Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in
+non-interactive contexts.}
 }
 \value{
 A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution
@@ -107,7 +108,8 @@ darTiedModel <- BBTm.ties(
 )
 
 # Get posterior means
-darTiedModelLambda <- parameter(darTiedModel, "lambda") - colMeans(parameter(darTiedModel, "lambda"))
+darTiedModelLambda <- parameter(darTiedModel, "lambda") -
+  colMeans(parameter(darTiedModel, "lambda"))
 lambda.mean <- rowMeans(darTiedModelLambda)
 
 # Generate trace plots

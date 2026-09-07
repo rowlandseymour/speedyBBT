@@ -29,7 +29,8 @@
 #' @param burn.in (optional) The number of iterations to discard as burn-in. Default is 100.
 #' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
 #' @param verbose (optional) A boolean indicating if progress should be printed to the console.
-#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in
+#' non-interactive contexts.
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
 #' N(0, 1^2) prior distributions are placed on each object quality parameter.
@@ -62,7 +63,9 @@
 #'
 #' # Plot results
 #'
-#' plot(forcedMarriageModel[, "lambda[1]"], xlab = "Iteration", ylab = expression(lambda[i]))
+#' plot(forcedMarriageModel[, "lambda[1]"],
+#'   xlab = "Iteration", ylab = expression(lambda[i])
+#' )
 #' }
 #' @export
 #'
@@ -235,7 +238,8 @@ speedyBBTm <- function(
 #' @param burn.in (optional) The number of iterations to use as a burn-in period. Default is 100.
 #' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
 #' @param verbose (optional) A boolean indicating if progress should be printed to the console.
-#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in
+#' non-interactive contexts.
 
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
@@ -271,7 +275,8 @@ speedyBBTm <- function(
 #' )
 #'
 #' # Get posterior means
-#' darTiedModelLambda <- parameter(darTiedModel, "lambda") - colMeans(parameter(darTiedModel, "lambda"))
+#' darTiedModelLambda <- parameter(darTiedModel, "lambda") -
+#'   colMeans(parameter(darTiedModel, "lambda"))
 #' lambda.mean <- rowMeans(darTiedModelLambda)
 #'
 #' # Generate trace plots
@@ -507,7 +512,8 @@ BBTm.ties <- function(
 #' @param burn.in Number of iterations to use as a burn-in period. Default is 100.
 #' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
 #' @param verbose (optional) A boolean indicating if progress should be printed to the console.
-#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled
+#' in non-interactive contexts.
 
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
@@ -755,7 +761,8 @@ BBTm.no.formula <- function(
 #' @param burn.in The number of iterations to use for a burn.in, default is 100.
 #' @param n.thin (optional) The number of iterations to thin the MCMC samples by. Default is 1.
 #' @param verbose (optional) A boolean indicating if progress should be printed to the console.
-#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in non-interactive contexts.
+#' Default is `interactive()` therefore progress is shown if run interactively, but disabled in
+#' non-interactive contexts.
 
 #'
 #' @details If `player.prior.var` is omitted, independent and identical
@@ -1021,7 +1028,9 @@ BBTm.with.formula <- function(
 #' )
 #'
 #' # Plot posterior distributions
-#' hist(parameter(wimbledonModel, "kappa"), main = "", xlab = expression(kappa), freq = FALSE)
+#' hist(parameter(wimbledonModel, "kappa"),
+#'   main = "", xlab = expression(kappa), freq = FALSE
+#' )
 #' }
 #' @export
 #'

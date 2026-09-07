@@ -54,7 +54,8 @@ hyperparameter. Default is 0.01.}
 \item{n.thin}{(optional) The number of iterations to thin the MCMC samples by. Default is 1.}
 
 \item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
-Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in non-interactive contexts.}
+Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in
+non-interactive contexts.}
 }
 \value{
 An \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.
@@ -93,6 +94,8 @@ forcedMarriageModel <- speedyBBTm(
 
 # Plot results
 
-plot(forcedMarriageModel[, "lambda[1]"], xlab = "Iteration", ylab = expression(lambda[i]))
+plot(forcedMarriageModel[, "lambda[1]"],
+  xlab = "Iteration", ylab = expression(lambda[i])
+)
 }
 }

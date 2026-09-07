@@ -22,9 +22,9 @@ allocating a winner. The columns are:
 \describe{
 \item{subwardName}{The name of the subward.}
 \item{geometry}{A list containing the shapefile of the subward.}
+}
 \item{adjacencyMatrix}{An adjacency matrix of the subwards formed from the shapefiles.This considers subwards as nodes and places edges between adjacent subwards.
 Two additional edges have been manually included to allow for crossings of the Kurasini creek.}
-}
 }
 }
 }
