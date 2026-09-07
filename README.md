@@ -36,7 +36,8 @@ Install the released version from CRAN:
 
 ```r
 install.packages("speedyBBT")
-#devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) #for development version
+# for development version
+# devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) 
 ```
 
 ## Usage
