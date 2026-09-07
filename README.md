@@ -6,7 +6,7 @@
 [![Codecov test coverage](https://codecov.io/gh/rowlandseymour/speedyBBT/graph/badge.svg)](https://app.codecov.io/gh/rowlandseymour/speedyBBT)
 <!-- badges: end -->
 
-# Overview
+## Overview
 
 `speedyBBT` is an R package for fitting Bradley-Terry models to pairwise comparison data using fast, fully Bayesian MCMC. Given a set of pairwise judgements -- which of two wards has the higher rate of forced marriage, which of two tennis players won a match, which of two neighbourhoods looks more deprived -- `speedyBBT` estimates a quality parameter for every item being compared, along with full posterior uncertainty.
 
