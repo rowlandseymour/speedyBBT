@@ -1,7 +1,7 @@
 #' Plot quality parameter posteriors
 #'
 #' Generates a plot of the posterior mean and 95% credible interval
-#' of the quality parameter estimate.
+#' of the quality parameter estimates.
 #'
 #' @param player_names A character vector containing the names of the different items (or players or wards) being compared.
 #' @param model_output The ["mcmc"][coda::mcmc] model output object containing the draws.
