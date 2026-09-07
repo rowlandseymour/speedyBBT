@@ -14,21 +14,23 @@
 #'   to a judgement made by a single judge. This differs from the data
 #'   in the `BBT` package as it explicitly includes ties rather than randomly
 #'   allocating a winner. The columns are:
-#'   \describe{
+#'    \describe{
 #'      \item{outcome}{The outcome of the comparison. 1 if item 2 is the winner, 0 if item 1 is the winner, and 2 if it was a tie (although there are no instances of this happening).}
 #'      \item{item1}{The first item in the comparison.}
 #'      \item{item2}{The second item in the comparison.}
 #'      \item{sex}{The sex of the judge making the comparison.}
 #'    }
-#' }
+#'   }
 #'   \item{wards}{A dataframe containing the names and shapefiles of the subwards with columns:
 #'     \describe{
 #'       \item{subwardName}{The name of the subward.}
 #'       \item{geometry}{A list containing the shapefile of the subward.}
-#'      }
-#'   \item{adjacencyMatrix}{An adjacency matrix of the subwards formed from the shapefiles.This considers subwards as nodes and places edges between adjacent subwards.
-#' Two additional edges have been manually included to allow for crossings of the Kurasini creek.}
+#'     }
 #'   }
+#'   \item{adjacencyMatrix}{An adjacency matrix of the subwards formed from
+#'   the shapefiles. This considers subwards as nodes and places edges between
+#'   adjacent subwards. Two additional edges have been manually included to
+#'   allow for crossings of the Kurasini creek.}
 #' }
 #'
 #' @keywords datasets
