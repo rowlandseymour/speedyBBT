@@ -60,7 +60,7 @@
 #' \describe{
 #'   \item{matches}{Each row of the matchs dataframe corresponds to a match. The columns are:
 #'     \describe{
-#'       \item{winner}{The `id`` of the winner of the match.}
+#'       \item{winner}{The `id` of the winner of the match.}
 #'       \item{loser}{The `id` of the loser of the match.}
 #'       \item{secondWeek}{A boolean indicating if the match was played in the second week of the tournament.}
 #'       \item{outcome}{The outcome of the match. 1 if the winner is item 2, 0 if the winner is item 1.}
