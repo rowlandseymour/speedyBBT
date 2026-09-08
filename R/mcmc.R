@@ -523,7 +523,7 @@ BBTm.ties <- function(
 #'
 #' If `lambda.var` is omitted, it is set to N(0, 5^2).
 #'
-#' #' If `kappa.var` is omitted, it is set to N(0, 5^2), if `kappa.initial` is omitted
+#' If `kappa.var` is omitted, it is set to N(0, 5^2), if `kappa.initial` is omitted
 #' it is set to 0.5.
 #'
 #' @return  A ["mcmc"][coda::mcmc] object containing samples from the posterior distribution
