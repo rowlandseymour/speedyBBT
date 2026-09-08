@@ -2,15 +2,17 @@ test_that("BBTm.ties produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
 
-  sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
-  sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
+  prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+  prior.var <- diag(diag(prior.var)^-0.5) %*%
+    prior.var %*%
+    diag(diag(prior.var)^-0.5)
   n.objects <- nrow(darEsSalaam$adjacencyMatrix)
   darTiedModel <- BBTm.ties(
     n.objects = n.objects,
     outcome = darEsSalaam$comparisons$outcome,
     player1 = darEsSalaam$comparisons$subward1,
     player2 = darEsSalaam$comparisons$subward2,
-    player.prior.var = sigma,
+    player.prior.var = prior.var,
     hyperparameter = TRUE,
     rw.sd = 0.005,
     n.iter = 400

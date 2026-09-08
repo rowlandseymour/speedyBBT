@@ -19,7 +19,9 @@ BBTm.with.formula(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 )
 }
 \arguments{
@@ -33,7 +35,7 @@ BBTm.with.formula(
 \item{formula}{Formula with no left-hand-side specifying the player specific
 effects.}
 
-\item{data}{Data.frame with a row corresponding to each player and  column corresponding
+\item{data}{Data frame with a row corresponding to each player and a column corresponding
 to each covariate.}
 
 \item{advantage}{(optional) A vector with the value of the comparisons specific
@@ -64,9 +66,15 @@ hyperparameter.}
 hyperparameter.}
 
 \item{burn.in}{The number of iterations to use for a burn.in, default is 100.}
+
+\item{n.thin}{(optional) The number of iterations to thin the MCMC samples by. Default is 1.}
+
+\item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
+Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in
+non-interactive contexts.}
 }
 \value{
-A \code{coda::mcmc} object containing samples from the posterior distribution.
+A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.
 }
 \description{
 This function fits the Bradley-Terry model with comparison  and player
@@ -75,7 +83,8 @@ specific effect for the comparison, such as bias, ordering or home/away effect.
 The value of this effect is denoted kappa. The player specific effects are
 described through a formula and data.frame containing the value. The function
 places a normal prior distribution on both kappa and the player specific
-parameters beta.
+parameters beta. This function is for advanced users who would like more control over
+their model inputs, novice users should look to \code{\link[=BBTm]{BBTm()}} for a simpler interface.
 }
 \details{
 If \code{player.prior.var} is omitted, independent and identical

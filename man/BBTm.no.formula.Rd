@@ -17,7 +17,9 @@ BBTm.no.formula(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 )
 }
 \arguments{
@@ -55,9 +57,15 @@ hyperparameter.}
 hyperparameter.}
 
 \item{burn.in}{Number of iterations to use as a burn-in period. Default is 100.}
+
+\item{n.thin}{(optional) The number of iterations to thin the MCMC samples by. Default is 1.}
+
+\item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
+Default is \code{interactive()} therefore progress is shown if run interactively, but disabled
+in non-interactive contexts.}
 }
 \value{
-A \code{coda::mcmc} object containing samples from the posterior distribution
+A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution
 }
 \description{
 This function fits the Bradley-Terry model with a comparison specific effect.

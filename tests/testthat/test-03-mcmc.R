@@ -1,14 +1,14 @@
 test_that("speedyBBTm produces results within tolerance", {
   # Construct covariance matrix
   expA <- expm::expm(forcedMarriage$adjacencyMatrix)
-  sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
   # Fit model
   forcedMarriageModel <- speedyBBTm(
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
     player1 = forcedMarriage$comparisons$win,
     player2 = forcedMarriage$comparisons$lost,
-    player.prior.var = sigma,
+    player.prior.var = prior.var,
     n.iter = 2000
   )
 
@@ -65,32 +65,31 @@ test_that("BBTm.no.formula produces results within tolerance", {
   set.seed(332)
   # Construct covariance matrix
   expA <- expm::expm(forcedMarriage$adjacencyMatrix)
-  sigma <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
   # Fit model
   forcedMarriageModel <- BBTm(
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
     player1 = forcedMarriage$comparisons$win,
     player2 = forcedMarriage$comparisons$lost,
-    player.prior.var = sigma,
+    player.prior.var = prior.var,
     n.iter = 2000
   )
 
-  lambda_draws <- forcedMarriageModel[
-    -c(1:100),
+  lambda_means <- colMeans(forcedMarriageModel[
+    ,
     grep(
       "lambda",
       varnames(forcedMarriageModel)
     )
-  ]
-  forcedMarriageModelMeans <- lambda_draws - colMeans(lambda_draws)
+  ])
 
   # Read in means
   testMeansPath <- test_path("forcedMarriageModelMeansNoFormula.csv")
   testMeans <- read.csv(testMeansPath)
 
   expect_equal(
-    sum(abs(testMeans - forcedMarriageModelMeans)) /
+    sum(abs(testMeans - lambda_means)) /
       nrow(forcedMarriage$adjacencyMatrix),
     0,
     tolerance = 1e-1
@@ -101,15 +100,17 @@ test_that("BBTm.ties produces expected output from a single iteration", {
   # Construct covariance matrix
   # Fit model
   set.seed(123)
-  sigma <- expm::expm(darEsSalaam$adjacencyMatrix)
-  sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
+  prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+  prior.var <- diag(diag(prior.var)^-0.5) %*%
+    prior.var %*%
+    diag(diag(prior.var)^-0.5)
   n.objects <- nrow(darEsSalaam$adjacencyMatrix)
   darTiedModel <- BBTm.ties(
     n.objects = n.objects,
     outcome = darEsSalaam$comparisons$outcome,
     player1 = darEsSalaam$comparisons$subward1,
     player2 = darEsSalaam$comparisons$subward2,
-    player.prior.var = sigma,
+    player.prior.var = prior.var,
     hyperparameter = TRUE,
     rw.sd = 0.005,
     burn.in = 0,
