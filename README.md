@@ -1,3 +1,7 @@
+<!-- QUALITY_BADGE_START -->
+[![Software quality](https://img.shields.io/badge/FAIRness-41%25-orange "score: 41% | passed: 17 | failed: 24 | errors: 1")](RSFC_REPORT.md)
+<!-- QUALITY_BADGE_END -->
+
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
