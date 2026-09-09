@@ -5,14 +5,21 @@
 \alias{oxon.comparisons}
 \title{Honour Based Abuse in Oxfordshire}
 \format{
-A data frame with 1,167 comparisons. Each comparison has an ID, the ID
-of the user who made the comparisons, the IDs of the two areas involved in the
-comparisons, the ID of the selected area, and the state of the outcome. If the
-comparison was tied, the ID of the selected area is NA
-
-@keywords datasets
-
-@source  The data was collected following ethical approval the University
+A data frame with 1,167 comparisons.
+\describe{
+\item{comparison_id}{The ID of the comparison.}
+\item{user_id}{The ID
+of the user who made the comparisons.}
+\item{item_1_id}{The ID of the first area involved in the
+comparison.}
+\item{item_2_id}{The ID of the second area involved in the comparison.}
+\item{selected_item_id}{The ID of the selected area. If the
+comparison was tied, the \code{selected_item_id} is NA.}
+\item{state}{The state of the outcome. \code{selected} indicates that a judgment was made, \code{skipped} indicates that the comparison was skipped, and \code{tied} indicates that the comparison was tied.}
+}
+}
+\source{
+The data was collected following ethical approval the University
 of Birmingham's Science, Engineering and Maths Ethics Committee.
 }
 \usage{

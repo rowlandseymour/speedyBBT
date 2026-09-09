@@ -17,7 +17,9 @@ BBTm.no.formula(
   hyperparameter = TRUE,
   chi = 0.01,
   psi = 0.01,
-  burn.in = 100
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 )
 }
 \arguments{
@@ -38,8 +40,9 @@ player parameters for the first MCMC iteration.}
 effect for each comparison.}
 
 \item{kappa.initial}{(optional) An initial value for the comparison specific
-value kappa.
-@param kappa.var (optional) The prior variance of the comparison specific
+value kappa.}
+
+\item{kappa.var}{(optional) The prior variance of the comparison specific
 value kappa.}
 
 \item{n.iter}{Number of MCMC samples to be drawn.}
@@ -55,16 +58,22 @@ hyperparameter.}
 hyperparameter.}
 
 \item{burn.in}{Number of iterations to use as a burn-in period. Default is 100.}
+
+\item{n.thin}{(optional) The number of iterations to thin the MCMC samples by. Default is 1.}
+
+\item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
+Default is \code{interactive()} therefore progress is shown if run interactively, but disabled
+in non-interactive contexts.}
 }
 \value{
-A \code{coda::mcmc} object containing samples from the posterior distribution
+A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution
 }
 \description{
 This function fits the Bradley-Terry model with a comparison specific effect.
 Each comparison can be assigned a real value to allow for a specific effect
 for the comparison, such as bias, ordering or home/away effect. The value of
-this effect is denoted $kappa$. The function places a normal prior distribution
-on both kappa and the player quality parameters lambda.
+this effect is denoted \eqn{\kappa}. The function places a normal prior distribution
+on both kappa and the player quality parameters \eqn{\lambda}.
 }
 \details{
 If \code{player.prior.var} is omitted, independent and identical
@@ -73,5 +82,8 @@ N(0, 5^2) prior distributions are placed on each object quality parameter.
 If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 
 If \code{lambda.var} is omitted, it is set to N(0, 5^2).
+
+If \code{kappa.var} is omitted, it is set to N(0, 5^2), if \code{kappa.initial} is omitted
+it is set to 0.5.
 }
 \keyword{internal}

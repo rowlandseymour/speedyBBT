@@ -6,7 +6,17 @@ Authors@R:
            family = "Seymour",
            role = c("aut", "cre", "cph"),
            email = "r.g.seymour@bham.ac.uk",
-           comment = c(ORCID = "0000-0002-8739-3921")))
+           comment = c(ORCID = "0000-0002-8739-3921")),
+      person(given = "Christine",
+            family = "Stawitz",
+            role = "aut",
+            email = "c.c.stawitz@bham.ac.uk",
+            comment = c(ORCID = "0000-0003-3122-4501")),
+      person(given = "Heather", 
+             family = "Turner", 
+             role = "aut",
+             email = "",
+             comment = c(ORCID = "0000-0002-1256-3375")))
 Description: A suite of functions that allow a full, fast, and efficient Bayesian treatment of the Bradley--Terry model. 
              Prior assumptions about the model parameters can be encoded through a multivariate normal prior distribution. 
              Inference is performed using a latent variable representation of the model. 
@@ -31,7 +41,7 @@ Suggests:
 Depends: 
     R (>= 2.10)
 Config/testthat/edition: 3
-URL: https://github.com/rowlandseymour/speedyBBT
+URL: https://www.rowlandseymour.com/speedyBBT, https://github.com/rowlandseymour/speedyBBT
 BugReports: https://github.com/rowlandseymour/speedyBBT/issues
 Config/roxygen2/version: 8.0.0
 VignetteBuilder: knitr

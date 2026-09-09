@@ -10,8 +10,8 @@
 #' @export
 #' @examples
 #'
-#' sigma <- expm::expm(forcedMarriage$adjacencyMatrix)
-#' sigma <- diag(diag(sigma)^-0.5) %*% sigma %*% diag(diag(sigma)^-0.5)
+#' prior.var <- expm::expm(forcedMarriage$adjacencyMatrix)
+#' prior.var <- diag(diag(prior.var)^-0.5) %*% prior.var %*% diag(diag(prior.var)^-0.5)
 #'
 #' # Fit model
 #' # Using `n.iter = 3, burn.in = 0` to reduce runtime
@@ -20,7 +20,7 @@
 #'   outcome = rep(1, length(forcedMarriage$comparisons$win)),
 #'   player1 = forcedMarriage$comparisons$win,
 #'   player2 = forcedMarriage$comparisons$lost,
-#'   player.prior.var = sigma, n.iter = 3, burn.in = 0
+#'   player.prior.var = prior.var, n.iter = 3, burn.in = 0
 #' )
 #'
 #' parameter(forcedMarriageModel, "lambda", c(10, 20, 30, 40))

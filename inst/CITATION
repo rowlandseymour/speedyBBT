@@ -1,0 +1,34 @@
+## R package reference generated from DESCRIPTION metadata
+citation(auto = meta)
+
+
+bibentry(
+    bibtype = "Article",
+    title = "Comparative judgement modelling to map forced marriage at local levels",
+    volume = "19",
+    ISSN = "1932-6157",
+    DOI = "10.1214/24-aoas1966",
+    number = 1,
+    journal = "The Annals of Applied Statistics",
+    publisher = "Institute of Mathematical Statistics",
+    author = as.person("Rowland G. Seymour [aut], Albert Nyarko-Agyei [aut], 
+    Helen McCabe [aut], Katie Severn [aut], David Sirl [aut], Theodore Kypraios [aut],
+    Adam Taylor [aut]"),
+    year = 2025,
+    month = "Mar"
+)
+
+bibentry(
+    bibtype = "Article",
+    title = "Scalable Bayesian inference for Bradley–Terry models with ties: an application to honour based abuse",
+    volume = 52,
+    ISSN = "1360-0532",
+    DOI = "10.1080/02664763.2024.2436608",
+    number = 9,
+    journal = "Journal of Applied Statistics",
+    publisher = "Informa UK Limited",
+    author = as.person("Rowland G. Seymour [aut], Fabian Hernandez [aut]"),
+    year = 2024,
+    month = "Dec",
+    pages = "1695–1712"
+)

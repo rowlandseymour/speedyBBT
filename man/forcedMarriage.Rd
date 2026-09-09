@@ -5,19 +5,30 @@
 \alias{forcedMarriage}
 \title{Forced Marriage in Nottinghamshire}
 \format{
-A list with three elements. The first is c dataframe containing 1846 rows and 4 columns.
-Each row corresponds to a judgement made by a single judge. Columns 3 and 4 shows which of the
-pair of wards was judged to have relatively higher and low forced marriage risk level, column 1
-shows which judge the comparison belong to, and column 2 shows what time they made the decision.
-
-The second is the a dataframe describing each ward and its geometry.
-
-The final element is an adjacency matrix, where the wards are nodes and edges are placed between
-adjacent wards.
-
-@keywords datasets
-
-@source The data was collected using support from the Engineering and Physical Sciences Research
+A list with three elements.
+\describe{
+\item{comparisons}{A dataframe containing the comparisons. Each row corresponds to a judgement made by a single judge. The columns are:
+\describe{
+\item{user}{The ID of the judge.}
+\item{time}{The time the comparison was made.}
+\item{win}{The ID of the ward that was judged to have a higher risk of forced marriage.}
+\item{lost}{The ID of the ward that was judged to have a lower risk of forced marriage.}
+}
+}
+\item{wards}{A dataframe containing information about each of the wards. The columns are:
+\describe{
+\item{NAME}{The name of the ward.}
+\item{AREA_CODE}{The code of the ward.}
+\item{DESCRIPTIO}{The electoral division of the ward.}
+\item{FILE_NAME}{The name of the file containing the shapefile for the ward.}
+}
+}
+\item{adjacencyMatrix}{The final element is an adjacency matrix, where the wards are nodes and edges are placed between
+adjacent wards.}
+}
+}
+\source{
+The data was collected using support from the Engineering and Physical Sciences Research
 Council (grant reference EP/R513283/1), the Economic and Social Sciences Research Council (ES/V015370/1)
 and the Research England Policy Support Fund. The data was collected following ethical approval
 from the University of Nottingham School of Politics and International Relations ethics committee.

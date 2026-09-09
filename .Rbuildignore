@@ -6,3 +6,9 @@
 ^\.travis\.yml$
 ^\.github$
 ^cran-comments\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^README\.Rmd$
+^citation\.cff$
+^codecov\.yml$
