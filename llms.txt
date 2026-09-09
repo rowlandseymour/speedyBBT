@@ -1,5 +1,8 @@
 # speedyBBT
 
+[![Software
+quality](https://img.shields.io/badge/FAIRness-41%25-orange "score: 41% | passed: 17 | failed: 24 | errors: 1")](RSFC_REPORT.md)
+
 ## Overview
 
 `speedyBBT` is an R package for fitting Bradley-Terry models to pairwise
