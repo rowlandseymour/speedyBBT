@@ -43,7 +43,7 @@ Hasting random walk algorithm is used to update this parameter."><meta property=
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Bayesian inference for the Bradley-Terry model with ties</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rowlandseymour/speedyBBT/blob/add_pkgdown/R/mcmc.R" class="external-link"><code>R/mcmc.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rowlandseymour/speedyBBT/blob/main/R/mcmc.R" class="external-link"><code>R/mcmc.R</code></a></small>
       <div class="d-none name"><code>BBTm.ties.Rd</code></div>
     </div>
 
@@ -153,7 +153,8 @@ distribution placed on theta.</p></dd>
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>(optional) A boolean indicating if progress should be printed to the console.
-Default is <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code> therefore progress is shown if run interactively, but disabled in non-interactive contexts.</p></dd>
+Default is <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code> therefore progress is shown if run interactively, but disabled in
+non-interactive contexts.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -192,7 +193,8 @@ N(0, 5^2) prior distributions are placed on each object quality parameter.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get posterior means</span></span></span>
-<span class="r-in"><span><span class="va">darTiedModelLambda</span> <span class="op">&lt;-</span> <span class="fu"><a href="parameter.html">parameter</a></span><span class="op">(</span><span class="va">darTiedModel</span>, <span class="st">"lambda"</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu"><a href="parameter.html">parameter</a></span><span class="op">(</span><span class="va">darTiedModel</span>, <span class="st">"lambda"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">darTiedModelLambda</span> <span class="op">&lt;-</span> <span class="fu"><a href="parameter.html">parameter</a></span><span class="op">(</span><span class="va">darTiedModel</span>, <span class="st">"lambda"</span><span class="op">)</span> <span class="op">-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu"><a href="parameter.html">parameter</a></span><span class="op">(</span><span class="va">darTiedModel</span>, <span class="st">"lambda"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lambda.mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="va">darTiedModelLambda</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Generate trace plots</span></span></span>
@@ -207,7 +209,7 @@ N(0, 5^2) prior distributions are placed on each object quality parameter.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rowland Seymour.</p>
+  <p>Developed by Rowland Seymour, Christine Stawitz, Heather Turner.</p>
 </div>
 
 <div class="pkgdown-footer-right">

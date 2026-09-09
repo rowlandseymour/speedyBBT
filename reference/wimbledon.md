@@ -21,9 +21,11 @@ dataframe describing the players.
 
   winner
 
-  :   The
-      ``` id`` of the winner of the match.} \item{loser}{The  ```id\` of
-      the loser of the match.
+  :   The `id` of the winner of the match.
+
+  loser
+
+  :   The `id` of the loser of the match.
 
   secondWeek
 

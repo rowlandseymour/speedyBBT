@@ -11,13 +11,15 @@ specific effect for the comparison, such as bias, ordering or home/away effect.
 The value of this effect is denoted kappa. The player specific effects are
 described through a formula and data.frame containing the value. The function
 places a normal prior distribution on both kappa and the player specific
-parameters beta."><meta property="og:description" content="This function fits the Bradley-Terry model with comparison  and player
+parameters beta. This function is for advanced users who would like more control over
+their model inputs, novice users should look to BBTm() for a simpler interface."><meta property="og:description" content="This function fits the Bradley-Terry model with comparison  and player
 specific effects. Each comparison can be assigned a real value to allow for a
 specific effect for the comparison, such as bias, ordering or home/away effect.
 The value of this effect is denoted kappa. The player specific effects are
 described through a formula and data.frame containing the value. The function
 places a normal prior distribution on both kappa and the player specific
-parameters beta."><meta property="og:image" content="https://www.rowlandseymour.com/speedyBBT/, https://github.com/rowlandseymour/speedyBBT/logo.png"></head><body>
+parameters beta. This function is for advanced users who would like more control over
+their model inputs, novice users should look to BBTm() for a simpler interface."><meta property="og:image" content="https://www.rowlandseymour.com/speedyBBT/, https://github.com/rowlandseymour/speedyBBT/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -47,7 +49,7 @@ parameters beta."><meta property="og:image" content="https://www.rowlandseymour.
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Bayesian Bradley–Terry model with comparison- and player-specific effect and formula</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rowlandseymour/speedyBBT/blob/add_pkgdown/R/mcmc.R" class="external-link"><code>R/mcmc.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rowlandseymour/speedyBBT/blob/main/R/mcmc.R" class="external-link"><code>R/mcmc.R</code></a></small>
       <div class="d-none name"><code>BBTm.with.formula.Rd</code></div>
     </div>
 
@@ -58,7 +60,8 @@ specific effect for the comparison, such as bias, ordering or home/away effect.
 The value of this effect is denoted kappa. The player specific effects are
 described through a formula and data.frame containing the value. The function
 places a normal prior distribution on both kappa and the player specific
-parameters beta.</p>
+parameters beta. This function is for advanced users who would like more control over
+their model inputs, novice users should look to <code><a href="BBTm.html">BBTm()</a></code> for a simpler interface.</p>
     </div>
 
     <div class="section level2">
@@ -166,7 +169,8 @@ hyperparameter.</p></dd>
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>(optional) A boolean indicating if progress should be printed to the console.
-Default is <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code> therefore progress is shown if run interactively, but disabled in non-interactive contexts.</p></dd>
+Default is <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code> therefore progress is shown if run interactively, but disabled in
+non-interactive contexts.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -187,7 +191,7 @@ it is set to 0.5.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rowland Seymour.</p>
+  <p>Developed by Rowland Seymour, Christine Stawitz, Heather Turner.</p>
 </div>
 
 <div class="pkgdown-footer-right">

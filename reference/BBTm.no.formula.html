@@ -8,12 +8,12 @@
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Bayesian Bradley–Terry model with comparison-specific effect — BBTm.no.formula"><meta name="description" content="This function fits the Bradley-Terry model with a comparison specific effect.
 Each comparison can be assigned a real value to allow for a specific effect
 for the comparison, such as bias, ordering or home/away effect. The value of
-this effect is denoted $kappa$. The function places a normal prior distribution
-on both kappa and the player quality parameters lambda."><meta property="og:description" content="This function fits the Bradley-Terry model with a comparison specific effect.
+this effect is denoted \(\kappa\). The function places a normal prior distribution
+on both kappa and the player quality parameters \(\lambda\)."><meta property="og:description" content="This function fits the Bradley-Terry model with a comparison specific effect.
 Each comparison can be assigned a real value to allow for a specific effect
 for the comparison, such as bias, ordering or home/away effect. The value of
-this effect is denoted $kappa$. The function places a normal prior distribution
-on both kappa and the player quality parameters lambda."><meta property="og:image" content="https://www.rowlandseymour.com/speedyBBT/, https://github.com/rowlandseymour/speedyBBT/logo.png"></head><body>
+this effect is denoted \(\kappa\). The function places a normal prior distribution
+on both kappa and the player quality parameters \(\lambda\)."><meta property="og:image" content="https://www.rowlandseymour.com/speedyBBT/, https://github.com/rowlandseymour/speedyBBT/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -43,7 +43,7 @@ on both kappa and the player quality parameters lambda."><meta property="og:imag
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Bayesian Bradley–Terry model with comparison-specific effect</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rowlandseymour/speedyBBT/blob/add_pkgdown/R/mcmc.R" class="external-link"><code>R/mcmc.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rowlandseymour/speedyBBT/blob/main/R/mcmc.R" class="external-link"><code>R/mcmc.R</code></a></small>
       <div class="d-none name"><code>BBTm.no.formula.Rd</code></div>
     </div>
 
@@ -51,8 +51,8 @@ on both kappa and the player quality parameters lambda."><meta property="og:imag
     <p>This function fits the Bradley-Terry model with a comparison specific effect.
 Each comparison can be assigned a real value to allow for a specific effect
 for the comparison, such as bias, ordering or home/away effect. The value of
-this effect is denoted $kappa$. The function places a normal prior distribution
-on both kappa and the player quality parameters lambda.</p>
+this effect is denoted \(\kappa\). The function places a normal prior distribution
+on both kappa and the player quality parameters \(\lambda\).</p>
     </div>
 
     <div class="section level2">
@@ -110,8 +110,11 @@ effect for each comparison.</p></dd>
 
 <dt id="arg-kappa-initial">kappa.initial<a class="anchor" aria-label="anchor" href="#arg-kappa-initial"></a></dt>
 <dd><p>(optional) An initial value for the comparison specific
-value kappa.
-@param kappa.var (optional) The prior variance of the comparison specific
+value kappa.</p></dd>
+
+
+<dt id="arg-kappa-var">kappa.var<a class="anchor" aria-label="anchor" href="#arg-kappa-var"></a></dt>
+<dd><p>(optional) The prior variance of the comparison specific
 value kappa.</p></dd>
 
 
@@ -145,7 +148,8 @@ hyperparameter.</p></dd>
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>(optional) A boolean indicating if progress should be printed to the console.
-Default is <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code> therefore progress is shown if run interactively, but disabled in non-interactive contexts.</p></dd>
+Default is <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code> therefore progress is shown if run interactively, but disabled
+in non-interactive contexts.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -158,7 +162,7 @@ Default is <code><a href="https://rdrr.io/r/base/interactive.html" class="extern
 N(0, 5^2) prior distributions are placed on each object quality parameter.</p>
 <p>If <code>lambda.initial</code> is omitted, it is set to a vector of zeroes.</p>
 <p>If <code>lambda.var</code> is omitted, it is set to N(0, 5^2).</p>
-<p>#' If <code>kappa.var</code> is omitted, it is set to N(0, 5^2), if <code>kappa.initial</code> is omitted
+<p>If <code>kappa.var</code> is omitted, it is set to N(0, 5^2), if <code>kappa.initial</code> is omitted
 it is set to 0.5.</p>
     </div>
 
@@ -167,7 +171,7 @@ it is set to 0.5.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rowland Seymour.</p>
+  <p>Developed by Rowland Seymour, Christine Stawitz, Heather Turner.</p>
 </div>
 
 <div class="pkgdown-footer-right">

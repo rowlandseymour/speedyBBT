@@ -130,7 +130,9 @@ forcedMarriageModel <- speedyBBTm(
 
 # Plot results
 
-plot(forcedMarriageModel[, "lambda[1]"], xlab = "Iteration", ylab = expression(lambda[i]))
+plot(forcedMarriageModel[, "lambda[1]"],
+  xlab = "Iteration", ylab = expression(lambda[i])
+)
 
 # }
 ```

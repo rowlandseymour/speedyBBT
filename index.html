@@ -66,10 +66,9 @@
 </div>
 <!-- badges: start -->
 
-</div>
-<div class="section level1">
-<h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
-</h1>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 <p><code>speedyBBT</code> is an R package for fitting Bradley-Terry models to pairwise comparison data using fast, fully Bayesian MCMC. Given a set of pairwise judgements – which of two wards has the higher rate of forced marriage, which of two tennis players won a match, which of two neighbourhoods looks more deprived – <code>speedyBBT</code> estimates a quality parameter for every item being compared, along with full posterior uncertainty.</p>
 <p>Inference is carried out using a Pólya-Gamma data augmentation scheme, which makes sampling fast even for large numbers of items and comparisons. The package supports:</p>
 <ul>
@@ -79,6 +78,7 @@
 <li>optional hyperparameter inference on the prior scale.</li>
 </ul>
 <p>The package can be used with data collected using the <a href="https://github.com/HiddenHarmsHub/comparative-judgement-interface" class="external-link">Comparative Judgement Interface</a>.</p>
+</div>
 <div class="section level2">
 <h2 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
 </h2>
@@ -99,7 +99,8 @@
 <p>Install the released version from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"speedyBBT"</span><span class="op">)</span></span>
-<span><span class="co">#devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) #for development version</span></span></code></pre></div>
+<span><span class="co"># for development version</span></span>
+<span><span class="co"># devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) </span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -109,6 +110,13 @@
 <code class="sourceCode R"><span><span class="co">#View Data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"forcedMarriage"</span>, package <span class="op">=</span> <span class="st">"speedyBBT"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   user            time win lost</span></span>
+<span><span class="co">#&gt; 1    1 16:08:26.316839  67   31</span></span>
+<span><span class="co">#&gt; 2    1 16:08:47.888894  19    9</span></span>
+<span><span class="co">#&gt; 3    1 16:09:14.093517  18   74</span></span>
+<span><span class="co">#&gt; 4    1 16:09:23.666987  56   68</span></span>
+<span><span class="co">#&gt; 5    1 16:09:42.930976  50   66</span></span>
+<span><span class="co">#&gt; 6    1 16:09:51.129570  53   15</span></span>
 <span></span>
 <span></span>
 <span><span class="co">#Construct covariance matrix</span></span>
@@ -116,28 +124,40 @@
 <span><span class="va">prior.var</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">expA</span><span class="op">)</span><span class="op">^</span><span class="op">-</span><span class="fl">0.5</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">expA</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">expA</span><span class="op">)</span><span class="op">^</span><span class="op">-</span><span class="fl">0.5</span><span class="op">)</span></span>
 <span>    </span>
 <span><span class="co">#Fit model</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.rowlandseymour.com/speedyBBT" class="external-link">speedyBBT</a></span><span class="op">)</span></span>
 <span><span class="va">forcedMarriageModel</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/speedyBBTm.html">speedyBBTm</a></span><span class="op">(</span>outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">win</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                                  player1 <span class="op">=</span> <span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">win</span>, </span>
 <span>                                  player2 <span class="op">=</span> <span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">lost</span>, </span>
 <span>                                  player.prior.var <span class="op">=</span> <span class="va">prior.var</span><span class="op">)</span></span>
-<span><span class="va">forcedMarriageModel</span><span class="op">$</span><span class="va">lambda</span>  <span class="op">&lt;-</span> <span class="va">forcedMarriageModel</span><span class="op">$</span><span class="va">lambda</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span><span class="op">$</span><span class="va">lambda</span><span class="op">)</span></span>
+<span><span class="va">lambda_draws</span>  <span class="op">&lt;-</span> <span class="fu"><a href="reference/parameter.html">parameter</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span>, <span class="st">"lambda"</span><span class="op">)</span> </span>
+<span><span class="va">lambda_centered</span> <span class="op">&lt;-</span> <span class="va">lambda_draws</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="va">lambda_draws</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#View Trace Plots</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span><span class="op">$</span><span class="va">lambda</span><span class="op">[</span>, <span class="fl">10</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">'l'</span>,</span>
-<span>     xlab <span class="op">=</span> <span class="st">"Iteration"</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span><span class="op">$</span><span class="va">lambda</span><span class="op">[</span>, <span class="fl">20</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">'l'</span>, </span>
-<span>     xlab <span class="op">=</span> <span class="st">"Iteration"</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">[</span><span class="fl">20</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span><span class="op">$</span><span class="va">lambda</span><span class="op">[</span>, <span class="fl">30</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">'l'</span>, </span>
-<span>     xlab <span class="op">=</span> <span class="st">"Iteration"</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">[</span><span class="fl">30</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span><span class="op">$</span><span class="va">lambda</span><span class="op">[</span>, <span class="fl">40</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">'l'</span>, </span>
-<span>     xlab <span class="op">=</span> <span class="st">"Iteration"</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">[</span><span class="fl">40</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span><span class="op">$</span><span class="va">alpha.sq</span>, type <span class="op">=</span> <span class="st">'l'</span><span class="op">)</span></span>
-<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lambda_centered</span><span class="op">[</span>, <span class="fl">10</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">'l'</span>,</span>
+<span>     xlab <span class="op">=</span> <span class="st">"Iteration"</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-1.png" alt="" width="100%"></p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lambda_centered</span><span class="op">[</span>, <span class="fl">20</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">'l'</span>, </span>
+<span>     xlab <span class="op">=</span> <span class="st">"Iteration"</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">[</span><span class="fl">20</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-2.png" alt="" width="100%"></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lambda_centered</span><span class="op">[</span>, <span class="fl">30</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">'l'</span>, </span>
+<span>     xlab <span class="op">=</span> <span class="st">"Iteration"</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">[</span><span class="fl">30</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-3.png" alt="" width="100%"></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lambda_centered</span><span class="op">[</span>, <span class="fl">40</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">'l'</span>, </span>
+<span>     xlab <span class="op">=</span> <span class="st">"Iteration"</span>, ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">[</span><span class="fl">40</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-4.png" alt="" width="100%"></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/parameter.html">parameter</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span>, <span class="st">"alpha.sq"</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">'l'</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-5.png" alt="" width="100%"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="co">#View Results</span></span>
-<span><span class="va">forcedMarriageModelMeans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span><span class="op">$</span><span class="va">lambda</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">forcedMarriageModelLowerCI</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span><span class="op">$</span><span class="va">lambda</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span>, <span class="op">]</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.025</span><span class="op">)</span></span>
-<span><span class="va">forcedMarriageModelUpperCI</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">forcedMarriageModel</span><span class="op">$</span><span class="va">lambda</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span>, <span class="op">]</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.975</span><span class="op">)</span></span>
+<span><span class="va">forcedMarriageModelMeans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">lambda_draws</span><span class="op">)</span></span>
+<span><span class="va">forcedMarriageModelLowerCI</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">lambda_draws</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.025</span><span class="op">)</span></span>
+<span><span class="va">forcedMarriageModelUpperCI</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">lambda_draws</span>, <span class="fl">2</span>, <span class="va">quantile</span>, <span class="fl">0.975</span><span class="op">)</span></span>
 <span><span class="va">forcedMarriageResults</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="st">"ward"</span> <span class="op">=</span> <span class="va">forcedMarriage</span><span class="op">$</span><span class="va">wards</span><span class="op">$</span><span class="va">NAME</span>,</span>
 <span>                                    <span class="st">"mean"</span> <span class="op">=</span> <span class="va">forcedMarriageModelMeans</span>,</span>
 <span>                                    <span class="st">"lowerCI"</span> <span class="op">=</span> <span class="va">forcedMarriageModelLowerCI</span>, </span>
@@ -147,6 +167,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">forcedMarriageResults</span><span class="op">$</span><span class="va">mean</span>, xlab <span class="op">=</span> <span class="st">"Ward"</span>, ylab <span class="op">=</span> <span class="st">"Posterior Mean"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">7.5</span>, <span class="fl">7.5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/segments.html" class="external-link">segments</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">forcedMarriageResults</span><span class="op">)</span>, y0 <span class="op">=</span> <span class="va">forcedMarriageResults</span><span class="op">$</span><span class="va">lowerCI</span>, </span>
 <span>         y1 <span class="op">=</span> <span class="va">forcedMarriageResults</span><span class="op">$</span><span class="va">upperCI</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-6.png" alt="" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -168,7 +189,6 @@
 <p>The data in Nottinghamshire was collected with support from the Nottinghamshire Slavery Multi Agency Risk Assessment Conference. Data in South Yorkshire was collected with support from South Yorkshire Police. Data in Wokingham was collected with support from Wokingham Council. Data in Oxfordshire was collected with support from Oxford Against Cutting. Data in West Yorkshire was collected with support from West Yorkshire Police and Karma Nirvana.</p>
 </div>
 </div>
-
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
@@ -198,6 +218,8 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Rowland Seymour <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0002-8739-3921" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Christine Stawitz <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-3122-4501" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Heather Turner <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1256-3375" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 
@@ -214,7 +236,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rowland Seymour.</p>
+  <p>Developed by Rowland Seymour, Christine Stawitz, Heather Turner.</p>
 </div>
 
 <div class="pkgdown-footer-right">

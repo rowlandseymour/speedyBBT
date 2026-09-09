@@ -3,9 +3,9 @@
 This function fits the Bradley-Terry model with a comparison specific
 effect. Each comparison can be assigned a real value to allow for a
 specific effect for the comparison, such as bias, ordering or home/away
-effect. The value of this effect is denoted \$kappa\$. The function
+effect. The value of this effect is denoted \\\kappa\\. The function
 places a normal prior distribution on both kappa and the player quality
-parameters lambda.
+parameters \\\lambda\\.
 
 ## Usage
 
@@ -62,8 +62,10 @@ BBTm.no.formula(
 - kappa.initial:
 
   (optional) An initial value for the comparison specific value kappa.
-  @param kappa.var (optional) The prior variance of the comparison
-  specific value kappa.
+
+- kappa.var:
+
+  (optional) The prior variance of the comparison specific value kappa.
 
 - n.iter:
 
@@ -116,5 +118,5 @@ If `lambda.initial` is omitted, it is set to a vector of zeroes.
 
 If `lambda.var` is omitted, it is set to N(0, 5^2).
 
-\#' If `kappa.var` is omitted, it is set to N(0, 5^2), if
-`kappa.initial` is omitted it is set to 0.5.
+If `kappa.var` is omitted, it is set to N(0, 5^2), if `kappa.initial` is
+omitted it is set to 0.5.

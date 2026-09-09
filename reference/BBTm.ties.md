@@ -149,7 +149,8 @@ darTiedModel <- BBTm.ties(
 )
 
 # Get posterior means
-darTiedModelLambda <- parameter(darTiedModel, "lambda") - colMeans(parameter(darTiedModel, "lambda"))
+darTiedModelLambda <- parameter(darTiedModel, "lambda") -
+  colMeans(parameter(darTiedModel, "lambda"))
 lambda.mean <- rowMeans(darTiedModelLambda)
 
 # Generate trace plots
