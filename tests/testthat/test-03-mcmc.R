@@ -224,7 +224,7 @@ test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces r
   }
   expect_snapshot_file(
     save_file(),
-    test_path("bbtNoFormulaAlphaSqOnlyMeans.csv")
+    "bbtNoFormulaAlphaSqOnlyMeans.csv"
   )
 })
 
