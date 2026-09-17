@@ -200,31 +200,31 @@ test_that("BBTm.no.formula produces results within tolerance", {
 })
 
 test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces results within tolerance", {
-  set.seed(42)
-  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
-  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+  save_file <- function() {
+    path <- tempfile(fileext = ".csv")
+    set.seed(42)
+    expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+    prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
-  model <- BBTm.no.formula(
-    outcome = rep(1, length(forcedMarriage$comparisons$win)),
-    player1 = forcedMarriage$comparisons$win,
-    player2 = forcedMarriage$comparisons$lost,
-    player.prior.var = prior.var,
-    lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
-    n.iter = 1000,
-    burn.in = 100,
-    hyperparameter = FALSE,
-    verbose = FALSE
-  )
+    model <- BBTm.no.formula(
+      outcome = rep(1, length(forcedMarriage$comparisons$win)),
+      player1 = forcedMarriage$comparisons$win,
+      player2 = forcedMarriage$comparisons$lost,
+      player.prior.var = prior.var,
+      lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
+      n.iter = 1000,
+      burn.in = 100,
+      hyperparameter = FALSE,
+      verbose = FALSE
+    )
 
-  model_means <- colMeans(model)
-  testMeansPath <- test_path("bbtNoFormulaAlphaSqOnlyMeans.csv")
-  testMeans <- read.csv(testMeansPath)
-
-  expect_equal(
-    sum(abs(testMeans - model_means)) /
-      nrow(forcedMarriage$adjacencyMatrix),
-    0,
-    tolerance = 1e-1
+    model_means <- colMeans(model)
+    write.csv(model_means, path, row.names = FALSE)
+    return(path)
+  }
+  expect_snapshot_file(
+    save_file(),
+    test_path("bbtNoFormulaAlphaSqOnlyMeans.csv")
   )
 })
 
