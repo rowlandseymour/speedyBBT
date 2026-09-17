@@ -45,6 +45,60 @@ test_that("speedyBBTm produces results within tolerance", {
 test_that("BBTm produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
+  save_file <- function() {
+    path <- tempfile(fileext = ".csv")
+    set.seed(103)
+    wimbledonModel <- BBTm(
+      outcome = wimbledon$matches$outcome,
+      player1 = wimbledon$matches$winner,
+      player2 = wimbledon$matches$loser,
+      advantage = wimbledon$matches$secondWeek,
+      formula = ~ rank + points,
+      data = wimbledon$players,
+      n.iter = 4000
+    )
+
+    wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
+      -c(1:50),
+    ])
+
+    # Read in means
+    write.csv(wimbledonModelMeans, path)
+    return(path)
+  }
+  expect_snapshot_file(save_file(), "wimbledonModelMeansWithHyper.csv")
+})
+
+test_that("BBTm produces results within tolerance when hyperparameter = FALSE", {
+  # Construct covariance matrix
+  # Fit model
+  save_file <- function() {
+    path <- tempfile(fileext = ".csv")
+    set.seed(423)
+    wimbledonModel <- BBTm(
+      outcome = wimbledon$matches$outcome,
+      player1 = wimbledon$matches$winner,
+      player2 = wimbledon$matches$loser,
+      advantage = wimbledon$matches$secondWeek,
+      formula = ~ rank + points,
+      data = wimbledon$players,
+      n.iter = 4000,
+      hyperparameter = FALSE
+    )
+
+    wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
+      -c(1:50),
+    ])
+    write.csv(wimbledonModelMeans, path)
+    return(path)
+  }
+  expect_snapshot_file(save_file(), "wimbledonModelMeansNoHyper.csv")
+})
+
+test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = FALSE", {
+  # Construct covariance matrix
+  # Fit model
+  set.seed(423)
   wimbledonModel <- BBTm(
     outcome = wimbledon$matches$outcome,
     player1 = wimbledon$matches$winner,
@@ -74,37 +128,34 @@ test_that("BBTm produces results within tolerance", {
 test_that("BBTm.no.formula produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
-  set.seed(332)
-  # Construct covariance matrix
-  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
-  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+  save_file <- function() {
+    path <- tempfile(fileext = ".csv")
+    set.seed(332)
+    # Construct covariance matrix
+    expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+    prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
-  # Fit model
-  forcedMarriageModel <- BBTm(
-    outcome = rep(1, length(forcedMarriage$comparisons$win)),
-    player1 = forcedMarriage$comparisons$win,
-    player2 = forcedMarriage$comparisons$lost,
-    player.prior.var = prior.var,
-    n.iter = 2000
-  )
-
-  lambda_draws <- colMeans(forcedMarriageModel[,
-    grep(
-      "lambda",
-      varnames(forcedMarriageModel)
+    # Fit model
+    forcedMarriageModel <- BBTm(
+      outcome = rep(1, length(forcedMarriage$comparisons$win)),
+      player1 = forcedMarriage$comparisons$win,
+      player2 = forcedMarriage$comparisons$lost,
+      player.prior.var = prior.var,
+      n.iter = 2000
     )
-  ])
+
+    lambda_draws <- colMeans(forcedMarriageModel[,
+      grep(
+        "lambda",
+        varnames(forcedMarriageModel)
+      )
+    ])
+    write.csv(lambda_draws, path)
+    return(path)
+  }
 
   # Read in means
-  testMeansPath <- test_path("forcedMarriageModelMeansNoFormula.csv")
-  testMeans <- read.csv(testMeansPath)
-
-  expect_equal(
-    sum(abs(testMeans - lambda_draws)) /
-      nrow(forcedMarriage$adjacencyMatrix),
-    0,
-    tolerance = 1e-1
-  )
+  expect_snapshot_file(save_file(), "forcedMarriageModelMeansNoFormula.csv")
 })
 
 test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces results within tolerance", {
