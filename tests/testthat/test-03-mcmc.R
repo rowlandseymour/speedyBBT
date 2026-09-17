@@ -45,61 +45,54 @@ test_that("speedyBBTm produces results within tolerance", {
 test_that("BBTm produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
-  wimbledonModel <- BBTm(
-    outcome = wimbledon$matches$outcome,
-    player1 = wimbledon$matches$winner,
-    player2 = wimbledon$matches$loser,
-    advantage = wimbledon$matches$secondWeek,
-    formula = ~ rank + points,
-    data = wimbledon$players,
-    n.iter = 4000
-  )
+  save_file <- function() {
+    path <- tempfile(fileext = ".csv")
+    set.seed(103)
+    wimbledonModel <- BBTm(
+      outcome = wimbledon$matches$outcome,
+      player1 = wimbledon$matches$winner,
+      player2 = wimbledon$matches$loser,
+      advantage = wimbledon$matches$secondWeek,
+      formula = ~ rank + points,
+      data = wimbledon$players,
+      n.iter = 4000
+    )
 
-  wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
-    -c(1:50),
-  ])
+    wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
+      -c(1:50),
+    ])
 
-  # Read in means
-  testMeansPath <- test_path("wimbledonModelMeansWithHyper.csv")
-  testMeans <- read.csv(testMeansPath)
-
-  # Compare within tolerance
-  expect_equal(
-    sum(abs(testMeans - wimbledonModelMeans)) / 128,
-    0,
-    tolerance = 1e-1
-  )
+    # Read in means
+    write.csv(wimbledonModelMeans, path)
+    return(path)
+  }
+  expect_file_snapshot(save_file(), "wimbledonModelMeansWithHyper.csv")
 })
 
 test_that("BBTm produces results within tolerance when hyperparameter = FALSE", {
   # Construct covariance matrix
   # Fit model
-  set.seed(423)
-  wimbledonModel <- BBTm(
-    outcome = wimbledon$matches$outcome,
-    player1 = wimbledon$matches$winner,
-    player2 = wimbledon$matches$loser,
-    advantage = wimbledon$matches$secondWeek,
-    formula = ~ rank + points,
-    data = wimbledon$players,
-    n.iter = 4000,
-    hyperparameter = FALSE
-  )
+  save_file <- function() {
+    path <- tempfile(fileext = ".csv")
+    set.seed(423)
+    wimbledonModel <- BBTm(
+      outcome = wimbledon$matches$outcome,
+      player1 = wimbledon$matches$winner,
+      player2 = wimbledon$matches$loser,
+      advantage = wimbledon$matches$secondWeek,
+      formula = ~ rank + points,
+      data = wimbledon$players,
+      n.iter = 4000,
+      hyperparameter = FALSE
+    )
 
-  wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
-    -c(1:50),
-  ])
-
-  # Read in means
-  testMeansPath <- test_path("wimbledonModelMeansNoHyper.csv")
-  testMeans <- read.csv(testMeansPath)
-
-  # Compare within tolerance
-  expect_equal(
-    sum(abs(testMeans - wimbledonModelMeans)) / 128,
-    0,
-    tolerance = 1e-1
-  )
+    wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
+      -c(1:50),
+    ])
+    write.csv(wimbledonModelMeans, path)
+    return(path)
+  }
+  expect_snapshot_file(save_file(), "wimbledonModelMeansNoHyper.csv")
 })
 
 test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = FALSE", {
@@ -135,6 +128,9 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
 test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE", {
   # Construct covariance matrix
   # Fit model
+  save_file <- function() {
+    path <- tempfile()
+  }
   set.seed(423)
   wimbledonModel <- BBTm(
     outcome = wimbledon$matches$outcome,
@@ -229,158 +225,134 @@ test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces r
 })
 
 test_that("BBTm.no.formula with advantage and hyperparameter=FALSE produces results within tolerance", {
-  set.seed(42)
-  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
-  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
-  advantage <- rep(1, length(forcedMarriage$comparisons$win))
+  save_file <- function() {
+    path <- tempfile(fileext = ".csv")
+    set.seed(42)
+    expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+    prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+    advantage <- rep(1, length(forcedMarriage$comparisons$win))
 
-  model <- BBTm.no.formula(
-    outcome = rep(1, length(forcedMarriage$comparisons$win)),
-    player1 = forcedMarriage$comparisons$win,
-    player2 = forcedMarriage$comparisons$lost,
-    player.prior.var = prior.var,
-    lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
-    advantage = advantage,
-    n.iter = 10,
-    burn.in = 1,
-    hyperparameter = FALSE,
-    verbose = FALSE
-  )
+    model <- BBTm.no.formula(
+      outcome = rep(1, length(forcedMarriage$comparisons$win)),
+      player1 = forcedMarriage$comparisons$win,
+      player2 = forcedMarriage$comparisons$lost,
+      player.prior.var = prior.var,
+      lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
+      advantage = advantage,
+      n.iter = 10,
+      burn.in = 1,
+      hyperparameter = FALSE,
+      verbose = FALSE
+    )
 
-  model_means <- colMeans(model)
-  testMeansPath <- test_path("bbtNoFormulaKappaMeans.csv")
-  testMeans <- read.csv(testMeansPath)
+    model_means <- colMeans(model)
+    testMeans <- write.csv(model_means, path, row.names = FALSE)
+    return(path)
+  }
 
-  expect_equal(
-    sum(abs(testMeans - model_means)) /
-      nrow(forcedMarriage$adjacencyMatrix),
-    0,
-    tolerance = 1
-  )
+  expect_snapshot_file(save_file(), "bbtNoFormulaKappaMeans.csv")
 })
 
 test_that("BBTm.no.formula with advantage and hyperparameter=TRUE produces results within tolerance", {
-  set.seed(42)
-  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
-  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
-  advantage <- rep(1, length(forcedMarriage$comparisons$win))
+  save_file <- function() {
+    path <- tempfile(fileext = ".csv")
+    set.seed(42)
+    expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+    prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+    advantage <- rep(1, length(forcedMarriage$comparisons$win))
 
-  model <- BBTm.no.formula(
-    outcome = rep(1, length(forcedMarriage$comparisons$win)),
-    player1 = forcedMarriage$comparisons$win,
-    player2 = forcedMarriage$comparisons$lost,
-    player.prior.var = prior.var,
-    lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
-    advantage = advantage,
-    n.iter = 10,
-    burn.in = 1,
-    hyperparameter = TRUE,
-    verbose = FALSE
-  )
+    model <- BBTm.no.formula(
+      outcome = rep(1, length(forcedMarriage$comparisons$win)),
+      player1 = forcedMarriage$comparisons$win,
+      player2 = forcedMarriage$comparisons$lost,
+      player.prior.var = prior.var,
+      lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
+      advantage = advantage,
+      n.iter = 10,
+      burn.in = 1,
+      hyperparameter = TRUE,
+      verbose = FALSE
+    )
 
-  model_means <- colMeans(model)
-  testMeansPath <- test_path("bbtNoFormulaAlphaSqKappaMeans.csv")
-  testMeans <- read.csv(testMeansPath)
-
-  expect_equal(
-    sum(abs(testMeans - model_means)) /
-      nrow(forcedMarriage$adjacencyMatrix),
-    0,
-    tolerance = 1
-  )
+    model_means <- colMeans(model)
+    write.csv(model_means, path)
+    return(path)
+  }
+  expect_snapshot_file(save_file(), "bbtNoFormulaAlphaSqKappaMeans.csv")
 })
 
 test_that("BBTm.ties produces expected output from two iterations", {
   # Construct covariance matrix
   # Fit model
-  set.seed(123)
-  prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
-  prior.var <- diag(diag(prior.var)^-0.5) %*%
-    prior.var %*%
-    diag(diag(prior.var)^-0.5)
-  n.objects <- nrow(darEsSalaam$adjacencyMatrix)
-  darTiedModel <- BBTm.ties(
-    n.objects = n.objects,
-    outcome = darEsSalaam$comparisons$outcome,
-    player1 = darEsSalaam$comparisons$subward1,
-    player2 = darEsSalaam$comparisons$subward2,
-    player.prior.var = prior.var,
-    hyperparameter = TRUE,
-    rw.sd = 0.005,
-    burn.in = 0,
-    n.iter = 2
-  )
-  # Get posterior means
-  centered_lambda <- parameter(darTiedModel, "lambda") -
-    colMeans(parameter(darTiedModel, "lambda"))
-  lambda.mean <- rowMeans(centered_lambda)
+  save_file <- function() {
+    path <- tempfile(fileext = ".csv")
+    set.seed(123)
+    prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+    prior.var <- diag(diag(prior.var)^-0.5) %*%
+      prior.var %*%
+      diag(diag(prior.var)^-0.5)
+    n.objects <- nrow(darEsSalaam$adjacencyMatrix)
+    darTiedModel <- BBTm.ties(
+      n.objects = n.objects,
+      outcome = darEsSalaam$comparisons$outcome,
+      player1 = darEsSalaam$comparisons$subward1,
+      player2 = darEsSalaam$comparisons$subward2,
+      player.prior.var = prior.var,
+      hyperparameter = TRUE,
+      rw.sd = 0.005,
+      burn.in = 0,
+      n.iter = 2
+    )
+    # Get posterior means
+    centered_lambda <- parameter(darTiedModel, "lambda") -
+      colMeans(parameter(darTiedModel, "lambda"))
+    lambda.mean <- rowMeans(centered_lambda)
+    theta.mean <- mean(parameter(darTiedModel, "theta"))
+    alpha.sq.mean <- mean(parameter(darTiedModel, "alpha.sq"))
 
-  # Read in means
-  testMeansPath <- test_path("darTiedModelMeansShort.csv")
-  testMeans <- read.csv(testMeansPath)
-
-  # Compare within tolerance
-  expect_equal(
-    sum(abs(testMeans - lambda.mean)) / n.objects,
-    0,
-    tolerance = 1e-1
-  )
-
-  theta.mean <- mean(parameter(darTiedModel, "theta"))
-  alpha.sq.mean <- mean(parameter(darTiedModel, "alpha.sq"))
-  expect_equal(
-    abs(0.4883739 - theta.mean),
-    0,
-    tolerance = 1e-1
-  )
-
-  expect_equal(
-    abs(9.278275E-05 - alpha.sq.mean),
-    0,
-    tolerance = 1e-1
-  )
+    write.csv(
+      rbind(lambda.mean, theta.mean, alpha.sq.mean),
+      path,
+      row.names = FALSE
+    )
+    return(path)
+  }
+  expect_snapshot_file(save_file(), "darTiedModelMeansShort.csv")
 })
 
 test_that("BBTm.ties produces expected output from two iterations when hyperparameter = FALSE", {
   # Construct covariance matrix
   # Fit model
-  set.seed(123)
-  prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
-  prior.var <- diag(diag(prior.var)^-0.5) %*%
-    prior.var %*%
-    diag(diag(prior.var)^-0.5)
-  n.objects <- nrow(darEsSalaam$adjacencyMatrix)
-  darTiedModel <- BBTm.ties(
-    n.objects = n.objects,
-    outcome = darEsSalaam$comparisons$outcome,
-    player1 = darEsSalaam$comparisons$subward1,
-    player2 = darEsSalaam$comparisons$subward2,
-    player.prior.var = prior.var,
-    hyperparameter = FALSE,
-    rw.sd = 0.005,
-    burn.in = 0,
-    n.iter = 2
-  )
-  # Get posterior means
-  centered_lambda <- parameter(darTiedModel, "lambda") -
-    colMeans(parameter(darTiedModel, "lambda"))
-  lambda.mean <- rowMeans(centered_lambda)
+
+  save_file <- function() {
+    path <- tempfile(fileext = ".csv")
+    set.seed(123)
+    prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+    prior.var <- diag(diag(prior.var)^-0.5) %*%
+      prior.var %*%
+      diag(diag(prior.var)^-0.5)
+    n.objects <- nrow(darEsSalaam$adjacencyMatrix)
+    darTiedModel <- BBTm.ties(
+      n.objects = n.objects,
+      outcome = darEsSalaam$comparisons$outcome,
+      player1 = darEsSalaam$comparisons$subward1,
+      player2 = darEsSalaam$comparisons$subward2,
+      player.prior.var = prior.var,
+      hyperparameter = FALSE,
+      rw.sd = 0.005,
+      burn.in = 0,
+      n.iter = 2
+    )
+    # Get posterior means
+    centered_lambda <- parameter(darTiedModel, "lambda") -
+      colMeans(parameter(darTiedModel, "lambda"))
+    lambda.mean <- rowMeans(centered_lambda)
+
+    theta.mean <- mean(parameter(darTiedModel, "theta"))
+    write.csv(rbind(lambda.mean, theta.mean), path, row.names = FALSE)
+    return(path)
+  }
 
   # Read in means
-  testMeansPath <- test_path("darTiedModelMeansShortNoHyper.csv")
-  testMeans <- read.csv(testMeansPath)
-
-  # Compare within tolerance
-  expect_equal(
-    sum(abs(testMeans - lambda.mean)) / n.objects,
-    0,
-    tolerance = 1e-1
-  )
-
-  theta.mean <- mean(parameter(darTiedModel, "theta"))
-  expect_equal(
-    abs(0.4883739 - theta.mean),
-    0,
-    tolerance = 1e-1
-  )
+  expect_snapshot_file(save_file(), "darTiedModelMeansShortNoHyper.csv")
 })
