@@ -63,6 +63,12 @@ hyperparameter.}
 \item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
 Default is \code{interactive()} therefore progress is shown if run interactively, but disabled
 in non-interactive contexts.}
+
+\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player1 argument is no longer supported, please use item1}
+
+\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player2 argument is no longer supported, please use item2 instead}
+
+\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player.prior.var argument is no longer supported, please use item.prior.var instead}
 }
 \value{
 A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution
