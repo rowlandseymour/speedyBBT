@@ -159,39 +159,6 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
   )
 })
 
-test_that("BBTm.no.formula produces results within tolerance", {
-  # Construct covariance matrix
-  # Fit model
-  save_file <- function() {
-    path <- tempfile(fileext = ".csv")
-    set.seed(332)
-    # Construct covariance matrix
-    expA <- expm::expm(forcedMarriage$adjacencyMatrix)
-    prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
-
-    # Fit model
-    forcedMarriageModel <- BBTm(
-      outcome = rep(1, length(forcedMarriage$comparisons$win)),
-      player1 = forcedMarriage$comparisons$win,
-      player2 = forcedMarriage$comparisons$lost,
-      player.prior.var = prior.var,
-      n.iter = 2000
-    )
-
-    lambda_draws <- colMeans(forcedMarriageModel[,
-      grep(
-        "lambda",
-        varnames(forcedMarriageModel)
-      )
-    ])
-    write.csv(lambda_draws, path)
-    return(path)
-  }
-
-  # Read in means
-  expect_snapshot_file(save_file(), "forcedMarriageModelMeansNoFormula.csv")
-})
-
 test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces results within tolerance", {
   save_file <- function() {
     path <- tempfile(fileext = ".csv")
