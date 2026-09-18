@@ -350,7 +350,7 @@ test_that("BBTm.ties produces expected output from two iterations when hyperpara
     lambda.mean <- rowMeans(centered_lambda)
 
     theta.mean <- mean(parameter(darTiedModel, "theta"))
-    write.csv(rbind(lambda.mean, theta.mean), path, row.names = FALSE)
+    write.csv(c(lambda.mean, theta.mean), path, row.names = FALSE)
     return(path)
   }
 
