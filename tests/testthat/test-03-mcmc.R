@@ -127,7 +127,7 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
 
   # Compare within tolerance
   expect_equal(
-    sum(abs(testMeans - wimbledonModelMeans)) / 128,
+    sum(abs(testMeans - wimbledonModelMeans)) / nrow(wimbledon$players),
     0,
     tolerance = 1e-1
   )
@@ -137,33 +137,29 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
   # Construct covariance matrix
   # Fit model
   mod_run <- function() {
-    path <- tempfile()
+    set.seed(423)
+    wimbledonModel <- BBTm(
+      outcome = wimbledon$matches$outcome,
+      player1 = wimbledon$matches$winner,
+      player2 = wimbledon$matches$loser,
+      formula = ~ rank + points,
+      advantage = wimbledon$matches$secondWeek,
+      data = wimbledon$players,
+      n.iter = 4000,
+      hyperparameter = FALSE
+    )
+
+    wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda"))
+
+    return(wimbledonModelMeans)
   }
-  set.seed(423)
-  wimbledonModel <- BBTm(
-    outcome = wimbledon$matches$outcome,
-    player1 = wimbledon$matches$winner,
-    player2 = wimbledon$matches$loser,
-    formula = ~ rank + points,
-    advantage = wimbledon$matches$secondWeek,
-    data = wimbledon$players,
-    n.iter = 4000,
-    hyperparameter = FALSE
-  )
-
-  wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
-    -c(1:50),
-  ])
-
-  # Read in means
-  testMeansPath <- test_path("wimbledonModelMeans.csv")
-  testMeans <- read.csv(testMeansPath)
 
   # Compare within tolerance
-  expect_equal(
-    sum(abs(testMeans - wimbledonModelMeans)) / 128,
-    0,
-    tolerance = 1e-1
+  expect_snapshot_value(
+    mod_run(),
+    style = "serialize",
+    tolerance = 1e-1,
+    variant = Sys.info()[["sysname"]]
   )
 })
 
