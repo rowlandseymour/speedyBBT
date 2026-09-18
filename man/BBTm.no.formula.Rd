@@ -20,9 +20,6 @@ BBTm.no.formula(
   burn.in = 100,
   n.thin = 1,
   verbose = interactive()
-  burn.in = 100,
-  n.thin = 1,
-  verbose = interactive()
 )
 }
 \arguments{
@@ -65,10 +62,10 @@ hyperparameter.}
 \item{n.thin}{(optional) The number of iterations to thin the MCMC samples by. Default is 1.}
 
 \item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
-Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in non-interactive contexts.}
+Default is \code{interactive()} therefore progress is shown if run interactively, but disabled
+in non-interactive contexts.}
 }
 \value{
-A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution
 A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution
 }
 \description{
@@ -86,7 +83,7 @@ If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 
 If \code{lambda.var} is omitted, it is set to N(0, 5^2).
 
-#' If \code{kappa.var} is omitted, it is set to N(0, 5^2), if \code{kappa.initial} is omitted
+If \code{kappa.var} is omitted, it is set to N(0, 5^2), if \code{kappa.initial} is omitted
 it is set to 0.5.
 }
 \keyword{internal}

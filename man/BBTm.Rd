@@ -23,9 +23,6 @@ BBTm(
   burn.in = 100,
   n.thin = 1,
   verbose = interactive()
-  burn.in = 100,
-  n.thin = 1,
-  verbose = interactive()
 )
 }
 \arguments{
@@ -50,7 +47,6 @@ player specific  parameters for the first MCMC iteration.}
 \item{formula}{Formula with no left-hand-side specifying the player specific
 effects.}
 
-\item{data}{Data frame with a row corresponding to each player and a column corresponding
 \item{data}{Data frame with a row corresponding to each player and a column corresponding
 to each covariate.}
 
@@ -78,7 +74,8 @@ hyperparameter.}
 \item{n.thin}{(optional) The number of iterations to thin the MCMC samples by. Default is 1.}
 
 \item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
-Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in non-interactive contexts.}
+Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in
+non-interactive contexts.}
 }
 \value{
 A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.

@@ -18,9 +18,6 @@ speedyBBTm(
   burn.in = 100,
   n.thin = 1,
   verbose = interactive()
-  burn.in = 100,
-  n.thin = 1,
-  verbose = interactive()
 )
 }
 \arguments{
@@ -57,10 +54,10 @@ hyperparameter. Default is 0.01.}
 \item{n.thin}{(optional) The number of iterations to thin the MCMC samples by. Default is 1.}
 
 \item{verbose}{(optional) A boolean indicating if progress should be printed to the console.
-Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in non-interactive contexts.}
+Default is \code{interactive()} therefore progress is shown if run interactively, but disabled in
+non-interactive contexts.}
 }
 \value{
-An \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.
 An \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.
 }
 \description{
@@ -84,8 +81,6 @@ If \code{lambda.initial} is ommitted, it is set to a vector of zeroes.
 # Construct covariance matrix based on spatial information
 prior.var <- expm::expm(forcedMarriage$adjacencyMatrix)
 prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.var)^-0.5)
-prior.var <- expm::expm(forcedMarriage$adjacencyMatrix)
-prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.var)^-0.5)
 
 # Fit model
 # Using `n.iter = 3` here to reduce runtime, you will need more
@@ -95,11 +90,12 @@ forcedMarriageModel <- speedyBBTm(
   player1 = forcedMarriage$comparisons$win,
   player2 = forcedMarriage$comparisons$lost,
   player.prior.var = prior.var, n.iter = 3, burn.in = 0
-  player.prior.var = prior.var, n.iter = 3, burn.in = 0
 )
 
 # Plot results
 
-plot(forcedMarriageModel[, "lambda[1]"], xlab = "Iteration", ylab = expression(lambda[i]))
+plot(forcedMarriageModel[, "lambda[1]"],
+  xlab = "Iteration", ylab = expression(lambda[i])
+)
 }
 }
