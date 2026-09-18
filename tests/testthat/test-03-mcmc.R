@@ -68,8 +68,7 @@ test_that("BBTm produces results within tolerance", {
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1,
-    variant = Sys.info()[["sysname"]]
+    tolerance = 1e-1
   )
 })
 
@@ -98,8 +97,7 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE", 
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1,
-    variant = Sys.info()[["sysname"]]
+    tolerance = 1e-1
   )
 })
 
@@ -195,8 +193,7 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1,
-    variant = Sys.info()[["sysname"]]
+    tolerance = 1e-1
   )
 })
 
@@ -225,8 +222,7 @@ test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces r
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1,
-    variant = Sys.info()[["sysname"]]
+    tolerance = 1e-1
   )
 })
 
@@ -257,8 +253,7 @@ test_that("BBTm.no.formula with advantage and hyperparameter=FALSE produces resu
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1,
-    variant = Sys.info()[["sysname"]]
+    tolerance = 1e-1
   )
 })
 
@@ -289,8 +284,7 @@ test_that("BBTm.no.formula with advantage and hyperparameter=TRUE produces resul
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1,
-    variant = Sys.info()[["sysname"]]
+    tolerance = 1e-1
   )
 })
 
@@ -327,8 +321,7 @@ test_that("BBTm.ties produces expected output from two iterations", {
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1,
-    variant = Sys.info()[["sysname"]]
+    tolerance = 1e-1
   )
 })
 
@@ -368,7 +361,6 @@ test_that("BBTm.ties produces expected output from two iterations when hyperpara
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1,
-    variant = Sys.info()[["sysname"]]
+    tolerance = 1e-1
   )
 })
