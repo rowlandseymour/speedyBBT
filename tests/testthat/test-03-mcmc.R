@@ -63,7 +63,7 @@ test_that("BBTm produces results within tolerance", {
     ])
 
     # Read in means
-    write.csv(wimbledonModelMeans, path)
+    write.csv(wimbledonModelMeans, path, row.names = FALSE)
     return(path)
   }
   expect_snapshot_file(save_file(), "wimbledonModelMeansWithHyper.csv")
@@ -89,7 +89,7 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE", 
     wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
       -c(1:50),
     ])
-    write.csv(wimbledonModelMeans, path)
+    write.csv(wimbledonModelMeans, path, row.names = FALSE)
     return(path)
   }
   expect_snapshot_file(save_file(), "wimbledonModelMeansNoHyper.csv")
@@ -276,7 +276,7 @@ test_that("BBTm.no.formula with advantage and hyperparameter=TRUE produces resul
     )
 
     model_means <- colMeans(model)
-    write.csv(model_means, path)
+    write.csv(model_means, path, row.names = FALSE)
     return(path)
   }
   expect_snapshot_file(save_file(), "bbtNoFormulaAlphaSqKappaMeans.csv")
