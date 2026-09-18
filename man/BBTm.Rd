@@ -23,6 +23,9 @@ BBTm(
   burn.in = 100,
   n.thin = 1,
   verbose = interactive()
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 )
 }
 \arguments{
@@ -47,6 +50,7 @@ player specific  parameters for the first MCMC iteration.}
 \item{formula}{Formula with no left-hand-side specifying the player specific
 effects.}
 
+\item{data}{Data frame with a row corresponding to each player and a column corresponding
 \item{data}{Data frame with a row corresponding to each player and a column corresponding
 to each covariate.}
 
@@ -116,6 +120,8 @@ wimbledonModel <- BBTm(
 )
 
 # Plot posterior distributions
-hist(parameter(wimbledonModel, "kappa"), main = "", xlab = expression(kappa), freq = FALSE)
+hist(parameter(wimbledonModel, "kappa"),
+  main = "", xlab = expression(kappa), freq = FALSE
+)
 }
 }

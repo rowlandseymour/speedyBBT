@@ -21,6 +21,9 @@ BBTm.ties(
   burn.in = 100,
   n.thin = 1,
   verbose = interactive()
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 )
 }
 \arguments{
@@ -69,6 +72,7 @@ Default is \code{interactive()} therefore progress is shown if run interactively
 }
 \value{
 A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution
+A \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution
 }
 \description{
 This function uses MCMC to sample from the posterior distribution of the
@@ -91,6 +95,8 @@ If \code{lambda.initial} is omitted, it is set to a vector of zeroes.
 # Construct covariance matrix based on spatial informartion
 prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
 prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.var)^-0.5)
+prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.var)^-0.5)
 
 
 # Fit BT model with ties
@@ -104,10 +110,14 @@ darTiedModel <- BBTm.ties(
   player.prior.var = prior.var,
   hyperparameter = TRUE,
   rw.sd = 0.005, n.iter = 3, burn.in = 0, verbose = FALSE
+  player.prior.var = prior.var,
+  hyperparameter = TRUE,
+  rw.sd = 0.005, n.iter = 3, burn.in = 0, verbose = FALSE
 )
 
 # Get posterior means
-darTiedModelLambda <- parameter(darTiedModel, "lambda") - colMeans(parameter(darTiedModel, "lambda"))
+darTiedModelLambda <- parameter(darTiedModel, "lambda") -
+  colMeans(parameter(darTiedModel, "lambda"))
 lambda.mean <- rowMeans(darTiedModelLambda)
 
 # Generate trace plots

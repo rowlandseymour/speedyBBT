@@ -18,6 +18,9 @@ speedyBBTm(
   burn.in = 100,
   n.thin = 1,
   verbose = interactive()
+  burn.in = 100,
+  n.thin = 1,
+  verbose = interactive()
 )
 }
 \arguments{
@@ -58,6 +61,7 @@ Default is \code{interactive()} therefore progress is shown if run interactively
 }
 \value{
 An \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.
+An \link[coda:mcmc]{"mcmc"} object containing samples from the posterior distribution.
 }
 \description{
 This function uses MCMC to sample from the posterior distribution of the
@@ -80,6 +84,8 @@ If \code{lambda.initial} is ommitted, it is set to a vector of zeroes.
 # Construct covariance matrix based on spatial information
 prior.var <- expm::expm(forcedMarriage$adjacencyMatrix)
 prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.var)^-0.5)
+prior.var <- expm::expm(forcedMarriage$adjacencyMatrix)
+prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.var)^-0.5)
 
 # Fit model
 # Using `n.iter = 3` here to reduce runtime, you will need more
@@ -88,6 +94,7 @@ forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
   player1 = forcedMarriage$comparisons$win,
   player2 = forcedMarriage$comparisons$lost,
+  player.prior.var = prior.var, n.iter = 3, burn.in = 0
   player.prior.var = prior.var, n.iter = 3, burn.in = 0
 )
 
