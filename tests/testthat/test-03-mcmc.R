@@ -145,7 +145,8 @@ test_that("BBTm.no.formula produces results within tolerance", {
     n.iter = 1000
   )
 
-  lambda_means <- colMeans(forcedMarriageModel[,
+  lambda_means <- colMeans(forcedMarriageModel[
+    ,
     grep(
       "lambda",
       varnames(forcedMarriageModel)

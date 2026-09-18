@@ -19,11 +19,17 @@ which of two tennis players won a match, which of two neighbourhoods
 looks more deprived – `speedyBBT` estimates a quality parameter for
 every item being compared, along with full posterior uncertainty.
 
-Inference is carried out using a Pólya-Gamma data augmentation scheme, which makes sampling fast even for large numbers of items and comparisons. The package supports:
+Inference is carried out using a Pólya-Gamma data augmentation scheme,
+which makes sampling fast even for large numbers of items and
+comparisons. The package supports:
 
-- the standard Bradley-Terry model (`speedyBBTm()`), optimised for speed when there are no ties or comparison-specific effects;
-- ties, comparison-specific effects (e.g. home advantage), and item-level covariates via a formula interface (`BBTm()`);
-- multivariate normal prior distributions on the item quality parameters, so that structure between items (e.g. spatial adjacency) can be encoded directly into the prior;
+- the standard Bradley-Terry model (`speedyBBTm()`), optimised for speed
+  when there are no ties or comparison-specific effects;
+- ties, comparison-specific effects (e.g. home advantage), and
+  item-level covariates via a formula interface (`BBTm()`);
+- multivariate normal prior distributions on the item quality
+  parameters, so that structure between items (e.g. spatial adjacency)
+  can be encoded directly into the prior;
 - optional hyperparameter inference on the prior scale.
 
 The package can be used with data collected using the [Comparative
@@ -49,7 +55,7 @@ discussion.
 
 Install the released version from CRAN:
 
-```r
+``` r
 install.packages("speedyBBT")
 # for development version
 # devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE)
