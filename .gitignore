@@ -10,3 +10,4 @@ Rplots.ps
 *.db
 *.Rds
 docs
+.kilo/
