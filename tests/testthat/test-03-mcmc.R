@@ -7,9 +7,9 @@ test_that("speedyBBTm produces results within tolerance", {
   # Fit model
   forcedMarriageModel <- speedyBBTm(
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
-    player1 = forcedMarriage$comparisons$win,
-    player2 = forcedMarriage$comparisons$lost,
-    player.prior.var = prior.var,
+    item1 = forcedMarriage$comparisons$win,
+    item2 = forcedMarriage$comparisons$lost,
+    item.prior.var = prior.var,
     n.iter = 2000
   )
 
@@ -41,14 +41,35 @@ test_that("speedyBBTm produces results within tolerance", {
   )
 })
 
+test_that("speedyBBTm produces a warning but still runs when a deprecated argument is used", {
+  # Construct covariance matrix
+  set.seed(905)
+  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+
+  # Fit model
+  expect_warning(
+    forcedMarriageModel <- speedyBBTm(
+      outcome = rep(1, length(forcedMarriage$comparisons$win)),
+      player1 = forcedMarriage$comparisons$win,
+      player2 = forcedMarriage$comparisons$lost,
+      player.prior.var = prior.var,
+      n.iter = 2,
+      burn.in = 0
+    )
+  )
+
+  expect_s3_class(forcedMarriageModel, 'mcmc')
+})
+
 
 test_that("BBTm produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
   wimbledonModel <- BBTm(
     outcome = wimbledon$matches$outcome,
-    player1 = wimbledon$matches$winner,
-    player2 = wimbledon$matches$loser,
+    item1 = wimbledon$matches$winner,
+    item2 = wimbledon$matches$loser,
     advantage = wimbledon$matches$secondWeek,
     formula = ~ rank + points,
     data = wimbledon$players,
@@ -79,8 +100,8 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE", 
     set.seed(423)
     wimbledonModel <- BBTm(
       outcome = wimbledon$matches$outcome,
-      player1 = wimbledon$matches$winner,
-      player2 = wimbledon$matches$loser,
+      item1 = wimbledon$matches$winner,
+      item2 = wimbledon$matches$loser,
       advantage = wimbledon$matches$secondWeek,
       formula = ~ rank + points,
       data = wimbledon$players,
@@ -107,8 +128,8 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
     set.seed(423)
     wimbledonModel <- BBTm(
       outcome = wimbledon$matches$outcome,
-      player1 = wimbledon$matches$winner,
-      player2 = wimbledon$matches$loser,
+      item1 = wimbledon$matches$winner,
+      item2 = wimbledon$matches$loser,
       formula = ~ rank + points,
       data = wimbledon$players,
       n.iter = 4000,
@@ -139,14 +160,13 @@ test_that("BBTm.no.formula produces results within tolerance", {
   # Fit model
   forcedMarriageModel <- BBTm(
     outcome = rep(1, length(forcedMarriage$comparisons$win)),
-    player1 = forcedMarriage$comparisons$win,
-    player2 = forcedMarriage$comparisons$lost,
-    player.prior.var = prior.var,
+    item1 = forcedMarriage$comparisons$win,
+    item2 = forcedMarriage$comparisons$lost,
+    item.prior.var = prior.var,
     n.iter = 1000
   )
 
-  lambda_means <- colMeans(forcedMarriageModel[
-    ,
+  lambda_means <- colMeans(forcedMarriageModel[,
     grep(
       "lambda",
       varnames(forcedMarriageModel)
@@ -173,8 +193,8 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
     set.seed(423)
     wimbledonModel <- BBTm(
       outcome = wimbledon$matches$outcome,
-      player1 = wimbledon$matches$winner,
-      player2 = wimbledon$matches$loser,
+      item1 = wimbledon$matches$winner,
+      item2 = wimbledon$matches$loser,
       formula = ~ rank + points,
       advantage = wimbledon$matches$secondWeek,
       data = wimbledon$players,
@@ -204,9 +224,9 @@ test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces r
 
     model <- BBTm.no.formula(
       outcome = rep(1, length(forcedMarriage$comparisons$win)),
-      player1 = forcedMarriage$comparisons$win,
-      player2 = forcedMarriage$comparisons$lost,
-      player.prior.var = prior.var,
+      item1 = forcedMarriage$comparisons$win,
+      item2 = forcedMarriage$comparisons$lost,
+      item.prior.var = prior.var,
       lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
       n.iter = 1000,
       burn.in = 100,
@@ -234,9 +254,9 @@ test_that("BBTm.no.formula with advantage and hyperparameter=FALSE produces resu
 
     model <- BBTm.no.formula(
       outcome = rep(1, length(forcedMarriage$comparisons$win)),
-      player1 = forcedMarriage$comparisons$win,
-      player2 = forcedMarriage$comparisons$lost,
-      player.prior.var = prior.var,
+      item1 = forcedMarriage$comparisons$win,
+      item2 = forcedMarriage$comparisons$lost,
+      item.prior.var = prior.var,
       lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
       advantage = advantage,
       n.iter = 10,
@@ -265,9 +285,9 @@ test_that("BBTm.no.formula with advantage and hyperparameter=TRUE produces resul
 
     model <- BBTm.no.formula(
       outcome = rep(1, length(forcedMarriage$comparisons$win)),
-      player1 = forcedMarriage$comparisons$win,
-      player2 = forcedMarriage$comparisons$lost,
-      player.prior.var = prior.var,
+      item1 = forcedMarriage$comparisons$win,
+      item2 = forcedMarriage$comparisons$lost,
+      item.prior.var = prior.var,
       lambda.initial = numeric(nrow(forcedMarriage$adjacencyMatrix)),
       advantage = advantage,
       n.iter = 10,
@@ -299,9 +319,9 @@ test_that("BBTm.ties produces expected output from two iterations", {
     darTiedModel <- BBTm.ties(
       n.objects = n.objects,
       outcome = darEsSalaam$comparisons$outcome,
-      player1 = darEsSalaam$comparisons$subward1,
-      player2 = darEsSalaam$comparisons$subward2,
-      player.prior.var = prior.var,
+      item1 = darEsSalaam$comparisons$subward1,
+      item2 = darEsSalaam$comparisons$subward2,
+      item.prior.var = prior.var,
       hyperparameter = TRUE,
       rw.sd = 0.005,
       burn.in = 0,
@@ -338,9 +358,9 @@ test_that("BBTm.ties produces expected output from two iterations when hyperpara
     darTiedModel <- BBTm.ties(
       n.objects = n.objects,
       outcome = darEsSalaam$comparisons$outcome,
-      player1 = darEsSalaam$comparisons$subward1,
-      player2 = darEsSalaam$comparisons$subward2,
-      player.prior.var = prior.var,
+      item1 = darEsSalaam$comparisons$subward1,
+      item2 = darEsSalaam$comparisons$subward2,
+      item.prior.var = prior.var,
       hyperparameter = FALSE,
       rw.sd = 0.005,
       burn.in = 0,
