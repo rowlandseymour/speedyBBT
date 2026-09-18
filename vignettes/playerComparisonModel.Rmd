@@ -1,5 +1,5 @@
 ---
-title: "Player and comparison-specific effects, and ties, in Bradley-Terry models"
+title: "Player and comparison-specific effects in Bradley-Terry models"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Getting started with speedyBBT}
@@ -168,9 +168,6 @@ $$θ ∼ Exp(τ )$$
 In the MCMC algorithm, all parameters except for $θ$ are updated by drawing from their full conditional distribution. The the threshold parameter $θ$ is updated using a Metropolis-Hastings random walk algorithm, where new values of $θ$ are proposed from a normal distribution with mean the current value of theta and variance $ν^2$. A full description of the underlying
 statistical framework can be found in Seymour and Hernandez (2024).
 
-```{r tied_model}
-
-```
 ## References
 
 Caron F, Doucet A (2012). “Efficient Bayesian Inference for Generalized Bradley–Terry Models.” Journal of Computational and Graphical Statistics, 21(1), 174–196. doi:10.1080/10618600.2012.638220.
