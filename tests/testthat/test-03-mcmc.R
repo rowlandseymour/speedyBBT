@@ -72,7 +72,7 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
       outcome = rep(1, length(forcedMarriage$comparisons$win)),
       item1 = forcedMarriage$comparisons$win,
       player2 = forcedMarriage$comparisons$lost,
-      player.prior.var = prior.var,
+      item.prior.var = prior.var,
       n.iter = 2,
       burn.in = 0
     ),
@@ -333,6 +333,36 @@ test_that("BBTm.no.formula produces results within tolerance", {
     sum(abs(testMeans - lambda_means)) /
       nrow(forcedMarriage$adjacencyMatrix),
     0,
+    tolerance = 1e-1
+  )
+})
+
+
+test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE", {
+  # Construct covariance matrix
+  # Fit model
+  mod_run <- function() {
+    set.seed(423)
+    wimbledonModel <- BBTm(
+      outcome = wimbledon$matches$outcome,
+      item1 = wimbledon$matches$winner,
+      item2 = wimbledon$matches$loser,
+      formula = ~ rank + points,
+      advantage = wimbledon$matches$secondWeek,
+      data = wimbledon$players,
+      n.iter = 1000,
+      hyperparameter = FALSE
+    )
+
+    wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda"))
+
+    return(wimbledonModelMeans)
+  }
+
+  # Compare within tolerance
+  expect_snapshot_value(
+    mod_run(),
+    style = "serialize",
     tolerance = 1e-1
   )
 })
