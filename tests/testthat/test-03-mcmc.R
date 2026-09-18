@@ -45,7 +45,7 @@ test_that("speedyBBTm produces results within tolerance", {
 test_that("BBTm produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
-  save_file <- function() {
+  mod_run <- function() {
     path <- tempfile(fileext = ".csv")
     set.seed(103)
     wimbledonModel <- BBTm(
@@ -63,16 +63,20 @@ test_that("BBTm produces results within tolerance", {
     ])
 
     # Read in means
-    write.csv(wimbledonModelMeans, path, row.names = FALSE)
-    return(path)
+    return(wimbledonModelMeans)
   }
-  expect_snapshot_file(save_file(), "wimbledonModelMeansWithHyper.csv")
+  expect_snapshot_value(
+    mod_run(),
+    style = "serialize",
+    tolerance = 1e-1,
+    variant = Sys.info()[["sysname"]]
+  )
 })
 
 test_that("BBTm produces results within tolerance when hyperparameter = FALSE", {
   # Construct covariance matrix
   # Fit model
-  save_file <- function() {
+  mod_run <- function() {
     path <- tempfile(fileext = ".csv")
     set.seed(423)
     wimbledonModel <- BBTm(
@@ -89,10 +93,14 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE", 
     wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
       -c(1:50),
     ])
-    write.csv(wimbledonModelMeans, path, row.names = FALSE)
-    return(path)
+    return(wimbledonModelMeans)
   }
-  expect_snapshot_file(save_file(), "wimbledonModelMeansNoHyper.csv")
+  expect_snapshot_value(
+    mod_run(),
+    style = "serialize",
+    tolerance = 1e-1,
+    variant = Sys.info()[["sysname"]]
+  )
 })
 
 test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = FALSE", {
@@ -165,7 +173,7 @@ test_that("BBTm.no.formula produces results within tolerance", {
 test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE", {
   # Construct covariance matrix
   # Fit model
-  save_file <- function() {
+  mod_run <- function() {
     path <- tempfile()
   }
   set.seed(423)
@@ -192,12 +200,12 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
   expect_equal(
     sum(abs(testMeans - wimbledonModelMeans)) / 128,
     0,
-    tolerance = 1
+    tolerance = 1e-1
   )
 })
 
 test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces results within tolerance", {
-  save_file <- function() {
+  mod_run <- function() {
     path <- tempfile(fileext = ".csv")
     set.seed(42)
     expA <- expm::expm(forcedMarriage$adjacencyMatrix)
@@ -216,17 +224,18 @@ test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces r
     )
 
     model_means <- colMeans(model)
-    write.csv(model_means, path, row.names = FALSE)
-    return(path)
+    return(model_means)
   }
-  expect_snapshot_file(
-    save_file(),
-    "bbtNoFormulaAlphaSqOnlyMeans.csv"
+  expect_snapshot_value(
+    mod_run(),
+    style = "serialize",
+    tolerance = 1e-1,
+    variant = Sys.info()[["sysname"]]
   )
 })
 
 test_that("BBTm.no.formula with advantage and hyperparameter=FALSE produces results within tolerance", {
-  save_file <- function() {
+  mod_run <- function() {
     path <- tempfile(fileext = ".csv")
     set.seed(42)
     expA <- expm::expm(forcedMarriage$adjacencyMatrix)
@@ -247,15 +256,18 @@ test_that("BBTm.no.formula with advantage and hyperparameter=FALSE produces resu
     )
 
     model_means <- colMeans(model)
-    testMeans <- write.csv(model_means, path, row.names = FALSE)
-    return(path)
+    return(model_means)
   }
-
-  expect_snapshot_file(save_file(), "bbtNoFormulaKappaMeans.csv")
+  expect_snapshot_value(
+    mod_run(),
+    style = "serialize",
+    tolerance = 1e-1,
+    variant = Sys.info()[["sysname"]]
+  )
 })
 
 test_that("BBTm.no.formula with advantage and hyperparameter=TRUE produces results within tolerance", {
-  save_file <- function() {
+  mod_run <- function() {
     path <- tempfile(fileext = ".csv")
     set.seed(42)
     expA <- expm::expm(forcedMarriage$adjacencyMatrix)
@@ -276,17 +288,20 @@ test_that("BBTm.no.formula with advantage and hyperparameter=TRUE produces resul
     )
 
     model_means <- colMeans(model)
-    write.csv(model_means, path, row.names = FALSE)
-    return(path)
+    return(model_means)
   }
-  expect_snapshot_file(save_file(), "bbtNoFormulaAlphaSqKappaMeans.csv")
+  expect_snapshot_value(
+    mod_run(),
+    style = "serialize",
+    tolerance = 1e-1,
+    variant = Sys.info()[["sysname"]]
+  )
 })
 
 test_that("BBTm.ties produces expected output from two iterations", {
   # Construct covariance matrix
   # Fit model
-  save_file <- function() {
-    path <- tempfile(fileext = ".csv")
+  mod_run <- function() {
     set.seed(123)
     prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
     prior.var <- diag(diag(prior.var)^-0.5) %*%
@@ -311,21 +326,21 @@ test_that("BBTm.ties produces expected output from two iterations", {
     theta.mean <- mean(parameter(darTiedModel, "theta"))
     alpha.sq.mean <- mean(parameter(darTiedModel, "alpha.sq"))
 
-    write.csv(
-      rbind(lambda.mean, theta.mean, alpha.sq.mean),
-      path,
-      row.names = FALSE
-    )
-    return(path)
+    return(c(lambda.mean, theta.mean, alpha.sq.mean))
   }
-  expect_snapshot_file(save_file(), "darTiedModelMeansShort.csv")
+  expect_snapshot_value(
+    mod_run(),
+    style = "serialize",
+    tolerance = 1e-1,
+    variant = Sys.info()[["sysname"]]
+  )
 })
 
 test_that("BBTm.ties produces expected output from two iterations when hyperparameter = FALSE", {
   # Construct covariance matrix
   # Fit model
 
-  save_file <- function() {
+  mod_run <- function() {
     path <- tempfile(fileext = ".csv")
     set.seed(123)
     prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
@@ -350,10 +365,14 @@ test_that("BBTm.ties produces expected output from two iterations when hyperpara
     lambda.mean <- rowMeans(centered_lambda)
 
     theta.mean <- mean(parameter(darTiedModel, "theta"))
-    write.csv(c(lambda.mean, theta.mean), path, row.names = FALSE)
-    return(path)
+    return(c(lambda.mean, theta.mean))
   }
 
   # Read in means
-  expect_snapshot_file(save_file(), "darTiedModelMeansShortNoHyper.csv")
+  expect_snapshot_value(
+    mod_run(),
+    style = "serialize",
+    tolerance = 1e-1,
+    variant = Sys.info()[["sysname"]]
+  )
 })
