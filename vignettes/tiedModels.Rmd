@@ -1,0 +1,47 @@
+
+```{r tied_model, eval = FALSE}
+
+###############################################################################
+# Section 4.1: Deprivation in Dar es Salaam — Bradley-Terry with Ties
+###############################################################################
+
+# Inspect comparison data
+head(darEsSalaam$comparisons)
+
+# Construct prior covariance matrix
+prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+prior.var <- diag(diag(prior.var)^-0.5) %*%
+  prior.var %*%
+  diag(diag(prior.var)^-0.5)
+
+# Fit tied BT model
+darTiedModel <- BBTm.ties(
+  outcome = darEsSalaam$comparisons$outcome,
+  item1 = darEsSalaam$comparisons$subward1,
+  item2 = darEsSalaam$comparisons$subward2,
+  item.prior.var = prior.var,
+  hyperparameter = TRUE,
+  rw.sd = 0.005,
+  n.iter = 5000,
+  burn.in = 100
+)
+
+# Trace plot and histogram for threshold parameter theta
+par(mfrow = c(1, 2))
+plot(
+  parameter(darTiedModel, "theta"),
+  type = 'l',
+  xlab = "Iteration",
+  ylab = expression(theta)
+)
+hist(
+  parameter(darTiedModel, "theta"),
+  main = "",
+  xlab = expression(theta),
+  freq = FALSE
+)
+
+# Posterior mean and 95% credible interval for theta
+mean(parameter(darTiedModel, "theta"))
+quantile(parameter(darTiedModel, "theta"), c(0.025, 0.975))
+```
