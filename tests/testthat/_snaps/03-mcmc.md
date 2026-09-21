@@ -1,25 +1,25 @@
-# BBTm produces results within tolerance when hyperparameter = FALSE
+# BBTm.ties produces expected output from two iterations
 
-    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
+    WAoAAAACAAQFAQACAwAAAAIOAAAAgD+tf7NKJwLZP9s2VCuuLw2/7WsirUIl9b/hhuko8cVo
+    wBLxbDV+x1G/8X0YEZ/WGb/MJDDy5PXev+L04zD2F0m/+KzDZ48Ba7/UEqHH38SwP86gltJV
+    GzC/9DrI+QIjlD/IgcpbQXsqv/BwqfokQ4w/9VcI48dR/b/GI6ekd6wev8qO35xuzXG/+a3Y
+    T8wznj/RpzFFEEn0P/YRH5expec/3nlF3j7yub/ZxHx5aWFWv9hZiSio5OM/xC7IHWkFQT/q
+    hacAL/qBP8pBebdtT5K/zZs/ILTIBz/SVp1+6N1Tv8kwByi9prM/1Ikyw6CYj7/EytyfTjA7
+    v4Xk1jRdaF4/2TQRD64DQL+XnPXN3/eZv90rjCwcl1a/9ZaatW905b/TYC7Ww1vkP9amslED
+    RTS/3HMLzHiDr7/B3MBDrovqP/bLNkub+dG/4jrfdbAY67/enIzrZL6jP9/kOS7/bys/0BHf
+    7pohh7/zYQUMVVYVv8Nf6U6Ns8i/8wiNQZgXCr/RADTVEh9AP9pZgzTcGke/2yBONdaypr/Q
+    L367T2AuP+MJIEL2AN3AAX+2085JPb++Jej+edFzP9wTJSKAQ9S/rm10C/8zQ7+7K7HFytdu
+    v93d/x05ACI/2FEyqlRDn7/W96n9s+i4P8E6nlNBthbADqqDQn2IfT/T0LJj/ITpP9WWby6w
+    BCs/s1WiOcvdhj/nml7EyJzSv7WYGjznkQy/1MgbcEAC6b+4bgDeaInzP8WfyNyxLI+/ooSX
+    KUNLLb/6BlAaiXKpP+Got83gC7Y/zTuw8BxJmD8qYfvL7EoUv9ehCMkE0Ty/wIoCrQy64sAC
+    sfKLOFXHv9vJrQEnmys/4gT3/bIViT/fLr+GnzDyv7Ik1mGfPfI/4Ux3ng4B4j/qCyOnt5pp
+    P+/USHzgpCY/y9zYfGsi2j/pQ4GzwFufv6f/+PgH5iO/8SSgRuKXDr/feV3iNtNqP+QFt74Q
+    Vp8/0MFMKHK05j/XaEbWctkjv+Zsl9OeYyG/5KtxwZOHtj+/t4u/IR6yv+KesG+ruFA/8TGo
+    RDr8AT/zOKG3SwTkP+73auBLq60/0xUrTRSb1L/HptCvVtP7P+aUsyPixsg/llK2puebQz+8
+    1YpAkNAWP/BzySs73U4/4E/gIvOsID/klu11BXdsP4d5k+OyJgM/4mjI96207j/Cn4Q1eoev
+    P92fe56ws18/p6N6kue6OD/guDsv1Quov87t/LdWmQ8/tjejuFwsIT/pn8HjkmVzP8cvDMSf
+    qiI/5voHeYBQ4z/lEXDNfdeFP+OaVfnrIak/9KhLXxtebT+5PfXOGnvcP+XuTmoSz/5AAIMv
+    HteTnD/88ZXoVQNiQAczQ3ePxQkAAAQCAAAAAQAEAAkAAAAFbmFtZXMAAAAQAAAAgAAEAAkA
     AAAJbGFtYmRhWzFdAAQACQAAAAlsYW1iZGFbMl0ABAAJAAAACWxhbWJkYVszXQAEAAkAAAAJ
     bGFtYmRhWzRdAAQACQAAAAlsYW1iZGFbNV0ABAAJAAAACWxhbWJkYVs2XQAEAAkAAAAJbGFt
     YmRhWzddAAQACQAAAAlsYW1iZGFbOF0ABAAJAAAACWxhbWJkYVs5XQAEAAkAAAAKbGFtYmRh
@@ -64,6 +64,11 @@
     YW1iZGFbMTIzXQAEAAkAAAALbGFtYmRhWzEyNF0ABAAJAAAAC2xhbWJkYVsxMjVdAAQACQAA
     AAtsYW1iZGFbMTI2XQAEAAkAAAALbGFtYmRhWzEyN10ABAAJAAAAC2xhbWJkYVsxMjhdAAAA
     /g==
+
+---
+
+    WAoAAAACAAQFAQACAwAAAAAOAAAABD9BAFA238zuv0EAUDbfzOs/30GElR44Nz8YUouT3/0e
+    
 
 # BBTm produces results within tolerance when hyperparameter = FALSE and advantage = FALSE
 
@@ -322,11 +327,6 @@
     AAQACQAAAApsYW1iZGFbNzJdAAQACQAAAApsYW1iZGFbNzNdAAQACQAAAApsYW1iZGFbNzRd
     AAQACQAAAApsYW1iZGFbNzVdAAQACQAAAApsYW1iZGFbNzZdAAQACQAAAAhhbHBoYS5zcQAE
     AAkAAAAFa2FwcGEAAAD+
-
-# BBTm.ties produces expected output from two iterations
-
-    WAoAAAACAAQFAQACAwAAAAAOAAAABD9BAFA238zuv0EAUDbfzOs/30GElR44Nz8YUouT3/0e
-    
 
 # BBTm.ties produces expected output from two iterations when hyperparameter = FALSE
 
