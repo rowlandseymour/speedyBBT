@@ -1,8 +1,5 @@
 # speedyBBT
 
-[![Software
-quality](https://img.shields.io/badge/FAIRness-41%25-orange "score: 41% | passed: 17 | failed: 24 | errors: 1")](RSFC_REPORT.md)
-
 ## Overview
 
 `speedyBBT` is an R package for fitting Bradley-Terry models to pairwise
@@ -54,7 +51,7 @@ Install the released version from CRAN:
 
 install.packages("speedyBBT")
 # for development version
-# devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE) 
+# devtools::install_github("rowlandseymour/speedyBBT", dependencies = TRUE)
 ```
 
 ## Usage
@@ -70,7 +67,7 @@ network representation of the wards in Nottinghamshire.
 
 ``` r
 
-#View Data
+# View Data
 data("forcedMarriage", package = "speedyBBT")
 head(forcedMarriage$comparisons)
 #>   user            time win lost
@@ -82,46 +79,56 @@ head(forcedMarriage$comparisons)
 #> 6    1 16:09:51.129570  53   15
 
 
-#Construct covariance matrix
-expA  <- expm::expm(forcedMarriage$adjacencyMatrix)
+# Construct covariance matrix
+expA <- expm::expm(forcedMarriage$adjacencyMatrix)
 prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
-    
-#Fit model
+
+# Fit model
 library(speedyBBT)
-forcedMarriageModel <- speedyBBTm(outcome = rep(1, length(forcedMarriage$comparisons$win)),
-                                  player1 = forcedMarriage$comparisons$win, 
-                                  player2 = forcedMarriage$comparisons$lost, 
-                                  player.prior.var = prior.var)
-lambda_draws  <- parameter(forcedMarriageModel, "lambda") 
+forcedMarriageModel <- speedyBBTm(
+  outcome = rep(1, length(forcedMarriage$comparisons$win)),
+  player1 = forcedMarriage$comparisons$win,
+  player2 = forcedMarriage$comparisons$lost,
+  player.prior.var = prior.var
+)
+lambda_draws <- parameter(forcedMarriageModel, "lambda")
 lambda_centered <- lambda_draws - rowMeans(lambda_draws)
 
-#View Trace Plots
-plot(lambda_centered[, 10], type = 'l',
-     xlab = "Iteration", ylab = expression(lambda[10]))
+# View Trace Plots
+plot(lambda_centered[, 10],
+  type = "l",
+  xlab = "Iteration", ylab = expression(lambda[10])
+)
 ```
 
 ![](reference/figures/README-example-1.png)
 
 ``` r
 
-plot(lambda_centered[, 20], type = 'l', 
-     xlab = "Iteration", ylab = expression(lambda[20]))
+plot(lambda_centered[, 20],
+  type = "l",
+  xlab = "Iteration", ylab = expression(lambda[20])
+)
 ```
 
 ![](reference/figures/README-example-2.png)
 
 ``` r
 
-plot(lambda_centered[, 30], type = 'l', 
-     xlab = "Iteration", ylab = expression(lambda[30]))
+plot(lambda_centered[, 30],
+  type = "l",
+  xlab = "Iteration", ylab = expression(lambda[30])
+)
 ```
 
 ![](reference/figures/README-example-3.png)
 
 ``` r
 
-plot(lambda_centered[, 40], type = 'l', 
-     xlab = "Iteration", ylab = expression(lambda[40]))
+plot(lambda_centered[, 40],
+  type = "l",
+  xlab = "Iteration", ylab = expression(lambda[40])
+)
 ```
 
 ![](reference/figures/README-example-4.png)
@@ -129,7 +136,7 @@ plot(lambda_centered[, 40], type = 'l',
 ``` r
 
 
-plot(parameter(forcedMarriageModel, "alpha.sq"), type = 'l')
+plot(parameter(forcedMarriageModel, "alpha.sq"), type = "l")
 ```
 
 ![](reference/figures/README-example-5.png)
@@ -137,19 +144,23 @@ plot(parameter(forcedMarriageModel, "alpha.sq"), type = 'l')
 ``` r
 
 
-#View Results
+# View Results
 forcedMarriageModelMeans <- colMeans(lambda_draws)
 forcedMarriageModelLowerCI <- apply(lambda_draws, 2, quantile, 0.025)
 forcedMarriageModelUpperCI <- apply(lambda_draws, 2, quantile, 0.975)
-forcedMarriageResults <- data.frame("ward" = forcedMarriage$wards$NAME,
-                                    "mean" = forcedMarriageModelMeans,
-                                    "lowerCI" = forcedMarriageModelLowerCI, 
-                                    "upperCI" = forcedMarriageModelUpperCI)
+forcedMarriageResults <- data.frame(
+  "ward" = forcedMarriage$wards$NAME,
+  "mean" = forcedMarriageModelMeans,
+  "lowerCI" = forcedMarriageModelLowerCI,
+  "upperCI" = forcedMarriageModelUpperCI
+)
 forcedMarriageResults <- forcedMarriageResults[order(forcedMarriageResults$mean), ]
 
 plot(forcedMarriageResults$mean, xlab = "Ward", ylab = "Posterior Mean", ylim = c(-7.5, 7.5))
-segments(x0 = 1:nrow(forcedMarriageResults), y0 = forcedMarriageResults$lowerCI, 
-         y1 = forcedMarriageResults$upperCI)
+segments(
+  x0 = 1:nrow(forcedMarriageResults), y0 = forcedMarriageResults$lowerCI,
+  y1 = forcedMarriageResults$upperCI
+)
 ```
 
 ![](reference/figures/README-example-6.png)
