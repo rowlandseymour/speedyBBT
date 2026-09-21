@@ -1,4 +1,4 @@
-#' Plot quality parameter posteriors
+#' Plot Quality Parameter Posteriors
 #'
 #' Generates a plot of the posterior mean and 95% credible interval
 #' of the quality parameter estimates.
@@ -20,11 +20,17 @@
 #'   n.iter = 200
 #' )
 #'
-#' plot_qualities(player_names = players, model_output = wimbledonModel)
-plot_qualities <- function(player_names, model_output) {
+#' plot_qualities(model_output = wimbledonModel, player_names = players)
+plot_qualities <- function(model_output, player_names) {
   # Posterior mean and 95% credible intervals (burn-in = 100)
+
   param_draws <- parameter(model_output, "lambda")
   model_means <- colMeans(param_draws)
+  if (length(player_names) != length(model_means)) {
+    stop(
+      "The length of player_names must match the expected number of quality estimates."
+    )
+  }
   modelLowerCI <- apply(
     param_draws,
     2,
@@ -37,13 +43,13 @@ plot_qualities <- function(player_names, model_output) {
     quantile,
     0.975
   )
-  modelResults <- data.frame(
+  results <- data.frame(
     "item" = player_names,
     "mean" = model_means,
     "lowerCI" = modelLowerCI,
     "upperCI" = modelUpperCI
   )
-  modelResults <- modelResults[
+  results <- results[
     order(modelResults$mean),
   ]
   oldpar <-
@@ -52,6 +58,7 @@ plot_qualities <- function(player_names, model_output) {
       mar = c(12, 4, 4, 2), # large bottom margin for vertical labels
       mgp = c(10, 0.5, 0) # axis title, tick labels, tick marks distance from axis
     )
+  on.exit(par(oldpar), add = TRUE)
 
   plot(
     modelResults$mean,
@@ -74,5 +81,6 @@ plot_qualities <- function(player_names, model_output) {
   )
   mtext("Player", side = 1, line = 10)
   mtext("Posterior Mean Quality", side = 2, line = 2.5)
-  on.exit(par(oldpar), add = TRUE)
+
+  return(results)
 }
