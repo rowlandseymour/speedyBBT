@@ -2,18 +2,18 @@
 % Please edit documentation in R/plot_qualities.R
 \name{plot_qualities}
 \alias{plot_qualities}
-\title{Plot quality parameter posteriors}
+\title{Plot Quality Parameter Posteriors}
 \usage{
-plot_qualities(player_names, model_output)
+plot_qualities(model_output, player_names)
 }
 \arguments{
-\item{player_names}{The names of the different items (or players or wards) being compared.}
+\item{model_output}{The \link[coda:mcmc]{"mcmc"} model output object containing the draws.}
 
-\item{model_output}{The model output object containing the draws.}
+\item{player_names}{A character vector containing the names of the items (e.g., players or wards).}
 }
 \description{
 Generates a plot of the posterior mean and 95\% credible interval
-of the quality parameter estimate.
+of the quality parameter estimates.
 }
 \examples{
 
@@ -29,6 +29,5 @@ wimbledonModel <- BBTm(
   n.iter = 200
 )
 
-plot_qualities(player_names = players, model_output = wimbledonModel)
-
+plot_qualities(model_output = wimbledonModel, player_names = players)
 }
