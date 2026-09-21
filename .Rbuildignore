@@ -12,3 +12,4 @@
 ^README\.Rmd$
 ^citation\.cff$
 ^codecov\.yml$
+^\.kilo$

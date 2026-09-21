@@ -5,7 +5,15 @@
 #'
 #' @param player_names A character vector containing the names of the items (e.g., players or wards).
 #' @param model_output The ["mcmc"][coda::mcmc] model output object containing the draws.
+#' @param flip Whether to flip the plot to put the quality estimates on the x-axis instead of the y-axis;
+#' defaults to FALSE.
+#' @param main The text to use for the plot title.
+#' @param xlab The text to use for the x-axis label.
+#' @param ylab The text to use for the y-axis label.
+#' @param quality_label A vector of three custom labels to use instead of numbers on the quality axis.
 #' @export
+#' @importFrom graphics axis mtext par segments
+#' @importFrom stats quantile
 #' @examples
 #'
 #' players <- wimbledon$players$name
@@ -21,11 +29,20 @@
 #' )
 #'
 #' plot_qualities(model_output = wimbledonModel, player_names = players)
-plot_qualities <- function(model_output, player_names) {
+plot_qualities <- function(
+  model_output,
+  player_names,
+  flip = FALSE,
+  main = "Posterior Mean and 95% Credible \n Interval of Player Quality",
+  xlab = "Player",
+  ylab = "Posterior Mean Quality",
+  quality_label = NULL
+) {
   # Posterior mean and 95% credible intervals (burn-in = 100)
 
   param_draws <- parameter(model_output, "lambda")
   model_means <- colMeans(param_draws)
+  n.items <- nrow(results)
   if (length(player_names) != length(model_means)) {
     stop(
       "The length of player_names must match the expected number of quality estimates."
@@ -50,37 +67,72 @@ plot_qualities <- function(model_output, player_names) {
     "upperCI" = modelUpperCI
   )
   results <- results[
-    order(modelResults$mean),
+    order(results$mean),
   ]
+
+  if (flip) {
+    mar_orig <- c(4, 12, 4, 2)
+  } else {
+    mar_orig <- c(12, 4, 4, 2)
+  }
   oldpar <-
     par(
       mfrow = c(1, 1),
-      mar = c(12, 4, 4, 2), # large bottom margin for vertical labels
-      mgp = c(10, 0.5, 0) # axis title, tick labels, tick marks distance from axis
+      mar = mar_orig, # large bottom margin for vertical labels
+      mgp = c(10, 1, 0) # axis title, tick labels, tick marks distance from axis
     )
   on.exit(par(oldpar), add = TRUE)
 
-  plot(
-    modelResults$mean,
-    xaxt = "n",
-    ylab = "",
-    ylim = c(min(modelLowerCI), max(modelUpperCI)),
-    xlab = "",
-    main = "Posterior Mean and 95% Credible Interval of Player Quality",
-  )
-  segments(
-    x0 = 1:nrow(modelResults),
-    y0 = modelResults$lowerCI,
-    y1 = modelResults$upperCI
-  )
+  if (flip) {
+    plot(
+      x = results$mean,
+      y = 1:n.items,
+      yaxt = "n",
+      xaxt = "n",
+      xlab = "",
+      xlim = c(min(modelLowerCI), max(modelUpperCI)),
+      ylab = "",
+      main = main
+    )
+    segments(
+      y0 = 1:n.items,
+      x0 = results$lowerCI,
+      x1 = results$upperCI
+    )
+    player_axis <- 2
+    quality_axis <- 1
+  } else {
+    plot(
+      x = results$mean,
+      xaxt = "n",
+      ylab = "",
+      ylim = c(min(modelLowerCI), max(modelUpperCI)),
+      xlab = "",
+      main = main
+    )
+    segments(
+      x0 = 1:n.items,
+      y0 = results$lowerCI,
+      y1 = results$upperCI
+    )
+    player_axis <- 1
+    quality_axis <- 2
+  }
+
   axis(
-    1,
-    at = 1:nrow(modelResults),
+    player_axis,
+    at = 1:n.items,
     labels = player_names,
     las = 2
   )
-  mtext("Player", side = 1, line = 10)
-  mtext("Posterior Mean Quality", side = 2, line = 2.5)
+
+  if (is.null(quality_label)) {
+    axis(quality_axis)
+  } else {
+    axis(labels = quality_label, at = c(1, median(1:n.items), n.items))
+  }
+  mtext(xlab, side = player_axis, line = 10)
+  mtext(ylab, side = quality_axis, line = 3)
 
   return(results)
 }
