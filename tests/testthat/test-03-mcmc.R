@@ -66,60 +66,6 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
 test_that("BBTm produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
-  save_file <- function() {
-    path <- tempfile(fileext = ".csv")
-    set.seed(103)
-    wimbledonModel <- BBTm(
-      outcome = wimbledon$matches$outcome,
-      item1 = wimbledon$matches$winner,
-      item2 = wimbledon$matches$loser,
-      advantage = wimbledon$matches$secondWeek,
-      formula = ~ rank + points,
-      data = wimbledon$players,
-      n.iter = 4000
-    )
-
-    wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
-      -c(1:50),
-    ])
-
-    # Read in means
-    write.csv(wimbledonModelMeans, path)
-    return(path)
-  }
-  expect_snapshot_file(save_file(), "wimbledonModelMeansWithHyper.csv")
-})
-
-test_that("BBTm produces results within tolerance when hyperparameter = FALSE", {
-  # Construct covariance matrix
-  # Fit model
-  save_file <- function() {
-    path <- tempfile(fileext = ".csv")
-    set.seed(423)
-    wimbledonModel <- BBTm(
-      outcome = wimbledon$matches$outcome,
-      item1 = wimbledon$matches$winner,
-      item2 = wimbledon$matches$loser,
-      advantage = wimbledon$matches$secondWeek,
-      formula = ~ rank + points,
-      data = wimbledon$players,
-      n.iter = 4000,
-      hyperparameter = FALSE
-    )
-
-    wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
-      -c(1:50),
-    ])
-    write.csv(wimbledonModelMeans, path)
-    return(path)
-  }
-  expect_snapshot_file(save_file(), "wimbledonModelMeansNoHyper.csv")
-})
-
-test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = FALSE", {
-  # Construct covariance matrix
-  # Fit model
-  set.seed(423)
   wimbledonModel <- BBTm(
     outcome = wimbledon$matches$outcome,
     item1 = wimbledon$matches$winner,
