@@ -22,3 +22,8 @@ importFrom(stats,
   median,
   quantile
 )
+importFrom(graphics,axis)
+importFrom(graphics,mtext)
+importFrom(graphics,par)
+importFrom(graphics,segments)
+importFrom(stats,quantile)
