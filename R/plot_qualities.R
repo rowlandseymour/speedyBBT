@@ -11,6 +11,7 @@
 #' @param xlab The text to use for the x-axis label.
 #' @param ylab The text to use for the y-axis label.
 #' @param quality_label A vector of three custom labels to use instead of numbers on the quality axis.
+#' @param ... other arguments passed to `plot`
 #' @export
 #' @importFrom graphics axis mtext par segments
 #' @importFrom stats quantile
@@ -36,13 +37,13 @@ plot_qualities <- function(
   main = "Posterior Mean and 95% Credible \n Interval of Player Quality",
   xlab = "Player",
   ylab = "Posterior Mean Quality",
-  quality_label = NULL
+  quality_label = NULL,
+  ...
 ) {
   # Posterior mean and 95% credible intervals (burn-in = 100)
 
   param_draws <- parameter(model_output, "lambda")
   model_means <- colMeans(param_draws)
-  n.items <- nrow(results)
   if (length(player_names) != length(model_means)) {
     stop(
       "The length of player_names must match the expected number of quality estimates."
@@ -69,11 +70,12 @@ plot_qualities <- function(
   results <- results[
     order(results$mean),
   ]
+  n.items <- nrow(results)
 
   if (flip) {
-    mar_orig <- c(4, 12, 4, 2)
+    mar_orig <- c(4, 11, 4, 2)
   } else {
-    mar_orig <- c(12, 4, 4, 2)
+    mar_orig <- c(11, 4, 4, 2)
   }
   oldpar <-
     par(
@@ -92,7 +94,8 @@ plot_qualities <- function(
       xlab = "",
       xlim = c(min(modelLowerCI), max(modelUpperCI)),
       ylab = "",
-      main = main
+      main = main,
+      ...
     )
     segments(
       y0 = 1:n.items,
@@ -105,10 +108,12 @@ plot_qualities <- function(
     plot(
       x = results$mean,
       xaxt = "n",
+      yaxt = "n",
       ylab = "",
       ylim = c(min(modelLowerCI), max(modelUpperCI)),
       xlab = "",
-      main = main
+      main = main,
+      ...
     )
     segments(
       x0 = 1:n.items,
@@ -129,7 +134,16 @@ plot_qualities <- function(
   if (is.null(quality_label)) {
     axis(quality_axis)
   } else {
-    axis(labels = quality_label, at = c(1, median(1:n.items), n.items))
+    axis(
+      quality_axis,
+      labels = quality_label,
+      las = 1,
+      at = c(
+        min(results$lowerCI),
+        median(results$mean),
+        0.95 * max(results$upperCI)
+      )
+    )
   }
   mtext(xlab, side = player_axis, line = 10)
   mtext(ylab, side = quality_axis, line = 3)
