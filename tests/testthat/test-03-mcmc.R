@@ -63,7 +63,7 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
 })
 
 
-test_that("BBTm produces results within tolerance", {
+test_that("BBTm produces results within tolerance when advantage = TRUE and hyperparameter = TRUE", {
   # Construct covariance matrix
   # Fit model
   wimbledonModel <- BBTm(
@@ -109,11 +109,10 @@ test_that("BBTm produces a warning but still runs when a deprecated argument is 
   )
 })
 
-test_that("BBTm.ties produces expected output from two iterations", {
+test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE", {
   # Construct covariance matrix
   # Fit model
   mod_run <- function() {
-    path <- tempfile(fileext = ".csv")
     set.seed(423)
     wimbledonModel <- BBTm(
       outcome = wimbledon$matches$outcome,
@@ -124,6 +123,33 @@ test_that("BBTm.ties produces expected output from two iterations", {
       data = wimbledon$players,
       n.iter = 2000,
       hyperparameter = FALSE
+    )
+
+    wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
+      -c(1:50),
+    ])
+    return(wimbledonModelMeans)
+  }
+  expect_snapshot_value(
+    mod_run(),
+    style = "serialize",
+    tolerance = 1e-4
+  )
+})
+
+test_that("BBTm produces results within tolerance when hyperparameter = TRUE and advantage = FALSE", {
+  # Construct covariance matrix
+  # Fit model
+  mod_run <- function() {
+    set.seed(423)
+    wimbledonModel <- BBTm(
+      outcome = wimbledon$matches$outcome,
+      item1 = wimbledon$matches$winner,
+      item2 = wimbledon$matches$loser,
+      formula = ~ rank + points,
+      data = wimbledon$players,
+      n.iter = 2000,
+      hyperparameter = TRUE
     )
 
     wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
@@ -202,39 +228,8 @@ test_that("BBTm.no.formula produces results within tolerance", {
   )
 })
 
-
-test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE", {
-  # Construct covariance matrix
-  # Fit model
-  mod_run <- function() {
-    set.seed(423)
-    wimbledonModel <- BBTm(
-      outcome = wimbledon$matches$outcome,
-      item1 = wimbledon$matches$winner,
-      item2 = wimbledon$matches$loser,
-      formula = ~ rank + points,
-      advantage = wimbledon$matches$secondWeek,
-      data = wimbledon$players,
-      n.iter = 1000,
-      hyperparameter = FALSE
-    )
-
-    wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda"))
-
-    return(wimbledonModelMeans)
-  }
-
-  # Compare within tolerance
-  expect_snapshot_value(
-    mod_run(),
-    style = "serialize",
-    tolerance = 1e-1
-  )
-})
-
 test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces results within tolerance", {
   mod_run <- function() {
-    path <- tempfile(fileext = ".csv")
     set.seed(42)
     expA <- expm::expm(forcedMarriage$adjacencyMatrix)
     prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
@@ -263,7 +258,6 @@ test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces r
 
 test_that("BBTm.no.formula with advantage and hyperparameter=FALSE produces results within tolerance", {
   mod_run <- function() {
-    path <- tempfile(fileext = ".csv")
     set.seed(42)
     expA <- expm::expm(forcedMarriage$adjacencyMatrix)
     prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
@@ -294,7 +288,6 @@ test_that("BBTm.no.formula with advantage and hyperparameter=FALSE produces resu
 
 test_that("BBTm.no.formula with advantage and hyperparameter=TRUE produces results within tolerance", {
   mod_run <- function() {
-    path <- tempfile(fileext = ".csv")
     set.seed(42)
     expA <- expm::expm(forcedMarriage$adjacencyMatrix)
     prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
@@ -389,7 +382,6 @@ test_that("BBTm.ties produces expected output from two iterations when hyperpara
   # Fit model
 
   mod_run <- function() {
-    path <- tempfile(fileext = ".csv")
     set.seed(123)
     prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
     prior.var <- diag(diag(prior.var)^-0.5) %*%
