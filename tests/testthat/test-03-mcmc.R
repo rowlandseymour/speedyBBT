@@ -92,6 +92,23 @@ test_that("BBTm produces results within tolerance", {
   )
 })
 
+test_that("BBTm produces a warning but still runs when a deprecated argument is used", {
+  set.seed(905)
+
+  # Fit model
+  expect_warning(
+    wimbledonModel <- BBTm(
+      outcome = wimbledon$matches$outcome,
+      player1 = wimbledon$matches$winner,
+      player2 = wimbledon$matches$loser,
+      advantage = wimbledon$matches$secondWeek,
+      formula = ~ rank + points,
+      data = wimbledon$players,
+      n.iter = 4000
+    )
+  )
+})
+
 test_that("BBTm.ties produces expected output from two iterations", {
   # Construct covariance matrix
   # Fit model
@@ -117,7 +134,7 @@ test_that("BBTm.ties produces expected output from two iterations", {
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1
+    tolerance = 1e-4
   )
 })
 
@@ -145,7 +162,7 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1
+    tolerance = 1e-4
   )
 })
 
@@ -272,7 +289,7 @@ test_that("BBTm.no.formula without advantage and hyperparameter=FALSE produces r
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1
+    tolerance = 1e-4
   )
 })
 
@@ -303,7 +320,7 @@ test_that("BBTm.no.formula with advantage and hyperparameter=FALSE produces resu
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1
+    tolerance = 1e-4
   )
 })
 
@@ -334,7 +351,7 @@ test_that("BBTm.no.formula with advantage and hyperparameter=TRUE produces resul
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1
+    tolerance = 1e-4
   )
 })
 
@@ -371,7 +388,31 @@ test_that("BBTm.ties produces expected output from two iterations", {
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1
+    tolerance = 1e-4
+  )
+})
+
+test_that("BBTm.ties produces a warning but still runs when a deprecated argument is used", {
+  set.seed(123)
+  prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+  prior.var <- diag(diag(prior.var)^-0.5) %*%
+    prior.var %*%
+    diag(diag(prior.var)^-0.5)
+  n.objects <- nrow(darEsSalaam$adjacencyMatrix)
+
+  # Fit model
+  expect_warning(
+    darTiedModel <- BBTm.ties(
+      n.objects = n.objects,
+      outcome = darEsSalaam$comparisons$outcome,
+      player1 = darEsSalaam$comparisons$subward1,
+      player2 = darEsSalaam$comparisons$subward2,
+      player.prior.var = prior.var,
+      hyperparameter = TRUE,
+      rw.sd = 0.005,
+      burn.in = 0,
+      n.iter = 2
+    )
   )
 })
 
@@ -411,6 +452,6 @@ test_that("BBTm.ties produces expected output from two iterations when hyperpara
   expect_snapshot_value(
     mod_run(),
     style = "serialize",
-    tolerance = 1e-1
+    tolerance = 1e-4
   )
 })
