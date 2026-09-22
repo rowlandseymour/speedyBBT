@@ -1,4 +1,4 @@
-# BBTm.ties produces expected output from two iterations
+# BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE
 
     WAoAAAACAAQFAQACAwAAAAIOAAAAgD+tf7NKJwLZP9s2VCuuLw2/7WsirUIl9b/hhuko8cVo
     wBLxbDV+x1G/8X0YEZ/WGb/MJDDy5PXev+L04zD2F0m/+KzDZ48Ba7/UEqHH38SwP86gltJV
@@ -65,33 +65,28 @@
     AAtsYW1iZGFbMTI2XQAEAAkAAAALbGFtYmRhWzEyN10ABAAJAAAAC2xhbWJkYVsxMjhdAAAA
     /g==
 
----
+# BBTm produces results within tolerance when hyperparameter = TRUE and advantage = FALSE
 
-    WAoAAAACAAQFAQACAwAAAAAOAAAABD9BAFA238zuv0EAUDbfzOs/30GElR44Nz8YUouT3/0e
-    
-
-# BBTm produces results within tolerance when hyperparameter = FALSE and advantage = FALSE
-
-    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
+    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
@@ -137,28 +132,28 @@
     AAtsYW1iZGFbMTI2XQAEAAkAAAALbGFtYmRhWzEyN10ABAAJAAAAC2xhbWJkYVsxMjhdAAAA
     /g==
 
-# BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE
+# BBTm produces results within tolerance when hyperparameter = FALSE and advantage = FALSE
 
-    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
+    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
@@ -327,6 +322,11 @@
     AAQACQAAAApsYW1iZGFbNzJdAAQACQAAAApsYW1iZGFbNzNdAAQACQAAAApsYW1iZGFbNzRd
     AAQACQAAAApsYW1iZGFbNzVdAAQACQAAAApsYW1iZGFbNzZdAAQACQAAAAhhbHBoYS5zcQAE
     AAkAAAAFa2FwcGEAAAD+
+
+# BBTm.ties produces expected output from two iterations
+
+    WAoAAAACAAQFAQACAwAAAAAOAAAABD9BAFA238zuv0EAUDbfzOs/30GElR44Nz8YUouT3/0e
+    
 
 # BBTm.ties produces expected output from two iterations when hyperparameter = FALSE
 
