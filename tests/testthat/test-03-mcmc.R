@@ -41,6 +41,24 @@ test_that("speedyBBTm produces results within tolerance", {
   )
 })
 
+test_that("speedyBBTm produces an error if n.iter is less than the burn.in period", {
+  set.seed(905)
+  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+
+  # Fit model
+  expect_error(
+    forcedMarriageModel <- speedyBBTm(
+      outcome = rep(1, length(forcedMarriage$comparisons$win)),
+      item1 = forcedMarriage$comparisons$win,
+      item2 = forcedMarriage$comparisons$lost,
+      item.prior.var = prior.var,
+      n.iter = 2,
+      burn.in = 3
+    )
+  )
+})
+
 test_that("speedyBBTm produces a warning but still runs when a deprecated argument is used", {
   # Construct covariance matrix
   set.seed(905)
@@ -60,6 +78,23 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
   )
 
   expect_s3_class(forcedMarriageModel, 'mcmc')
+})
+
+test_that("BBTm produces an error when n.iter < n.burn.in", {
+  # Construct covariance matrix
+  # Fit model
+  expect_error(
+    wimbledonModel <- BBTm(
+      outcome = wimbledon$matches$outcome,
+      item1 = wimbledon$matches$winner,
+      item2 = wimbledon$matches$loser,
+      advantage = wimbledon$matches$secondWeek,
+      formula = ~ rank + points,
+      data = wimbledon$players,
+      n.iter = 2,
+      burn.in = 3
+    )
+  )
 })
 
 
@@ -351,6 +386,27 @@ test_that("BBTm.ties produces expected output from two iterations", {
     mod_run(),
     style = "serialize",
     tolerance = 1e-4
+  )
+})
+
+test_that("BBTm.ties produces an error when n.iter < burn.in", {
+  prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+  prior.var <- diag(diag(prior.var)^-0.5) %*%
+    prior.var %*%
+    diag(diag(prior.var)^-0.5)
+  n.objects <- nrow(darEsSalaam$adjacencyMatrix)
+  expect_error(
+    darTiedModel <- BBTm.ties(
+      n.objects = n.objects,
+      outcome = darEsSalaam$comparisons$outcome,
+      item1 = darEsSalaam$comparisons$subward1,
+      item2 = darEsSalaam$comparisons$subward2,
+      item.prior.var = prior.var,
+      hyperparameter = TRUE,
+      rw.sd = 0.005,
+      burn.in = 3,
+      n.iter = 2
+    )
   )
 })
 
