@@ -94,17 +94,18 @@ test_that("BBTm produces results within tolerance when advantage = TRUE and hype
 
 test_that("BBTm produces a warning but still runs when a deprecated argument is used", {
   set.seed(905)
+  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
   # Fit model
   expect_warning(
-    wimbledonModel <- BBTm(
-      outcome = wimbledon$matches$outcome,
-      player1 = wimbledon$matches$winner,
-      player2 = wimbledon$matches$loser,
-      advantage = wimbledon$matches$secondWeek,
-      formula = ~ rank + points,
-      data = wimbledon$players,
-      n.iter = 4000
+    # Fit model
+    forcedMarriageModel <- BBTm(
+      outcome = rep(1, length(forcedMarriage$comparisons$win)),
+      player1 = forcedMarriage$comparisons$win,
+      player2 = forcedMarriage$comparisons$lost,
+      player.prior.var = prior.var,
+      n.iter = 1000
     )
   )
 })
