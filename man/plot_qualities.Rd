@@ -4,12 +4,34 @@
 \alias{plot_qualities}
 \title{Plot Quality Parameter Posteriors}
 \usage{
-plot_qualities(model_output, player_names)
+plot_qualities(
+  model_output,
+  player_names,
+  flip = FALSE,
+  main = "Posterior Mean and 95\% Credible \\n Interval of Player Quality",
+  xlab = "Player",
+  ylab = "Posterior Mean Quality",
+  quality_label = NULL,
+  ...
+)
 }
 \arguments{
 \item{model_output}{The \link[coda:mcmc]{"mcmc"} model output object containing the draws.}
 
 \item{player_names}{A character vector containing the names of the items (e.g., players or wards).}
+
+\item{flip}{Whether to flip the plot to put the quality estimates on the x-axis instead of the y-axis;
+defaults to FALSE.}
+
+\item{main}{The text to use for the plot title.}
+
+\item{xlab}{The text to use for the x-axis label.}
+
+\item{ylab}{The text to use for the y-axis label.}
+
+\item{quality_label}{A vector of three custom labels to use instead of numbers on the quality axis.}
+
+\item{...}{other arguments passed to \code{plot}}
 }
 \description{
 Generates a plot of the posterior mean and 95\% credible interval
