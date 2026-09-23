@@ -14,7 +14,7 @@
 #' @param ... other arguments passed to `plot`
 #' @export
 #' @importFrom graphics axis mtext par segments
-#' @importFrom stats quantile
+#' @importFrom stats quantile median
 #' @examples
 #'
 #' players <- wimbledon$players$name
