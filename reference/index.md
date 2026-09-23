@@ -30,3 +30,5 @@
   Construct win matrix from comparisons
 - [`parameter()`](reference/parameter.md) : Extract parameter draws from
   a model object
+- [`plot_qualities()`](reference/plot_qualities.md) : Plot Quality
+  Parameter Posteriors
