@@ -228,6 +228,23 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
   )
 })
 
+test_that("BBTM.with.formula produces a warning but still runs when you use deprecated arguments", {
+  # Construct covariance matrix
+  # Fit model
+  expect_warning(
+    wimbledonModel <- BBTm.with.formula(
+      outcome = wimbledon$matches$outcome,
+      player1 = wimbledon$matches$winner,
+      player2 = wimbledon$matches$loser,
+      formula = ~ rank + points,
+      data = wimbledon$players,
+      n.iter = 4000,
+      hyperparameter = FALSE
+    )
+  )
+})
+
+
 test_that("BBTm.no.formula produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
