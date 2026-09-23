@@ -554,11 +554,8 @@ BBTm.ties <- function(
 #'
 #' @param outcome Vector of outcomes. 1 if item2 is the winner,
 #'  0 if item1 is the winner.
-#' @param player1  `r lifecycle::badge("deprecated")` player1 argument is no longer supported, please use item1
-#' @param player2 `r lifecycle::badge("deprecated")` player2 argument is no longer supported, please use item2 instead
 #' @param item1 Vector of first items.
 #' @param item2 Vector of second items.
-#' @param player.prior.var `r lifecycle::badge("deprecated")` player.prior.var argument is no longer supported, please use item.prior.var instead
 #' @param item.prior.var (optional) A matrix specifying the prior covariance of the items with one another.
 #' @param lambda.initial (optional) Vector containing the values of the
 #'  item parameters for the first MCMC iteration.
