@@ -77,7 +77,7 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
     )
   )
 
-  expect_s3_class(forcedMarriageModel, 'mcmc')
+  expect_s3_class(forcedMarriageModel, "mcmc")
 })
 
 test_that("BBTm produces an error when n.iter < n.burn.in", {
@@ -262,7 +262,8 @@ test_that("BBTm.no.formula produces results within tolerance", {
     n.iter = 1000
   )
 
-  lambda_means <- colMeans(forcedMarriageModel[,
+  lambda_means <- colMeans(forcedMarriageModel[
+    ,
     grep(
       "lambda",
       varnames(forcedMarriageModel)
