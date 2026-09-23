@@ -20,3 +20,4 @@ reference:
     contents:
       - comparisons_to_matrix
       - parameter
+      - plot_qualities
