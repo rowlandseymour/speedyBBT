@@ -18,4 +18,5 @@ importFrom(graphics,
   segments
 )
 importFrom(lifecycle,deprecated)
+importFrom(stats,median)
 importFrom(stats,quantile)
