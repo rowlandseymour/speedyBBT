@@ -1,12 +1,12 @@
 # Quality Assessment for speedyBBT v1.0
 
-An automated assessment of the speedyBBT tool based on the EVERSE software quality indicators, run on 2026-09-09.
+An automated assessment of the speedyBBT tool based on the EVERSE software quality indicators, run on 2026-09-25.
 
 ## General Information
 
 - **Software:** speedyBBT
 - **Repository:** https://github.com/rowlandseymour/speedyBBT
-- **Assessment date:** 2026-09-09T11:18:50Z
+- **Assessment date:** 2026-09-25T10:27:39Z
 - **Total checks:** 42
 
 ## Summary
@@ -454,6 +454,7 @@ An automated assessment of the speedyBBT tool based on the EVERSE software quali
 	- https://raw.githubusercontent.com/rowlandseymour/speedyBBT/main/.github/workflows/generate-codemeta.yml
 	- https://raw.githubusercontent.com/rowlandseymour/speedyBBT/main/.github/workflows/fair-assessment.yml
 	- https://raw.githubusercontent.com/rowlandseymour/speedyBBT/main/.github/workflows/slow-tests.yml
+	- https://raw.githubusercontent.com/rowlandseymour/speedyBBT/main/.github/workflows/rsmetacheck.yml
 - **Suggestions:** No suggestions
 
 ### requirements_specified
@@ -594,13 +595,19 @@ An automated assessment of the speedyBBT tool based on the EVERSE software quali
 - tests/longtests/test-mcmc-long.R	
 - tests/testthat.R	
 - tests/testthat	
-- tests/testthat/darTiedModelMeansShort.csv	
+- tests/testthat/_snaps	
+- tests/testthat/_snaps/03-mcmc.md	
+- tests/testthat/_snaps/04-plot	
+- tests/testthat/_snaps/04-plot/wimbledon-qualities-custom-axes.svg	
+- tests/testthat/_snaps/04-plot/wimbledon-qualities-flipped.svg	
+- tests/testthat/_snaps/04-plot/wimbledon-qualities.svg	
 - tests/testthat/forcedMarriageModelMeans.csv	
 - tests/testthat/forcedMarriageModelMeansNoFormula.csv	
 - tests/testthat/setup.R	
 - tests/testthat/test-01-parameters.R	
 - tests/testthat/test-02-matrices.R	
 - tests/testthat/test-03-mcmc.R	
+- tests/testthat/test-04-plot.R	
 - tests/testthat/wimbledonModelMeans.csv
 - **Suggestions:** No suggestions
 
