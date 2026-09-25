@@ -95,3 +95,5 @@ pkgdown::build_site()
 4. Push the branch and open a pull request.
 5. Maintainers review it — expect a few rounds of feedback. Address the comments and push updates.
 6. Once approved, a maintainer merges it. Thank you for your contribution!
+
+**This contributors guide was adapted from the template at https://toolwasp.com/contributing-md-generator**
