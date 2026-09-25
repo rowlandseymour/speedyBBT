@@ -1,6 +1,3 @@
 # speedyBBT (development version)
 
-# speedyBBT 1.0.0
-The first release 
-
-
+* Added a `NEWS.md` file to track changes to the package.
