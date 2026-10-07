@@ -7,8 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
-``` r
+```{r setup}
 knitr::opts_chunk$set(fig.path = "tiedModels-")
 library(speedyBBT)
 library(coda)
@@ -42,27 +41,15 @@ In the MCMC algorithm, all parameters except for $\theta$ are updated by drawing
 The `darEsSalaam` dataset contains pairwise comparisons of the deprivation of subwards in Dar es Salaam, Tanzania. Judges could say that one subward was more deprived than the other, or that the two were tied. The data also include an adjacency matrix describing which subwards are neighbours.
 
 
-
-``` r
+```{r}
 data("darEsSalaam")
 head(darEsSalaam$comparisons)
-```
-
-```
-##   outcome subward1 subward2  sex
-## 1       1      230      155 male
-## 2       1      380      112 male
-## 3       1      395      136 male
-## 4       1       89      235 male
-## 5       1       49      217 male
-## 6       1      117      449 male
 ```
 
 We use the adjacency matrix to construct the prior covariance matrix for the item qualities, assuming that neighbouring subwards have more similar levels of deprivation (you can see another example of this in the `Getting started with speedyBBT` vignette).
 
 
-
-``` r
+```{r}
 prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
 prior.var <- diag(diag(prior.var)^-0.5) %*%
   prior.var %*%
@@ -72,8 +59,7 @@ prior.var <- diag(diag(prior.var)^-0.5) %*%
 We fit the model with `BBTm.ties()`. The `rw.sd` argument controls the standard deviation of the random walk proposal for the tie threshold parameter $\theta$.
 
 
-
-``` r
+```{r}
 set.seed(432)
 darTiedModel <- BBTm.ties(
   n.objects = nrow(darEsSalaam$adjacencyMatrix),
@@ -92,8 +78,7 @@ darTiedModel <- BBTm.ties(
 The posterior histogram for the threshold parameter $\theta$ are:
 
 
-
-``` r
+```{r}
 if (requireNamespace("bayesplot", quietly = TRUE)) {
   # Install bayesplot if not already installed
   # install.packages("bayesplot")
@@ -114,46 +99,11 @@ plot(
 }
 ```
 
-```
-## This is bayesplot version 1.16.0
-```
-
-```
-## - Online documentation and vignettes at mc-stan.org/bayesplot
-```
-
-```
-## - bayesplot theme set to bayesplot::theme_default()
-```
-
-```
-##    * Does _not_ affect other ggplot2 plots
-```
-
-```
-##    * See ?bayesplot_theme_set for details on theme setting
-```
-
-![plot of chunk unnamed-chunk-4](tiedModels-unnamed-chunk-4-1.png)
-
 The posterior mean and 95% credible interval for $\theta$ are:
 
-
-``` r
+```{r}
 mean(parameter(darTiedModel, "theta"))
-```
-
-```
-## [1] 0.3406564
-```
-
-``` r
 quantile(parameter(darTiedModel, "theta"), c(0.025, 0.975))
-```
-
-```
-##      2.5%     97.5% 
-## 0.3344861 0.3472650
 ```
 You can see that if the qualities of two subwards differ by less that 0.34 units, the judge is likely to declare a tie. 
 
