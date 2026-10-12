@@ -10,9 +10,9 @@ test_that("BBTm.ties produces results within tolerance", {
   darTiedModel <- BBTm.ties(
     n.objects = n.objects,
     outcome = darEsSalaam$comparisons$outcome,
-    player1 = darEsSalaam$comparisons$subward1,
-    player2 = darEsSalaam$comparisons$subward2,
-    player.prior.var = prior.var,
+    item1 = darEsSalaam$comparisons$subward1,
+    item2 = darEsSalaam$comparisons$subward2,
+    item.prior.var = prior.var,
     hyperparameter = TRUE,
     rw.sd = 0.005,
     n.iter = 400

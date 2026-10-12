@@ -4,7 +4,7 @@
 #' of the quality parameter estimates.
 #'
 #' @param model_output The ["mcmc"][coda::mcmc] model output object containing the draws.
-#' @param player_names A character vector containing the names of the items (e.g., players or wards).
+#' @param item_names A character vector containing the names of the items (e.g., players or wards).
 #' @param flip Whether to flip the plot to put the quality estimates on the x-axis instead of the y-axis;
 #' defaults to FALSE.
 #' @param main The text to use for the plot title.
@@ -14,28 +14,28 @@
 #' @param ... other arguments passed to `plot`
 #' @export
 #' @importFrom graphics axis mtext par segments
-#' @importFrom stats quantile
+#' @importFrom stats quantile median
 #' @examples
 #'
 #' players <- wimbledon$players$name
 #'
 #' wimbledonModel <- BBTm(
 #'   outcome = wimbledon$matches$outcome,
-#'   player2 = wimbledon$matches$loser,
-#'   player1 = wimbledon$matches$winner,
+#'   item2 = wimbledon$matches$loser,
+#'   item1 = wimbledon$matches$winner,
 #'   advantage = wimbledon$matches$secondWeek,
 #'   formula = ~ rank + points,
 #'   data = wimbledon$players,
 #'   n.iter = 200
 #' )
 #'
-#' plot_qualities(model_output = wimbledonModel, player_names = players)
+#' plot_qualities(model_output = wimbledonModel, item_names = players)
 plot_qualities <- function(
   model_output,
-  player_names,
+  item_names,
   flip = FALSE,
-  main = "Posterior Mean and 95% Credible \n Interval of Player Quality",
-  xlab = "Player",
+  main = "Posterior Mean and 95% Credible \n Interval of Item Quality",
+  xlab = "Item",
   ylab = "Posterior Mean Quality",
   quality_label = NULL,
   ...
@@ -44,9 +44,9 @@ plot_qualities <- function(
 
   param_draws <- parameter(model_output, "lambda")
   model_means <- colMeans(param_draws)
-  if (length(player_names) != length(model_means)) {
+  if (length(item_names) != length(model_means)) {
     stop(
-      "The length of player_names must match the expected number of quality estimates."
+      "The length of item_names must match the expected number of quality estimates."
     )
   }
   modelLowerCI <- apply(
@@ -62,7 +62,7 @@ plot_qualities <- function(
     0.975
   )
   results <- data.frame(
-    "item" = player_names,
+    "item" = item_names,
     "mean" = model_means,
     "lowerCI" = modelLowerCI,
     "upperCI" = modelUpperCI
@@ -102,7 +102,7 @@ plot_qualities <- function(
       x0 = results$lowerCI,
       x1 = results$upperCI
     )
-    player_axis <- 2
+    item_axis <- 2
     quality_axis <- 1
   } else {
     plot(
@@ -120,14 +120,14 @@ plot_qualities <- function(
       y0 = results$lowerCI,
       y1 = results$upperCI
     )
-    player_axis <- 1
+    item_axis <- 1
     quality_axis <- 2
   }
 
   axis(
-    player_axis,
+    item_axis,
     at = 1:n.items,
-    labels = player_names,
+    labels = item_names,
     las = 2
   )
 
@@ -145,7 +145,7 @@ plot_qualities <- function(
       )
     )
   }
-  mtext(xlab, side = player_axis, line = 10)
+  mtext(xlab, side = item_axis, line = 10)
   mtext(ylab, side = quality_axis, line = 3)
 
   return(results)

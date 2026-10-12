@@ -6,10 +6,10 @@
 \usage{
 plot_qualities(
   model_output,
-  player_names,
+  item_names,
   flip = FALSE,
-  main = "Posterior Mean and 95\% Credible \\n Interval of Player Quality",
-  xlab = "Player",
+  main = "Posterior Mean and 95\% Credible \\n Interval of Item Quality",
+  xlab = "Item",
   ylab = "Posterior Mean Quality",
   quality_label = NULL,
   ...
@@ -18,7 +18,7 @@ plot_qualities(
 \arguments{
 \item{model_output}{The \link[coda:mcmc]{"mcmc"} model output object containing the draws.}
 
-\item{player_names}{A character vector containing the names of the items (e.g., players or wards).}
+\item{item_names}{A character vector containing the names of the items (e.g., players or wards).}
 
 \item{flip}{Whether to flip the plot to put the quality estimates on the x-axis instead of the y-axis;
 defaults to FALSE.}
@@ -43,13 +43,13 @@ players <- wimbledon$players$name
 
 wimbledonModel <- BBTm(
   outcome = wimbledon$matches$outcome,
-  player2 = wimbledon$matches$loser,
-  player1 = wimbledon$matches$winner,
+  item2 = wimbledon$matches$loser,
+  item1 = wimbledon$matches$winner,
   advantage = wimbledon$matches$secondWeek,
   formula = ~ rank + points,
   data = wimbledon$players,
   n.iter = 200
 )
 
-plot_qualities(model_output = wimbledonModel, player_names = players)
+plot_qualities(model_output = wimbledonModel, item_names = players)
 }
