@@ -55,7 +55,8 @@ test_that("speedyBBTm produces an error if n.iter is less than the burn.in perio
       item.prior.var = prior.var,
       n.iter = 2,
       burn.in = 3
-    )
+    ),
+    "Your burn in period is greater than the total number of iterations"
   )
 })
 
