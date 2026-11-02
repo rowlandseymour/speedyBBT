@@ -5,7 +5,7 @@
 \title{Bayesian inference for the Bradley-Terry model with ties}
 \usage{
 BBTm.ties(
-  n.objects,
+  n.objects = deprecated(),
   outcome,
   player1 = deprecated(),
   player2 = deprecated(),
@@ -27,16 +27,16 @@ BBTm.ties(
 )
 }
 \arguments{
-\item{n.objects}{The number of objects in the study.}
+\item{n.objects}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{n.objects} argument is no longer supported, the number of items is calculated automatically}
 
 \item{outcome}{Vector of outcomes. 0 if item 1 is the winner,
 1 if item 2 is the winner, and 2 if it is a tie.}
 
-\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player1 argument is no longer supported, please use item1}
+\item{player1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{player1} argument is no longer supported, please use \code{item1} instead}
 
-\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player2 argument is no longer supported, please use item2 instead}
+\item{player2}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{player2} argument is no longer supported, please use \code{item2} instead}
 
-\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} player.prior.var argument is no longer supported, please use item.prior.var instead}
+\item{player.prior.var}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{player.prior.var} argument is no longer supported, please use \code{item.prior.var} instead}
 
 \item{item1}{Vector of first items.}
 
@@ -106,7 +106,6 @@ prior.var <- diag(diag(prior.var)^-0.5) \%*\% prior.var \%*\% diag(diag(prior.va
 # Using `n.iter = 3` here to reduce model runtime, you will need
 # a larger number of iterations for valid inference.
 darTiedModel <- BBTm.ties(
-  n.objects = nrow(darEsSalaam$adjacencyMatrix),
   outcome = darEsSalaam$comparisons$outcome,
   item1 = darEsSalaam$comparisons$subward1,
   item2 = darEsSalaam$comparisons$subward2,

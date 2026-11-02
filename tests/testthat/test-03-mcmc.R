@@ -381,7 +381,6 @@ test_that("BBTm.ties produces expected output from two iterations", {
       diag(diag(prior.var)^-0.5)
     n.objects <- nrow(darEsSalaam$adjacencyMatrix)
     darTiedModel <- BBTm.ties(
-      n.objects = n.objects,
       outcome = darEsSalaam$comparisons$outcome,
       item1 = darEsSalaam$comparisons$subward1,
       item2 = darEsSalaam$comparisons$subward2,
@@ -439,7 +438,6 @@ test_that("BBTm.ties produces a warning but still runs when a deprecated argumen
   # Fit model
   expect_warning(
     darTiedModel <- BBTm.ties(
-      n.objects = n.objects,
       outcome = darEsSalaam$comparisons$outcome,
       player1 = darEsSalaam$comparisons$subward1,
       player2 = darEsSalaam$comparisons$subward2,
@@ -464,7 +462,6 @@ test_that("BBTm.ties produces expected output from two iterations when hyperpara
       diag(diag(prior.var)^-0.5)
     n.objects <- nrow(darEsSalaam$adjacencyMatrix)
     darTiedModel <- BBTm.ties(
-      n.objects = n.objects,
       outcome = darEsSalaam$comparisons$outcome,
       item1 = darEsSalaam$comparisons$subward1,
       item2 = darEsSalaam$comparisons$subward2,
