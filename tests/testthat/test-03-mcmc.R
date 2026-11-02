@@ -67,7 +67,8 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
   prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
   # Fit model
-  expect_warning(
+  rlang::local_options(lifecycle_verbosity = "warning")
+  expect_snapshot(
     forcedMarriageModel <- speedyBBTm(
       outcome = rep(1, length(forcedMarriage$comparisons$win)),
       player1 = forcedMarriage$comparisons$win,
@@ -94,7 +95,8 @@ test_that("BBTm produces an error when n.iter < n.burn.in", {
       data = wimbledon$players,
       n.iter = 2,
       burn.in = 3
-    )
+    ),
+    "Your burn in period is greater than the total number of iterations"
   )
 })
 
@@ -133,8 +135,8 @@ test_that("BBTm produces a warning but still runs when a deprecated argument is 
   expA <- expm::expm(forcedMarriage$adjacencyMatrix)
   prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
-  # Fit model
-  expect_warning(
+  rlang::local_options(lifecycle_verbosity = "warning")
+  expect_snapshot(
     # Fit model
     forcedMarriageModel <- BBTm(
       outcome = rep(1, length(forcedMarriage$comparisons$win)),
@@ -232,7 +234,8 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
 test_that("BBTM.with.formula produces a warning but still runs when you use deprecated arguments", {
   # Construct covariance matrix
   # Fit model
-  expect_warning(
+  rlang::local_options(lifecycle_verbosity = "warning")
+  expect_snapshot(
     wimbledonModel <- BBTm.with.formula(
       outcome = wimbledon$matches$outcome,
       player1 = wimbledon$matches$winner,
@@ -423,7 +426,8 @@ test_that("BBTm.ties produces an error when n.iter < burn.in", {
       rw.sd = 0.005,
       burn.in = 3,
       n.iter = 2
-    )
+    ),
+    "Your burn in period is greater than the total number of iterations"
   )
 })
 
@@ -436,7 +440,8 @@ test_that("BBTm.ties produces a warning but still runs when a deprecated argumen
   n.objects <- nrow(darEsSalaam$adjacencyMatrix)
 
   # Fit model
-  expect_warning(
+  rlang::local_options(lifecycle_verbosity = "warning")
+  expect_snapshot(
     darTiedModel <- BBTm.ties(
       outcome = darEsSalaam$comparisons$outcome,
       player1 = darEsSalaam$comparisons$subward1,

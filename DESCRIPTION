@@ -37,6 +37,7 @@ Suggests:
     expm,
     ggplot2,
     knitr,
+    rlang,
     rmarkdown,
     testthat (>= 3.0.0),
     vdiffr

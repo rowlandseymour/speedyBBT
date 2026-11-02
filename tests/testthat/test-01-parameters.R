@@ -28,10 +28,16 @@ test_that("check_model works when object is valid", {
 
 
 test_that("check_model fails when object is invalid", {
-  expect_error(check_model(matrix(0, 1, 1), parameter_name = "lambda"))
+  expect_error(
+    check_model(matrix(0, 1, 1), parameter_name = "lambda"),
+    "model_output must be an object of class mcmc for this function to work correctly."
+  )
 })
 
 
 test_that("check_model fails when parameter name isn't found in the draws matrix", {
-  expect_error(check_model(test.bad.obj, parameter_name = "lambda"))
+  expect_error(
+    check_model(test.bad.obj, parameter_name = "lambda"),
+    "This model object does not contain estimates of the lambda parameter. Please run a model using the `speedyBBTm` function."
+  )
 })
