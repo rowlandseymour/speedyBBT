@@ -129,8 +129,8 @@ test_that("construct.generalised.design.matrix constructs correct design matrix"
   example.df <- data.frame("a" = c(1, 2), "b" = c(2, 3))
   example.formula <- ~a
 
-  item1 <- c(1)
-  item2 <- c(2)
+  item1 <- 1
+  item2 <- 2
 
   expected_matrix <- matrix(c(-1), ncol = 1)
 

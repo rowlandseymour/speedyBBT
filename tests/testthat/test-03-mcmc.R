@@ -190,7 +190,7 @@ test_that("BBTm produces results within tolerance when hyperparameter = TRUE and
     )
 
     wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda")[
-      -c(1:50),
+      -(1:50),
     ])
     return(wimbledonModelMeans)
   }
@@ -263,8 +263,7 @@ test_that("BBTm.no.formula produces results within tolerance", {
     n.iter = 1000
   )
 
-  lambda_means <- colMeans(forcedMarriageModel[
-    ,
+  lambda_means <- colMeans(forcedMarriageModel[,
     grep(
       "lambda",
       varnames(forcedMarriageModel)

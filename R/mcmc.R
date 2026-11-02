@@ -10,11 +10,11 @@
 #'
 #' @param outcome Vector of outcomes. 1 if item 2 is the winner,
 #'  0 if item 1 is the winner.
-#' @param player1  `r lifecycle::badge("deprecated")` player1 argument is no longer supported, please use item1
-#' @param player2 `r lifecycle::badge("deprecated")` player2 argument is no longer supported, please use item2 instead
+#' @param player1  `r lifecycle::badge("deprecated")` `player1` argument is no longer supported, please use `item1` instead
+#' @param player2 `r lifecycle::badge("deprecated")` `player2` argument is no longer supported, please use `item2` instead
 #' @param item1 Vector of first items.
 #' @param item2 Vector of second items.
-#' @param player.prior.var `r lifecycle::badge("deprecated")` player.prior.var argument is no longer supported, please use item.prior.var instead
+#' @param player.prior.var `r lifecycle::badge("deprecated")` `player.prior.var` argument is no longer supported, please use item.prior.var instead
 #' @param item.prior.var (optional) A matrix specifying the prior covariance of the items with one another.
 #' @param win.matrix (optional) A win-loss matrix where the i,j th element is the number of
 #' times object i beat object j.
@@ -93,7 +93,7 @@ speedyBBTm <- function(
     lifecycle::deprecate_warn(
       when = "2.0.0",
       what = "speedyBBTm(player1)",
-      details = "Please use item1 instead."
+      details = "Please use `item1` instead."
     )
     item1 <- player1
   }
@@ -101,7 +101,7 @@ speedyBBTm <- function(
     lifecycle::deprecate_warn(
       when = "2.0.0",
       what = "speedyBBTm(player2)",
-      details = "Please use item2 instead."
+      details = "Please use `item2` instead."
     )
     item2 <- player2
   }
@@ -109,7 +109,7 @@ speedyBBTm <- function(
     lifecycle::deprecate_warn(
       when = "2.0.0",
       what = "speedyBBTm(player.prior.var)",
-      details = "Please use item.prior.var instead."
+      details = "Please use `item.prior.var` instead."
     )
     item.prior.var <- player.prior.var
   }
@@ -117,16 +117,16 @@ speedyBBTm <- function(
   if (is.null(win.matrix)) {
     # Create win matrix
     # get number of objects in study
-    n.objects <- max(c(item1, item2))
+    n.items <- max(c(item1, item2))
 
     # Get winner and loser of each comparison
     winner <- ifelse(outcome == 1, item2, item1)
     loser <- ifelse(outcome == 0, item2, item1)
 
     # Turn each comparison (except ties) into a win/loss matrix
-    win.matrix <- comparisons_to_matrix(n.objects, data.frame(winner, loser))
+    win.matrix <- comparisons_to_matrix(n.items, data.frame(winner, loser))
   } else {
-    n.objects <- dim(win.matrix)[1]
+    n.items <- dim(win.matrix)[1]
   }
 
   # Get y_ij and n_ij (the number of times i beat j and i and
@@ -136,22 +136,22 @@ speedyBBTm <- function(
   y <- n - y
 
   # Construct the design matrix
-  X <- construct.design.matrix(n.objects)
+  X <- construct.design.matrix(n.items)
 
   # Get inverse of prior covariance matrix
   # If not set, the prior is iid N(0,1^2)
   if (is.null(item.prior.var)) {
-    item.prior.var <- diag(n.objects)
+    item.prior.var <- diag(n.items)
   }
   item.prior.var.inverse <- solve(item.prior.var)
 
   # Set initial values for lambda
   if (is.null(lambda.initial)) {
-    lambda.initial <- numeric(n.objects)
+    lambda.initial <- numeric(n.items)
   }
-  if (n.objects != length(lambda.initial)) {
+  if (n.items != length(lambda.initial)) {
     stop(
-      "Mismatch between number of objects in study and length of
+      "Mismatch between number of items in study and length of
        vector for initial estimates."
     )
   }
@@ -174,7 +174,7 @@ speedyBBTm <- function(
   alpha.sq <- 1
 
   # Set up empty storage spaces
-  lambda.matrix <- matrix(0, n.iter, n.objects)
+  lambda.matrix <- matrix(0, n.iter, n.items)
   alpha.sq.vector <- numeric(n.iter)
 
   # Set commonly required constants
@@ -192,7 +192,7 @@ speedyBBTm <- function(
       alpha.sq <- 1 /
         stats::rgamma(
           1,
-          chi + n.objects / 2,
+          chi + n.items / 2,
           0.5 * t(lambda) %*% item.prior.var.inverse %*% lambda + psi
         )
     }
@@ -204,7 +204,7 @@ speedyBBTm <- function(
     ))
     mu <- V %*% unnormalised.mu
     V.chol <- base::chol(V)
-    lambda <- as.numeric(t(V.chol) %*% stats::rnorm(n.objects, 0, 1) + mu)
+    lambda <- as.numeric(t(V.chol) %*% stats::rnorm(n.items, 0, 1) + mu)
 
     # Translate quality parameters
     lambda <- lambda - mean(lambda)
@@ -225,17 +225,17 @@ speedyBBTm <- function(
       thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
+      paste0("lambda[", 1:n.items, "]"),
       "alpha.sq"
     )
   } else {
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[iters_to_save, 1:n.objects],
+      x = pars.matrix[iters_to_save, 1:n.items],
       start = burn.in + 1,
       end = n.iter,
       thin = n.thin
     )
-    coda::varnames(mcmc_out) <- paste0("lambda[", 1:n.objects, "]")
+    coda::varnames(mcmc_out) <- paste0("lambda[", 1:n.items, "]")
   }
   return(mcmc_out)
 }
@@ -249,14 +249,14 @@ speedyBBTm <- function(
 #' prior distribution is placed on the tie parameter theta, and a Metropolis-
 #' Hasting random walk algorithm is used to update this parameter.
 #'
-#' @param n.objects The number of objects in the study.
+#' @param n.objects `r lifecycle::badge("deprecated")` `n.objects` argument is no longer supported, the number of items is calculated automatically
 #' @param outcome Vector of outcomes. 0 if item 1 is the winner,
 #'  1 if item 2 is the winner, and 2 if it is a tie.
-#' @param player1  `r lifecycle::badge("deprecated")` player1 argument is no longer supported, please use item1
-#' @param player2 `r lifecycle::badge("deprecated")` player2 argument is no longer supported, please use item2 instead
+#' @param player1  `r lifecycle::badge("deprecated")` `player1` argument is no longer supported, please use `item1` instead
+#' @param player2 `r lifecycle::badge("deprecated")` `player2` argument is no longer supported, please use `item2` instead
 #' @param item1 Vector of first items.
 #' @param item2 Vector of second items.
-#' @param player.prior.var `r lifecycle::badge("deprecated")` player.prior.var argument is no longer supported, please use item.prior.var instead
+#' @param player.prior.var `r lifecycle::badge("deprecated")` `player.prior.var` argument is no longer supported, please use `item.prior.var` instead
 #' @param item.prior.var (optional) A matrix specifying the prior covariance of the items with one another.
 #' @param theta.initial (optional) Value of the tied parameter there for
 #' the first MCMC iteration.
@@ -304,7 +304,6 @@ speedyBBTm <- function(
 #' # Using `n.iter = 3` here to reduce model runtime, you will need
 #' # a larger number of iterations for valid inference.
 #' darTiedModel <- BBTm.ties(
-#'   n.objects = nrow(darEsSalaam$adjacencyMatrix),
 #'   outcome = darEsSalaam$comparisons$outcome,
 #'   item1 = darEsSalaam$comparisons$subward1,
 #'   item2 = darEsSalaam$comparisons$subward2,
@@ -324,7 +323,7 @@ speedyBBTm <- function(
 #' @export
 #'
 BBTm.ties <- function(
-  n.objects,
+  n.objects = deprecated(),
   outcome,
   player1 = deprecated(),
   player2 = deprecated(),
@@ -348,7 +347,7 @@ BBTm.ties <- function(
     lifecycle::deprecate_warn(
       when = "2.0.0",
       what = "BBTm.ties(player1)",
-      details = "Please use item1 instead."
+      details = "Please use `item1` instead."
     )
     item1 <- player1
   }
@@ -356,7 +355,7 @@ BBTm.ties <- function(
     lifecycle::deprecate_warn(
       when = "2.0.0",
       what = "BBTm.ties(player2)",
-      details = "Please use item2 instead."
+      details = "Please use `item2` instead."
     )
     item2 <- player2
   }
@@ -368,8 +367,16 @@ BBTm.ties <- function(
     )
     item.prior.var <- player.prior.var
   }
+  if (lifecycle::is_present(n.objects)) {
+    lifecycle::deprecate_warn(
+      when = "2.0.0",
+      what = "BBTm.ties(n.objects)",
+      details = "The number of items is calculated automatically."
+    )
+    item.prior.var <- player.prior.var
+  }
   # get number of objects in study
-  n.objects <- max(c(item1, item2))
+  n.items <- max(c(item1, item2))
 
   if (n.iter <= burn.in) {
     stop(
@@ -391,29 +398,29 @@ BBTm.ties <- function(
   )
 
   # Turn each comparison (except ties) into a win/loss matrix
-  win.matrix <- comparisons_to_matrix(n.objects, data.frame(winner, loser))
+  win.matrix <- comparisons_to_matrix(n.items, data.frame(winner, loser))
 
-  tie.matrix <- matrix(0, n.objects, n.objects)
+  tie.matrix <- matrix(0, n.items, n.items)
   for (j in which(outcome == 2)) {
     tie.matrix[item1[j], item2[j]] <- tie.matrix[item1[j], item2[j]] + 1
     tie.matrix[item2[j], item1[j]] <- tie.matrix[item2[j], item1[j]] + 1
   }
 
-  X <- construct.design.matrix.both.ways(n.objects)
+  X <- construct.design.matrix.both.ways(n.items)
 
   # Get inverse of prior covariance matrix
   if (is.null(item.prior.var)) {
-    item.prior.var <- 5^2 * diag(n.objects)
+    item.prior.var <- 5^2 * diag(n.items)
   }
   item.prior.var.inverse <- solve(item.prior.var)
 
   # Set initial values for lambda
   if (is.null(lambda.initial)) {
-    lambda.initial <- numeric(n.objects)
+    lambda.initial <- numeric(n.items)
   }
-  if (n.objects != length(lambda.initial)) {
+  if (n.items != length(lambda.initial)) {
     stop(
-      "Mismatch between number of objects in study and length of vector for initial estimates."
+      "Mismatch between number of items in study and length of vector for initial estimates."
     )
   }
 
@@ -446,7 +453,7 @@ BBTm.ties <- function(
   grand.covariance <- sum(item.prior.var)
 
   # Create empty storage vessels
-  lambda.matrix <- matrix(0, n.iter, n.objects) # store results
+  lambda.matrix <- matrix(0, n.iter, n.items) # store results
   theta.store <- numeric(n.iter) # store results
   alpha.sq.store <- numeric(n.iter) # store results
 
@@ -462,7 +469,7 @@ BBTm.ties <- function(
       alpha.sq <- 1 /
         stats::rgamma(
           1,
-          0.01 + n.objects / 2,
+          0.01 + n.items / 2,
           0.5 * t(lambda) %*% item.prior.var.inverse %*% lambda + 0.01
         )
     }
@@ -481,7 +488,7 @@ BBTm.ties <- function(
     ))
     mu <- V %*% (Matrix::t(X) %*% (kappa + theta * Z %*% ones))
     V.chol <- chol(V)
-    lambda <- as.numeric(t(V.chol) %*% stats::rnorm(n.objects, 0, 1) + mu)
+    lambda <- as.numeric(t(V.chol) %*% stats::rnorm(n.items, 0, 1) + mu)
     lambda <- lambda - mean(lambda) # translate to have mean 0
 
     # Update theta
@@ -517,25 +524,25 @@ BBTm.ties <- function(
 
   if (hyperparameter == TRUE) {
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[iters_to_save, 1:(n.objects + 2)],
+      x = pars.matrix[iters_to_save, 1:(n.items + 2)],
       start = burn.in + 1,
       end = n.iter,
       thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
-      paste("lambda[", 1:n.objects, "]", sep = ""),
+      paste("lambda[", 1:n.items, "]", sep = ""),
       "theta",
       "alpha.sq"
     )
   } else {
     mcmc_out <- coda::as.mcmc(
-      x = pars.matrix[iters_to_save, 1:(n.objects + 1)],
+      x = pars.matrix[iters_to_save, 1:(n.items + 1)],
       start = burn.in + 1,
       end = n.iter,
       thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
+      paste0("lambda[", 1:n.items, "]"),
       "theta"
     )
   }
@@ -612,7 +619,7 @@ BBTm.no.formula <- function(
   verbose = interactive()
 ) {
   # get number of objects in study
-  n.objects <- max(c(item1, item2))
+  n.items <- max(c(item1, item2))
 
   iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
 
@@ -633,15 +640,15 @@ BBTm.no.formula <- function(
   # Get inverse of prior covariance matrix
   # If not set, the prior is iid N(0, 5^2)
   if (is.null(item.prior.var)) {
-    item.prior.var <- 5^2 * diag(n.objects)
+    item.prior.var <- 5^2 * diag(n.items)
   }
   item.prior.var.inverse <- solve(item.prior.var)
 
   # Set initial values for lambda
   if (is.null(lambda.initial)) {
-    lambda.initial <- numeric(n.objects)
+    lambda.initial <- numeric(n.items)
   }
-  if (n.objects != length(lambda.initial)) {
+  if (n.items != length(lambda.initial)) {
     stop(
       "Mismatch between number of objects in study and length of
        vector for initial estimates."
@@ -673,7 +680,7 @@ BBTm.no.formula <- function(
   }
 
   # Set up empty storage spaces
-  lambda.matrix <- matrix(0, n.iter, n.objects)
+  lambda.matrix <- matrix(0, n.iter, n.items)
   alpha.sq.vector <- numeric(n.iter)
 
   # Set commonly required constants
@@ -690,7 +697,7 @@ BBTm.no.formula <- function(
       alpha.sq <- 1 /
         stats::rgamma(
           1,
-          chi + n.objects / 2,
+          chi + n.items / 2,
           0.5 * t(lambda) %*% item.prior.var.inverse %*% lambda + psi
         )
     }
@@ -709,7 +716,7 @@ BBTm.no.formula <- function(
     ))
     mu <- V %*% (Matrix::t(X) %*% (k - kappa * Z %*% advantage))
     V.chol <- chol(V)
-    lambda <- as.numeric(t(V.chol) %*% stats::rnorm(n.objects, 0, 1) + mu)
+    lambda <- as.numeric(t(V.chol) %*% stats::rnorm(n.items, 0, 1) + mu)
 
     # Update kappa
     if (advantage.inf) {
@@ -739,7 +746,7 @@ BBTm.no.formula <- function(
       thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
+      paste0("lambda[", 1:n.items, "]"),
       "alpha.sq",
       "kappa"
     )
@@ -753,7 +760,7 @@ BBTm.no.formula <- function(
       thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
+      paste0("lambda[", 1:n.items, "]"),
       "kappa"
     )
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
@@ -766,7 +773,7 @@ BBTm.no.formula <- function(
       thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
+      paste0("lambda[", 1:n.items, "]"),
       "alpha.sq"
     )
   } else {
@@ -777,7 +784,7 @@ BBTm.no.formula <- function(
       end = n.iter,
       thin = n.thin
     )
-    coda::varnames(mcmc_out) <- paste0("lambda[", 1:n.objects, "]")
+    coda::varnames(mcmc_out) <- paste0("lambda[", 1:n.items, "]")
   }
   return(mcmc_out)
 }
@@ -798,11 +805,11 @@ BBTm.no.formula <- function(
 #'
 #' @param outcome Vector of outcomes. 1 if item2 is the winner,
 #'  0 if item1 is the winner.
-#' @param player1  `r lifecycle::badge("deprecated")` player1 argument is no longer supported, please use item1
-#' @param player2 `r lifecycle::badge("deprecated")` player2 argument is no longer supported, please use item2 instead
+#' @param player1  `r lifecycle::badge("deprecated")` `player1` argument is no longer supported, please use `item1` instead
+#' @param player2 `r lifecycle::badge("deprecated")` `player2` argument is no longer supported, please use `item2` instead
 #' @param item1 Vector of first items.
 #' @param item2 Vector of second items.
-#' @param player.prior.var `r lifecycle::badge("deprecated")` player.prior.var argument is no longer supported, please use item.prior.var instead
+#' @param player.prior.var `r lifecycle::badge("deprecated")` `player.prior.var` argument is no longer supported, please use `item.prior.var` instead
 #' @param item.prior.var (optional) A matrix specifying the prior covariance of the items with one another.
 #' @param formula Formula with no left-hand-side specifying the player specific
 #' effects.
@@ -872,7 +879,7 @@ BBTm.with.formula <- function(
     lifecycle::deprecate_warn(
       when = "2.0.0",
       what = "BBTm.with.formula(player1)",
-      details = "Please use item1 instead."
+      details = "Please use `item1` instead."
     )
     item1 <- player1
   }
@@ -880,7 +887,7 @@ BBTm.with.formula <- function(
     lifecycle::deprecate_warn(
       when = "2.0.0",
       what = "BBTm.with.formula(player2)",
-      details = "Please use item2 instead."
+      details = "Please use `item2` instead."
     )
     item2 <- player2
   }
@@ -888,12 +895,12 @@ BBTm.with.formula <- function(
     lifecycle::deprecate_warn(
       when = "2.0.0",
       what = "BBTm.with.formula(player.prior.var)",
-      details = "Please use item.prior.var instead."
+      details = "Please use `item.prior.var` instead."
     )
     item.prior.var <- player.prior.var
   }
   # get number of objects in study
-  n.objects <- max(c(item1, item2))
+  n.items <- max(c(item1, item2))
   n.comp <- length(outcome)
 
   # Get y_ij
@@ -953,7 +960,7 @@ BBTm.with.formula <- function(
   alpha.sq <- 1
 
   beta.matrix <- matrix(0, n.iter, n.betas)
-  lambda.matrix <- matrix(0, n.iter, n.objects)
+  lambda.matrix <- matrix(0, n.iter, n.items)
   alpha.sq.vector <- numeric(n.iter)
   grand.covariance <- sum(item.prior.var)
 
@@ -1024,7 +1031,7 @@ BBTm.with.formula <- function(
     )
     coda::varnames(mcmc_out) <- c(
       paste0("beta[", 1:n.betas, "]"),
-      paste0("lambda[", 1:n.objects, "]"),
+      paste0("lambda[", 1:n.items, "]"),
       "kappa",
       "alpha.sq"
     )
@@ -1040,7 +1047,7 @@ BBTm.with.formula <- function(
     )
     coda::varnames(mcmc_out) <- c(
       paste0("beta[", 1:n.betas, "]"),
-      paste0("lambda[", 1:n.objects, "]"),
+      paste0("lambda[", 1:n.items, "]"),
       "kappa"
     )
   } else if (hyperparameter == FALSE & advantage.inf == FALSE) {
@@ -1055,7 +1062,7 @@ BBTm.with.formula <- function(
       thin = n.thin
     )
     coda::varnames(mcmc_out) <- c(
-      paste0("lambda[", 1:n.objects, "]"),
+      paste0("lambda[", 1:n.items, "]"),
       "alpha.sq"
     )
   } else {
@@ -1069,7 +1076,7 @@ BBTm.with.formula <- function(
     )
     coda::varnames(mcmc_out) <- c(
       paste0("beta[", 1:n.betas, "]"),
-      paste0("lambda[", 1:n.objects, "]")
+      paste0("lambda[", 1:n.items, "]")
     )
   }
   return(mcmc_out)
@@ -1159,7 +1166,7 @@ BBTm <- function(
     lifecycle::deprecate_warn(
       when = "2.0.0",
       what = "BBTm(player1)",
-      details = "Please use item1 instead."
+      details = "Please use `item1` instead."
     )
     item1 <- player1
   }
@@ -1167,7 +1174,7 @@ BBTm <- function(
     lifecycle::deprecate_warn(
       when = "2.0.0",
       what = "BBTm(player2)",
-      details = "Please use item2 instead."
+      details = "Please use `item2` instead."
     )
     item2 <- player2
   }
