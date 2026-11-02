@@ -1,27 +1,47 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
+  # Triggers the workflow on pushes to the "main" branch, i.e., PR merges
   push:
     branches: [main]
+
+  # Triggers the workflow on pull requests
   pull_request:
+    paths:
+      - '.github/workflows/pkgdown.yaml'
+      - '**.R'
+      - '**.Rmd'
+      - '**.md'
+      - 'DESCRIPTION'
+      - '_pkgdown.yml'
+      - 'docs/**'
+
+  # Triggers the workflow on release publication
   release:
     types: [published]
+
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 name: pkgdown.yaml
 
+# Write permissions are not needed for this workflow by default
 permissions: read-all
 
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     # Only restrict concurrency for non-PR jobs
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    # This job deploys to GitHub Pages, so it needs write access
     permissions:
       contents: write
+      pages: write
+      id-token: write
     steps:
       - uses: actions/checkout@v6
 

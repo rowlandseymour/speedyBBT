@@ -1,17 +1,38 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
+  # Triggers the workflow on pushes to the "main" branch, i.e., PR merges
   push:
     branches: main
+
+  # Triggers the workflow on pull requests with changes to source or workflow files
   pull_request:
+    paths:
+      - '.github/workflows/test-coverage.yaml'
+      - '**.R'
+      - '**.Rmd'
+      - 'DESCRIPTION'
+      - 'NAMESPACE'
+      - 'man/**'
+      - 'src/**'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 name: test-coverage.yaml
 
+# Write permissions are not needed for this workflow by default
 permissions: read-all
+
+# Cancel runs happening simultaneously on the same branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test-coverage:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 

@@ -1,13 +1,27 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
+  # Triggers the workflow on pushes to the "main" branch, i.e., PR merges
   push:
     branches: main
+
+  # Triggers the workflow on pull requests with changes to source or workflow files
   pull_request:
+    paths:
+      - '.github/workflows/R-CMD-check.yaml'
+      - '**.R'
+      - '**.Rmd'
+      - 'DESCRIPTION'
+      - 'NAMESPACE'
+      - 'man/**'
+      - 'src/**'
+
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 name: R-CMD-check.yaml
 
+# Write permissions are not needed for this workflow by default
 permissions: read-all
 
 # Cancel runs happening simultaneously on the same branch.
@@ -18,6 +32,7 @@ concurrency:
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
+    timeout-minutes: 60
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
