@@ -84,7 +84,7 @@ The posterior mean for the effect of a match being in the second week is around 
 
 ```{r}
 djokovic <- which(wimbledon$players == "Djokovic N")
-nadal    <- which(wimbledon$players == "Nadal R")
+nadal <- which(wimbledon$players == "Nadal R")
 mean(wimbledonModel[, paste0("lambda[", djokovic, "]")] > wimbledonModel[, paste0("lambda[", nadal, "]")])
 ```
 
@@ -112,7 +112,9 @@ if (requireNamespace("bayesplot", quietly = TRUE)) {
   bayesplot::mcmc_dens(wimbledonModel, pars = c(paste0("lambda[", djokovic, "]"), paste0("lambda[", nadal, "]")))
 } else {
   # Trace plots
-plot(
-  wimbledonModel[, paste0("lambda[", c(djokovic, nadal), "]")], main = "Trace plots for Djokovic and Nadal")
+  plot(
+    wimbledonModel[, paste0("lambda[", c(djokovic, nadal), "]")],
+    main = "Trace plots for Djokovic and Nadal"
+  )
 }
 ```
