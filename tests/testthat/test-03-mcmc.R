@@ -72,7 +72,7 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
       outcome = rep(1, length(forcedMarriage$comparisons$win)),
       item1 = forcedMarriage$comparisons$win,
       player2 = forcedMarriage$comparisons$lost,
-      player.prior.var = prior.var,
+      item.prior.var = prior.var,
       n.iter = 2,
       burn.in = 0
     ),

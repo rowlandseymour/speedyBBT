@@ -631,7 +631,7 @@ BBTm.no.formula <- function(
   loser <- ifelse(outcome == 0, item2, item1)
 
   # Get y_ij
-  y <- outcome
+  y <- 1 - outcome
   k <- y - 0.5
 
   # Construct the design matrix
