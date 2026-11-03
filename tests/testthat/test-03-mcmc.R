@@ -56,7 +56,7 @@ test_that("speedyBBTm produces an error if n.iter is less than the burn.in perio
       n.iter = 2,
       burn.in = 3
     ),
-    "Your burn in period is greater than the total number of iterations"
+    "Your burn in period is greater than the total number of iterations. Please choose a shorter burn-in period or a larger number of total iterations."
   )
 })
 
@@ -96,7 +96,7 @@ test_that("BBTm produces an error when n.iter < n.burn.in", {
       n.iter = 2,
       burn.in = 3
     ),
-    "Your burn in period is greater than the total number of iterations"
+    "Your burn in period is greater than the total number of iterations. Please choose a shorter burn-in period or a larger number of total iterations."
   )
 })
 
@@ -427,7 +427,7 @@ test_that("BBTm.ties produces an error when n.iter < burn.in", {
       burn.in = 3,
       n.iter = 2
     ),
-    "Your burn in period is greater than the total number of iterations"
+    "Your burn in period is greater than the total number of iterations. Please choose a shorter burn-in period or a larger number of total iterations."
   )
 })
 
