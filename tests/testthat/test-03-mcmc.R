@@ -67,16 +67,16 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
   prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
   # Fit model
-  rlang::local_options(lifecycle_verbosity = "warning")
-  expect_snapshot(
+  expect_warning(
     forcedMarriageModel <- speedyBBTm(
       outcome = rep(1, length(forcedMarriage$comparisons$win)),
-      player1 = forcedMarriage$comparisons$win,
+      item1 = forcedMarriage$comparisons$win,
       player2 = forcedMarriage$comparisons$lost,
       player.prior.var = prior.var,
       n.iter = 2,
       burn.in = 0
-    )
+    ),
+    regexp = "The `player2` argument of `speedyBBTm\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
   )
 
   expect_s3_class(forcedMarriageModel, "mcmc")
@@ -130,21 +130,57 @@ test_that("BBTm produces results within tolerance when advantage = TRUE and hype
   )
 })
 
-test_that("BBTm produces a warning but still runs when a deprecated argument is used", {
+test_that("BBTm produces a warning but still runs when the player1 deprecated argument is used", {
   set.seed(905)
   expA <- expm::expm(forcedMarriage$adjacencyMatrix)
   prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
 
-  rlang::local_options(lifecycle_verbosity = "warning")
-  expect_snapshot(
+  expect_warning(
     # Fit model
     forcedMarriageModel <- BBTm(
       outcome = rep(1, length(forcedMarriage$comparisons$win)),
       player1 = forcedMarriage$comparisons$win,
+      item2 = forcedMarriage$comparisons$lost,
+      item.prior.var = prior.var,
+      n.iter = 1000
+    ),
+    regexp = "The `player1` argument of `BBTm\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
+  )
+})
+
+test_that("BBTm produces a warning but still runs when the player2 deprecated argument is used", {
+  set.seed(905)
+  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+
+  expect_warning(
+    # Fit model
+    forcedMarriageModel <- BBTm(
+      outcome = rep(1, length(forcedMarriage$comparisons$win)),
+      item1 = forcedMarriage$comparisons$win,
       player2 = forcedMarriage$comparisons$lost,
+      item.prior.var = prior.var,
+      n.iter = 1000
+    ),
+    regexp = "The `player2` argument of `BBTm\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
+  )
+})
+
+test_that("BBTm produces a warning but still runs when the player.prior.var deprecated argument is used", {
+  set.seed(905)
+  expA <- expm::expm(forcedMarriage$adjacencyMatrix)
+  prior.var <- diag(diag(expA)^-0.5) %*% expA %*% diag(diag(expA)^-0.5)
+
+  expect_warning(
+    # Fit model
+    forcedMarriageModel <- BBTm(
+      outcome = rep(1, length(forcedMarriage$comparisons$win)),
+      item1 = forcedMarriage$comparisons$win,
+      item2 = forcedMarriage$comparisons$lost,
       player.prior.var = prior.var,
       n.iter = 1000
-    )
+    ),
+    regexp = "The `player.prior.var` argument of `BBTm\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
   )
 })
 
@@ -231,20 +267,37 @@ test_that("BBTm produces results within tolerance when hyperparameter = FALSE an
   )
 })
 
-test_that("BBTM.with.formula produces a warning but still runs when you use deprecated arguments", {
+test_that("BBTM.with.formula produces a warning but still runs when you use deprecated argument player1", {
   # Construct covariance matrix
   # Fit model
-  rlang::local_options(lifecycle_verbosity = "warning")
-  expect_snapshot(
+  expect_warning(
     wimbledonModel <- BBTm.with.formula(
       outcome = wimbledon$matches$outcome,
       player1 = wimbledon$matches$winner,
+      item2 = wimbledon$matches$loser,
+      formula = ~ rank + points,
+      data = wimbledon$players,
+      n.iter = 4000,
+      hyperparameter = FALSE
+    ),
+    regexp = "The `player1` argument of `BBTm\\.with\\.formula\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
+  )
+})
+
+test_that("BBTM.with.formula produces a warning but still runs when you use deprecated argument player2", {
+  # Construct covariance matrix
+  # Fit model
+  expect_warning(
+    wimbledonModel <- BBTm.with.formula(
+      outcome = wimbledon$matches$outcome,
+      item1 = wimbledon$matches$winner,
       player2 = wimbledon$matches$loser,
       formula = ~ rank + points,
       data = wimbledon$players,
       n.iter = 4000,
       hyperparameter = FALSE
-    )
+    ),
+    regexp = "The `player2` argument of `BBTm\\.with\\.formula\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
   )
 })
 
@@ -431,7 +484,7 @@ test_that("BBTm.ties produces an error when n.iter < burn.in", {
   )
 })
 
-test_that("BBTm.ties produces a warning but still runs when a deprecated argument is used", {
+test_that("BBTm.ties produces a warning but still runs when a deprecated argument player1 is used", {
   set.seed(123)
   prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
   prior.var <- diag(diag(prior.var)^-0.5) %*%
@@ -440,18 +493,42 @@ test_that("BBTm.ties produces a warning but still runs when a deprecated argumen
   n.objects <- nrow(darEsSalaam$adjacencyMatrix)
 
   # Fit model
-  rlang::local_options(lifecycle_verbosity = "warning")
-  expect_snapshot(
-    darTiedModel <- BBTm.ties(
+  expect_warning(
+    BBTm.ties(
       outcome = darEsSalaam$comparisons$outcome,
       player1 = darEsSalaam$comparisons$subward1,
-      player2 = darEsSalaam$comparisons$subward2,
-      player.prior.var = prior.var,
+      item2 = darEsSalaam$comparisons$subward2,
+      item.prior.var = prior.var,
       hyperparameter = TRUE,
       rw.sd = 0.005,
       burn.in = 0,
       n.iter = 2
-    )
+    ),
+    regexp = "The `player1` argument of `BBTm\\.ties\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
+  )
+})
+
+test_that("BBTM.ties produces a warning but still runs when you use deprecated argument player2", {
+  # Construct covariance matrix
+  set.seed(123)
+  prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+  prior.var <- diag(diag(prior.var)^-0.5) %*%
+    prior.var %*%
+    diag(diag(prior.var)^-0.5)
+  n.objects <- nrow(darEsSalaam$adjacencyMatrix)
+  # Fit model
+  expect_warning(
+    darTiedModel <- BBTm.ties(
+      outcome = darEsSalaam$comparisons$outcome,
+      item1 = darEsSalaam$comparisons$subward1,
+      player2 = darEsSalaam$comparisons$subward2,
+      item.prior.var = prior.var,
+      hyperparameter = TRUE,
+      rw.sd = 0.005,
+      burn.in = 0,
+      n.iter = 2
+    ),
+    regexp = "The `player2` argument of `BBTm\\.ties\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
   )
 })
 
