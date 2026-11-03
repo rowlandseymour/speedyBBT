@@ -50,10 +50,10 @@ of the quality parameter estimates.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_qualities</span><span class="op">(</span></span>
 <span>  <span class="va">model_output</span>,</span>
-<span>  <span class="va">player_names</span>,</span>
+<span>  <span class="va">item_names</span>,</span>
 <span>  flip <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  main <span class="op">=</span> <span class="st">"Posterior Mean and 95% Credible \n Interval of Player Quality"</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"Player"</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"Posterior Mean and 95% Credible \n Interval of Item Quality"</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"Item"</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="st">"Posterior Mean Quality"</span>,</span>
 <span>  quality_label <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -68,7 +68,7 @@ of the quality parameter estimates.</p>
 <dd><p>The <a href="https://rdrr.io/pkg/coda/man/mcmc.html" class="external-link">"mcmc"</a> model output object containing the draws.</p></dd>
 
 
-<dt id="arg-player-names">player_names<a class="anchor" aria-label="anchor" href="#arg-player-names"></a></dt>
+<dt id="arg-item-names">item_names<a class="anchor" aria-label="anchor" href="#arg-item-names"></a></dt>
 <dd><p>A character vector containing the names of the items (e.g., players or wards).</p></dd>
 
 
@@ -105,15 +105,15 @@ defaults to FALSE.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">wimbledonModel</span> <span class="op">&lt;-</span> <span class="fu"><a href="BBTm.html">BBTm</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  outcome <span class="op">=</span> <span class="va">wimbledon</span><span class="op">$</span><span class="va">matches</span><span class="op">$</span><span class="va">outcome</span>,</span></span>
-<span class="r-in"><span>  player2 <span class="op">=</span> <span class="va">wimbledon</span><span class="op">$</span><span class="va">matches</span><span class="op">$</span><span class="va">loser</span>,</span></span>
-<span class="r-in"><span>  player1 <span class="op">=</span> <span class="va">wimbledon</span><span class="op">$</span><span class="va">matches</span><span class="op">$</span><span class="va">winner</span>,</span></span>
+<span class="r-in"><span>  item2 <span class="op">=</span> <span class="va">wimbledon</span><span class="op">$</span><span class="va">matches</span><span class="op">$</span><span class="va">loser</span>,</span></span>
+<span class="r-in"><span>  item1 <span class="op">=</span> <span class="va">wimbledon</span><span class="op">$</span><span class="va">matches</span><span class="op">$</span><span class="va">winner</span>,</span></span>
 <span class="r-in"><span>  advantage <span class="op">=</span> <span class="va">wimbledon</span><span class="op">$</span><span class="va">matches</span><span class="op">$</span><span class="va">secondWeek</span>,</span></span>
 <span class="r-in"><span>  formula <span class="op">=</span> <span class="op">~</span> <span class="va">rank</span> <span class="op">+</span> <span class="va">points</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">wimbledon</span><span class="op">$</span><span class="va">players</span>,</span></span>
 <span class="r-in"><span>  n.iter <span class="op">=</span> <span class="fl">200</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">plot_qualities</span><span class="op">(</span>model_output <span class="op">=</span> <span class="va">wimbledonModel</span>, player_names <span class="op">=</span> <span class="va">players</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_qualities</span><span class="op">(</span>model_output <span class="op">=</span> <span class="va">wimbledonModel</span>, item_names <span class="op">=</span> <span class="va">players</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_qualities-1.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          item         mean       lowerCI      upperCI</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lambda[5]             Stebe C -4.473643917 -7.5310786708 -1.527189084</span>

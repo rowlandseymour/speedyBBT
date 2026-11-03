@@ -2,7 +2,7 @@
 
 This function uses MCMC to sample from the posterior distribution of the
 Bradley–Terry model with ties.A multivariate normal prior distribution
-on the player quality parameters can be specified. An exponential prior
+on the item quality parameters can be specified. An exponential prior
 distribution is placed on the tie parameter theta, and a Metropolis-
 Hasting random walk algorithm is used to update this parameter.
 
@@ -10,11 +10,14 @@ Hasting random walk algorithm is used to update this parameter.
 
 ``` r
 BBTm.ties(
-  n.objects,
+  n.objects = deprecated(),
   outcome,
-  player1,
-  player2,
-  player.prior.var = NULL,
+  player1 = deprecated(),
+  player2 = deprecated(),
+  player.prior.var = deprecated(),
+  item1 = NULL,
+  item2 = NULL,
+  item.prior.var = NULL,
   theta.initial = NULL,
   lambda.initial = NULL,
   n.iter = 1000,
@@ -33,25 +36,41 @@ BBTm.ties(
 
 - n.objects:
 
-  The number of objects in the study.
+  **\[deprecated\]** `n.objects` argument is no longer supported, the
+  number of items is calculated automatically
 
 - outcome:
 
-  Vector of outcomes. 0 if player 1 is the winner, 1 if player 2 is the
+  Vector of outcomes. 0 if item 1 is the winner, 1 if item 2 is the
   winner, and 2 if it is a tie.
 
 - player1:
 
-  Vector of first players.
+  **\[deprecated\]** `player1` argument is no longer supported, please
+  use `item1` instead
 
 - player2:
 
-  Vector of second players.
+  **\[deprecated\]** `player2` argument is no longer supported, please
+  use `item2` instead
 
 - player.prior.var:
 
-  (optional) Matrix specifying the prior covariance of the player
-  correlation parameters.
+  **\[deprecated\]** `player.prior.var` argument is no longer supported,
+  please use `item.prior.var` instead
+
+- item1:
+
+  Vector of first items.
+
+- item2:
+
+  Vector of second items.
+
+- item.prior.var:
+
+  (optional) A matrix specifying the prior covariance of the items with
+  one another.
 
 - theta.initial:
 
@@ -60,8 +79,8 @@ BBTm.ties(
 
 - lambda.initial:
 
-  (optional) Vector containing the values of the player parameters for
-  the first MCMC iteration.
+  (optional) Vector containing the values of the item parameters for the
+  first MCMC iteration.
 
 - n.iter:
 
@@ -118,7 +137,7 @@ samples from the posterior distribution
 
 ## Details
 
-If `player.prior.var` is omitted, independent and identical N(0, 5^2)
+If `item.prior.var` is omitted, independent and identical N(0, 5^2)
 prior distributions are placed on each object quality parameter.
 
 If `lambda.initial` is omitted, it is set to a vector of zeroes.
@@ -139,11 +158,10 @@ prior.var <- diag(diag(prior.var)^-0.5) %*% prior.var %*% diag(diag(prior.var)^-
 # Using `n.iter = 3` here to reduce model runtime, you will need
 # a larger number of iterations for valid inference.
 darTiedModel <- BBTm.ties(
-  n.objects = nrow(darEsSalaam$adjacencyMatrix),
   outcome = darEsSalaam$comparisons$outcome,
-  player1 = darEsSalaam$comparisons$subward1,
-  player2 = darEsSalaam$comparisons$subward2,
-  player.prior.var = prior.var,
+  item1 = darEsSalaam$comparisons$subward1,
+  item2 = darEsSalaam$comparisons$subward2,
+  item.prior.var = prior.var,
   hyperparameter = TRUE,
   rw.sd = 0.005, n.iter = 3, burn.in = 0, verbose = FALSE
 )

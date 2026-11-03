@@ -8,10 +8,10 @@ quality parameter estimates.
 ``` r
 plot_qualities(
   model_output,
-  player_names,
+  item_names,
   flip = FALSE,
-  main = "Posterior Mean and 95% Credible \n Interval of Player Quality",
-  xlab = "Player",
+  main = "Posterior Mean and 95% Credible \n Interval of Item Quality",
+  xlab = "Item",
   ylab = "Posterior Mean Quality",
   quality_label = NULL,
   ...
@@ -25,7 +25,7 @@ plot_qualities(
   The ["mcmc"](https://rdrr.io/pkg/coda/man/mcmc.html) model output
   object containing the draws.
 
-- player_names:
+- item_names:
 
   A character vector containing the names of the items (e.g., players or
   wards).
@@ -64,15 +64,15 @@ players <- wimbledon$players$name
 
 wimbledonModel <- BBTm(
   outcome = wimbledon$matches$outcome,
-  player2 = wimbledon$matches$loser,
-  player1 = wimbledon$matches$winner,
+  item2 = wimbledon$matches$loser,
+  item1 = wimbledon$matches$winner,
   advantage = wimbledon$matches$secondWeek,
   formula = ~ rank + points,
   data = wimbledon$players,
   n.iter = 200
 )
 
-plot_qualities(model_output = wimbledonModel, player_names = players)
+plot_qualities(model_output = wimbledonModel, item_names = players)
 
 #>                          item         mean       lowerCI      upperCI
 #> lambda[5]             Stebe C -4.473643917 -7.5310786708 -1.527189084

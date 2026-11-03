@@ -75,8 +75,8 @@
 <p><code>speedyBBT</code> is a package for Bayesian Bradley-Terry
 modelling. It provides functions for fitting the Bradley-Terry model
 using Markov Chain Monte Carlo (MCMC) methods, allowing for inference on
-player abilities and hyperparameters. It uses latent Pólya-Gamma
-variables to facilitate efficient sampling.</p>
+item qualities and hyperparameters. It uses latent Pólya-Gamma variables
+to facilitate efficient sampling.</p>
 <p>To fit a Bradley-Terry model using <code>speedyBBT</code>, you can
 first install the package from CRAN or install the development version
 from GitHub.</p>
@@ -139,9 +139,9 @@ vignette, you will need to use the same argument to
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">432</span><span class="op">)</span></span>
 <span><span class="va">forcedMarriageModel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/speedyBBTm.html">speedyBBTm</a></span><span class="op">(</span></span>
 <span>  outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">win</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  player1 <span class="op">=</span> <span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">win</span>,</span>
-<span>  player2 <span class="op">=</span> <span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">lost</span>,</span>
-<span>  player.prior.var <span class="op">=</span> <span class="va">prior.var</span>,</span>
+<span>  item1 <span class="op">=</span> <span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">win</span>,</span>
+<span>  item2 <span class="op">=</span> <span class="va">forcedMarriage</span><span class="op">$</span><span class="va">comparisons</span><span class="op">$</span><span class="va">lost</span>,</span>
+<span>  item.prior.var <span class="op">=</span> <span class="va">prior.var</span>,</span>
 <span>  n.iter <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  burn.in <span class="op">=</span> <span class="fl">100</span></span>
 <span><span class="op">)</span></span></code></pre></div>

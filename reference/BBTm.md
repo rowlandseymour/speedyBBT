@@ -1,22 +1,25 @@
 # Generalised Bradley-Terry model
 
-This function fits the Bradley-Terry model with comparison and player
+This function fits the Bradley-Terry model with comparison and item
 specific effects. Each comparison can be assigned a real value to allow
 for a specific effect for the comparison, such as bias, ordering or
-home/away effect. The value of this effect is denoted kappa. The player
+home/away effect. The value of this effect is denoted kappa. The item
 specific effects are described through a formula and data.frame
 containing the value. The function places a normal prior distribution on
-both kappa and the player specific parameters beta.
+both kappa and the item specific parameters beta.
 
 ## Usage
 
 ``` r
 BBTm(
   outcome,
-  player1,
-  player2,
+  item1,
+  item2,
   lambda.initial = NULL,
-  player.prior.var = NULL,
+  item.prior.var = NULL,
+  player1 = deprecated(),
+  player2 = deprecated(),
+  player.prior.var = deprecated(),
   beta.initial = NULL,
   n.iter = 1000,
   formula = NULL,
@@ -37,30 +40,45 @@ BBTm(
 
 - outcome:
 
-  Vector of outcomes. 1 if player2 is the winner, 0 if player1 is the
+  Vector of outcomes. 1 if item2 is the winner, 0 if item1 is the
   winner.
 
-- player1:
+- item1:
 
-  Vector of first players.
+  Vector of first items.
 
-- player2:
+- item2:
 
-  Vector of second players.
+  Vector of second items.
 
 - lambda.initial:
 
-  (optional) Vector containing the values of the player parameters for
-  the first MCMC iteration.
+  (optional) Vector containing the values of the item parameters for the
+  first MCMC iteration.
+
+- item.prior.var:
+
+  (optional) A matrix specifying the prior covariance of the items with
+  one another.
+
+- player1:
+
+  **\[deprecated\]** `player1` argument is no longer supported, please
+  use `item1` instead
+
+- player2:
+
+  **\[deprecated\]** `player2` argument is no longer supported, please
+  use `item2` instead
 
 - player.prior.var:
 
-  (optional) Matrix specifying the prior covariance of the player
-  correlation parameters.
+  **\[deprecated\]** `player.prior.var` argument is no longer supported,
+  please use `item.prior.var` instead
 
 - beta.initial:
 
-  (optional) Vector containing the values of the player specific
+  (optional) Vector containing the values of the item specific
   parameters for the first MCMC iteration.
 
 - n.iter:
@@ -73,7 +91,7 @@ BBTm(
 
 - data:
 
-  Data frame with a row corresponding to each player and a column
+  Data frame with a row corresponding to each item and a column
   corresponding to each covariate.
 
 - advantage:
@@ -129,7 +147,7 @@ samples from the posterior distribution.
 
 ## Details
 
-If `player.prior.var` is omitted, independent and identical N(0, 5^2)
+If `item.prior.var` is omitted, independent and identical N(0, 5^2)
 prior distributions are placed on each object quality parameter.
 
 If `beta.initial`is omitted, it is set to a vector of zeroes.
@@ -144,13 +162,13 @@ omitted it is set to 0.5.
 #####################
 ## Wimbledon 2019 ##
 ####################
-# Fit model where the quality of each player depends on their rank
+# Fit model where the quality of each item depends on their rank
 # and the number of points they had immediately before the tournament.
 # Allow an effect for a match being in the first or second week.
 wimbledonModel <- BBTm(
   outcome = wimbledon$matches$outcome,
-  player2 = wimbledon$matches$loser,
-  player1 = wimbledon$matches$winner,
+  item2 = wimbledon$matches$loser,
+  item1 = wimbledon$matches$winner,
   advantage = wimbledon$matches$secondWeek,
   formula = ~ rank + points,
   data = wimbledon$players,

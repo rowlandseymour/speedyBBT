@@ -2,9 +2,9 @@
 
 This function uses MCMC to sample from the posterior distribution of the
 standard Bradley–Terry model. Standard model means that there are no
-tied comparisons and no player or comparison specific variables. This
+tied comparisons and no item or comparison specific variables. This
 provides a fast implementation of the standard model. A multivariate
-normal prior distribution on the player quality parameters can be
+normal prior distribution on the item quality parameters can be
 specified.
 
 ## Usage
@@ -12,10 +12,13 @@ specified.
 ``` r
 speedyBBTm(
   outcome = NULL,
-  player1 = NULL,
-  player2 = NULL,
+  player1 = deprecated(),
+  player2 = deprecated(),
+  item1 = NULL,
+  item2 = NULL,
   win.matrix = NULL,
-  player.prior.var = NULL,
+  item.prior.var = NULL,
+  player.prior.var = deprecated(),
   lambda.initial = NULL,
   n.iter = 1000,
   hyperparameter = TRUE,
@@ -31,30 +34,45 @@ speedyBBTm(
 
 - outcome:
 
-  Vector of outcomes. 1 if player 2 is the winner, 0 if player 1 is the
+  Vector of outcomes. 1 if item 2 is the winner, 0 if item 1 is the
   winner.
 
 - player1:
 
-  Vector of first players.
+  **\[deprecated\]** `player1` argument is no longer supported, please
+  use `item1` instead
 
 - player2:
 
-  Vector of second players.
+  **\[deprecated\]** `player2` argument is no longer supported, please
+  use `item2` instead
+
+- item1:
+
+  Vector of first items.
+
+- item2:
+
+  Vector of second items.
 
 - win.matrix:
 
   (optional) A win-loss matrix where the i,j th element is the number of
   times object i beat object j.
 
+- item.prior.var:
+
+  (optional) A matrix specifying the prior covariance of the items with
+  one another.
+
 - player.prior.var:
 
-  (optional) A matrix specifying the prior covariance of the player
-  correlation parameters.
+  **\[deprecated\]** `player.prior.var` argument is no longer supported,
+  please use item.prior.var instead
 
 - lambda.initial:
 
-  (optional) A vector containing the values of the player correlation
+  (optional) A vector containing the values of the item correlation
   parameters for the first MCMC iteration.
 
 - n.iter:
@@ -102,7 +120,7 @@ samples from the posterior distribution.
 
 ## Details
 
-If `player.prior.var` is omitted, independent and identical N(0, 1^2)
+If `item.prior.var` is omitted, independent and identical N(0, 1^2)
 prior distributions are placed on each object quality parameter.
 
 If `lambda.initial` is ommitted, it is set to a vector of zeroes.
@@ -123,9 +141,9 @@ prior.var <- diag(diag(prior.var)^-0.5) %*% prior.var %*% diag(diag(prior.var)^-
 # iterations for inference.
 forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
-  player1 = forcedMarriage$comparisons$win,
-  player2 = forcedMarriage$comparisons$lost,
-  player.prior.var = prior.var, n.iter = 3, burn.in = 0
+  item1 = forcedMarriage$comparisons$win,
+  item2 = forcedMarriage$comparisons$lost,
+  item.prior.var = prior.var, n.iter = 3, burn.in = 0
 )
 
 # Plot results

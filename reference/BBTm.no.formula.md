@@ -12,9 +12,9 @@ parameters \\\lambda\\.
 ``` r
 BBTm.no.formula(
   outcome,
-  player1,
-  player2,
-  player.prior.var,
+  item1,
+  item2,
+  item.prior.var,
   lambda.initial,
   advantage = NULL,
   kappa.initial = NULL,
@@ -33,26 +33,26 @@ BBTm.no.formula(
 
 - outcome:
 
-  Vector of outcomes. 1 if player2 is the winner, 0 if player1 is the
+  Vector of outcomes. 1 if item2 is the winner, 0 if item1 is the
   winner.
 
-- player1:
+- item1:
 
-  Vector of first players.
+  Vector of first items.
 
-- player2:
+- item2:
 
-  Vector of second players.
+  Vector of second items.
 
-- player.prior.var:
+- item.prior.var:
 
-  (optional) Matrix specifying the prior covariance of the player
-  correlation parameters.
+  (optional) A matrix specifying the prior covariance of the items with
+  one another.
 
 - lambda.initial:
 
-  (optional) Vector containing the values of the player parameters for
-  the first MCMC iteration.
+  (optional) Vector containing the values of the item parameters for the
+  first MCMC iteration.
 
 - advantage:
 
@@ -111,8 +111,8 @@ samples from the posterior distribution
 
 ## Details
 
-If `player.prior.var` is omitted, independent and identical N(0, 5^2)
-prior distributions are placed on each object quality parameter.
+If `item.prior.var` is omitted, independent and identical N(0, 5^2)
+prior distributions are placed on each item quality parameter.
 
 If `lambda.initial` is omitted, it is set to a vector of zeroes.
 

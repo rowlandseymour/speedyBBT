@@ -8,8 +8,8 @@ library(coda)
 
 `speedyBBT` is a package for Bayesian Bradley-Terry modelling. It
 provides functions for fitting the Bradley-Terry model using Markov
-Chain Monte Carlo (MCMC) methods, allowing for inference on player
-abilities and hyperparameters. It uses latent Pólya-Gamma variables to
+Chain Monte Carlo (MCMC) methods, allowing for inference on item
+qualities and hyperparameters. It uses latent Pólya-Gamma variables to
 facilitate efficient sampling.
 
 To fit a Bradley-Terry model using `speedyBBT`, you can first install
@@ -90,9 +90,9 @@ the one provided here.
 set.seed(432)
 forcedMarriageModel <- speedyBBTm(
   outcome = rep(1, length(forcedMarriage$comparisons$win)),
-  player1 = forcedMarriage$comparisons$win,
-  player2 = forcedMarriage$comparisons$lost,
-  player.prior.var = prior.var,
+  item1 = forcedMarriage$comparisons$win,
+  item2 = forcedMarriage$comparisons$lost,
+  item.prior.var = prior.var,
   n.iter = 1000,
   burn.in = 100
 )
