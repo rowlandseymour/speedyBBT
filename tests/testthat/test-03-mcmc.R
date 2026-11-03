@@ -301,40 +301,6 @@ test_that("BBTM.with.formula produces a warning but still runs when you use depr
   )
 })
 
-test_that("BBTM.with.formula produces a warning but still runs when you use deprecated argument player1", {
-  # Construct covariance matrix
-  # Fit model
-  expect_warning(
-    wimbledonModel <- BBTm.with.formula(
-      outcome = wimbledon$matches$outcome,
-      player1 = wimbledon$matches$winner,
-      item2 = wimbledon$matches$loser,
-      formula = ~ rank + points,
-      data = wimbledon$players,
-      n.iter = 4000,
-      hyperparameter = FALSE
-    ),
-    regexp = "The `player1` argument of `BBTm\\.with\\.formula\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
-  )
-})
-
-test_that("BBTM.with.formula produces a warning but still runs when you use deprecated argument player2", {
-  # Construct covariance matrix
-  # Fit model
-  expect_warning(
-    wimbledonModel <- BBTm.with.formula(
-      outcome = wimbledon$matches$outcome,
-      item1 = wimbledon$matches$winner,
-      player2 = wimbledon$matches$loser,
-      formula = ~ rank + points,
-      data = wimbledon$players,
-      n.iter = 4000,
-      hyperparameter = FALSE
-    ),
-    regexp = "The `player2` argument of `BBTm\\.with\\.formula\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
-  )
-})
-
 test_that("BBTm.no.formula produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
