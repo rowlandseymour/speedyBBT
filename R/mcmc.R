@@ -250,14 +250,14 @@ speedyBBTm <- function(
 #' prior distribution is placed on the tie parameter theta, and a Metropolis-
 #' Hasting random walk algorithm is used to update this parameter.
 #'
-#' @param n.objects The number of objects in the study.
+#' @param n.objects `r lifecycle::badge("deprecated")` `n.objects` argument is no longer supported, the number of items is calculated automatically
 #' @param outcome Vector of outcomes. 0 if item 1 is the winner,
 #'  1 if item 2 is the winner, and 2 if it is a tie.
-#' @param player1  `r lifecycle::badge("deprecated")` player1 argument is no longer supported, please use item1
-#' @param player2 `r lifecycle::badge("deprecated")` player2 argument is no longer supported, please use item2 instead
+#' @param player1  `r lifecycle::badge("deprecated")` `player1` argument is no longer supported, please use `item1` instead
+#' @param player2 `r lifecycle::badge("deprecated")` `player2` argument is no longer supported, please use `item2` instead
 #' @param item1 Vector of first items.
 #' @param item2 Vector of second items.
-#' @param player.prior.var `r lifecycle::badge("deprecated")` player.prior.var argument is no longer supported, please use item.prior.var instead
+#' @param player.prior.var `r lifecycle::badge("deprecated")` `player.prior.var` argument is no longer supported, please use `item.prior.var` instead
 #' @param item.prior.var (optional) A matrix specifying the prior covariance of the items with one another.
 #' @param theta.initial (optional) Value of the tied parameter there for
 #' the first MCMC iteration.
