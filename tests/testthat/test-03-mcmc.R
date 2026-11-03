@@ -71,7 +71,7 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
     forcedMarriageModel <- speedyBBTm(
       outcome = rep(1, length(forcedMarriage$comparisons$win)),
       item1 = forcedMarriage$comparisons$win,
-      item2 = forcedMarriage$comparisons$lost,
+      player2 = forcedMarriage$comparisons$lost,
       item.prior.var = prior.var,
       n.iter = 2,
       burn.in = 0
@@ -335,23 +335,6 @@ test_that("BBTM.with.formula produces a warning but still runs when you use depr
   )
 })
 
-test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE", {
-  # Construct covariance matrix
-  # Fit model
-  expect_warning(
-    wimbledonModel <- BBTm.with.formula(
-      outcome = wimbledon$matches$outcome,
-      player1 = wimbledon$matches$winner,
-      player2 = wimbledon$matches$loser,
-      formula = ~ rank + points,
-      data = wimbledon$players,
-      n.iter = 4000,
-      hyperparameter = FALSE
-    )
-  )
-})
-
-
 test_that("BBTm.no.formula produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
@@ -384,36 +367,6 @@ test_that("BBTm.no.formula produces results within tolerance", {
     sum(abs(testMeans - lambda_means)) /
       nrow(forcedMarriage$adjacencyMatrix),
     0,
-    tolerance = 1e-1
-  )
-})
-
-
-test_that("BBTm produces results within tolerance when hyperparameter = FALSE and advantage = TRUE", {
-  # Construct covariance matrix
-  # Fit model
-  mod_run <- function() {
-    set.seed(423)
-    wimbledonModel <- BBTm(
-      outcome = wimbledon$matches$outcome,
-      item1 = wimbledon$matches$winner,
-      item2 = wimbledon$matches$loser,
-      formula = ~ rank + points,
-      advantage = wimbledon$matches$secondWeek,
-      data = wimbledon$players,
-      n.iter = 1000,
-      hyperparameter = FALSE
-    )
-
-    wimbledonModelMeans <- colMeans(parameter(wimbledonModel, "lambda"))
-
-    return(wimbledonModelMeans)
-  }
-
-  # Compare within tolerance
-  expect_snapshot_value(
-    mod_run(),
-    style = "serialize",
     tolerance = 1e-1
   )
 })

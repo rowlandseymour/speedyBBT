@@ -214,7 +214,6 @@ speedyBBTm <- function(
     pars.matrix <- cbind(lambda.matrix, alpha.sq.vector)
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
-      on.exit(close(pb), add = TRUE)
     }
   }
   iters_to_save <- seq(burn.in + 1, n.iter, by = n.thin)
@@ -517,7 +516,6 @@ BBTm.ties <- function(
     lambda.matrix[i, ] <- as.numeric(lambda)
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
-      on.exit(close(pb), add = TRUE)
     }
   }
   pars.matrix <- cbind(lambda.matrix, theta.store, alpha.sq.store)
@@ -736,7 +734,6 @@ BBTm.no.formula <- function(
 
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
-      on.exit(close(pb), add = TRUE)
     }
   }
   if (hyperparameter == TRUE & advantage.inf == TRUE) {
@@ -1012,7 +1009,6 @@ BBTm.with.formula <- function(
     alpha.sq.vector[i] <- alpha.sq
     if (verbose) {
       utils::setTxtProgressBar(pb, i) # update text progress bar after each iter
-      on.exit(close(pb), add = TRUE)
     }
   }
 
