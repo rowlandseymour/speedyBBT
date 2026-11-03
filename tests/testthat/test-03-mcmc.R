@@ -301,7 +301,6 @@ test_that("BBTM.with.formula produces a warning but still runs when you use depr
   )
 })
 
-
 test_that("BBTm.no.formula produces results within tolerance", {
   # Construct covariance matrix
   # Fit model
@@ -529,6 +528,30 @@ test_that("BBTM.ties produces a warning but still runs when you use deprecated a
       n.iter = 2
     ),
     regexp = "The `player2` argument of `BBTm\\.ties\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
+  )
+})
+
+test_that("BBTM.ties produces a warning but still runs when you use deprecated argument player.prior.var", {
+  # Construct covariance matrix
+  set.seed(123)
+  prior.var <- expm::expm(darEsSalaam$adjacencyMatrix)
+  prior.var <- diag(diag(prior.var)^-0.5) %*%
+    prior.var %*%
+    diag(diag(prior.var)^-0.5)
+  n.objects <- nrow(darEsSalaam$adjacencyMatrix)
+  # Fit model
+  expect_warning(
+    darTiedModel <- BBTm.ties(
+      outcome = darEsSalaam$comparisons$outcome,
+      item1 = darEsSalaam$comparisons$subward1,
+      item2 = darEsSalaam$comparisons$subward2,
+      player.prior.var = prior.var,
+      hyperparameter = TRUE,
+      rw.sd = 0.005,
+      burn.in = 0,
+      n.iter = 2
+    ),
+    regexp = "The `player\\.prior\\.var` argument of `BBTm\\.ties\\(\\)` is deprecated as of speedyBBT 2\\.0\\.0\\."
   )
 })
 
