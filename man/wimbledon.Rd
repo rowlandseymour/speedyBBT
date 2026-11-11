@@ -27,7 +27,7 @@ describing the players.
 }
 }
 \source{
-\url{http://tennis-data.co.uk/alldata.php}
+\url{https://tennis-data.co.uk/data.php}
 }
 \usage{
 wimbledon

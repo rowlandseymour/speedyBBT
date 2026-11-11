@@ -77,7 +77,7 @@
 #' }
 #' @keywords datasets
 #'
-#' @source \url{http://tennis-data.co.uk/alldata.php}
+#' @source \url{https://tennis-data.co.uk/data.php}
 #'
 "wimbledon"
 

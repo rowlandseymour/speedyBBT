@@ -13,7 +13,7 @@ A suite of functions that allow a full, fast, and efficient Bayesian treatment o
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://www.rowlandseymour.com/speedyBBT}
+  \item \url{https://www.rowlandseymour.com/speedyBBT/}
   \item \url{https://github.com/rowlandseymour/speedyBBT}
   \item Report bugs at \url{https://github.com/rowlandseymour/speedyBBT/issues}
 }
