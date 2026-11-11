@@ -86,14 +86,14 @@ The posterior mean for the effect of a match being in the second week is around 
 ```{r}
 djokovic <- which(wimbledon$players == "Djokovic N")
 nadal <- which(wimbledon$players == "Nadal R")
-mean((parameter(wimbledonModel, "lambda", djokovic))> mean(parameter(wimbledonModel,"lambda", nadal))
+mean(parameter(wimbledonModel, "lambda", djokovic))> mean(parameter(wimbledonModel,"lambda", nadal))
 ```
 
 You can run some MCMC diagnostics to check convergence. The `BBTm()` function returns an ["mcmc"](https://cran.r-project.org/package=coda) object that can be used with the `coda` package for diagnostics. You can use the `effectiveSize()` function to calculate the estimated effective sample size for convergence. Another example diagnostic illustrated here is the Geweke diagnostic, calculated using the `geweke.diag()` function from `coda`. For more information about available plots and diagnostics, you can refer to the [**coda** package documentation](https://cran.r-project.org/package=coda).
 
 ```{r some_diags}
-effectiveSize(wimbledonModel[, grep("beta", varnames(wimbledonModel))])
-geweke.diag(wimbledonModel[, grep("beta", varnames(wimbledonModel))])
+effectiveSize(parameter(wimbledonModel, "beta"))
+geweke.diag(parameter(wimbledonModel, "beta"))
 ``` 
 
 You can also investigate the model outputs visually using the `plot` function in `coda` or `bayesplot`. This example shows the estimated abilities of playes 10, 20, 30, and 40 from the `mcmc_dens()` function to create density plots of the MCMC samples. For more information, see the [**bayesplot** package documentation](https://mc-stan.org/bayesplot/). 
