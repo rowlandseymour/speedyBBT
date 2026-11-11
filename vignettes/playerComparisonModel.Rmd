@@ -76,9 +76,9 @@ wimbledonModel <- BBTm(
 
 You can get the posterior means for $\beta_1, \beta_2$ and $\kappa$ by using the following commands:
 ```{r wimbledon_results}
-wimbledonModelCovariateMeans <- colMeans(wimbledonModel[, grep("beta", varnames(wimbledonModel))])
+wimbledonModelCovariateMeans <- colMeans(parameter(wimbledonModel, "beta"))
 wimbledonModelCovariateMeans
-wimbledonModelComparisonMeans <- mean(wimbledonModel[, grep("kappa", varnames(wimbledonModel))])
+wimbledonModelComparisonMeans <- mean(parameter(wimbledonModel, "kappa"))
 wimbledonModelComparisonMeans
 ```
 The posterior mean for the effect of a match being in the second week is around 6. You can also use the MCMC samples to investigate functions of the posterior distirbution. For example, you can compute the probability Djokovic beat Nadal by running
