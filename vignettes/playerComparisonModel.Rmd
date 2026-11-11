@@ -69,7 +69,8 @@ wimbledonModel <- BBTm(
   formula = ~ rank + points,
   data = wimbledon$players,
   n.iter = 4000,
-  burn.in = 100
+  burn.in = 100,
+  verbose = FALSE
 )
 ```
 
