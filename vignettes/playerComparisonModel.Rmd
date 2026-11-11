@@ -36,7 +36,7 @@ $$
 \prod_{k=1}^K \pi_{ijk}^{y_{ijk}} (1 - \pi_{ijk})^{1 - y_{ijk}}.
 $$
 
-The prior distributions for this model are similar to the standard model. For the item covariates, we use a multivariate normal prior distribution. The relationship between the item covariates can be described through the covariance matrix $\Sigma$, which could be the identify matrix if prior covariance is not assumed. The diagonal of this matrix is set to $\alpha^2$, which can be learned, and has an inverse-Gamma prior distribution. The comparison specific effect $\kappa$, has a normal prior distirbution with variance $\tau^2$. The default value for $\tau$ is 5. The prior distributions are given by:
+The prior distributions for this model are similar to the standard model. For the item covariates, we use a multivariate normal prior distribution. The relationship between the item covariates can be described through the covariance matrix $\Sigma$, which could be the identify matrix if prior covariance is not assumed. The diagonal of this matrix is set to $\alpha^2$, which can be learned, and has an inverse-Gamma prior distribution. The comparison specific effect $\kappa$, has a normal prior distribution with variance $\tau^2$. The default value for $\tau$ is 5. The prior distributions are given by:
 
 \begin{align}
 \beta &\sim \text{MVN}(\mu, \alpha^2\Sigma) \\
