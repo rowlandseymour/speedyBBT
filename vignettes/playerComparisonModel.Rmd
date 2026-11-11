@@ -89,7 +89,7 @@ nadal <- which(wimbledon$players == "Nadal R")
 mean(wimbledonModel[, paste0("lambda[", djokovic, "]")] > wimbledonModel[, paste0("lambda[", nadal, "]")])
 ```
 
-You can run some MCMC diagnostics to check convergence. The `BBTm()` function returns an ["mcmc"](https://cran.r-project.org/package=coda) object that can be used with the `coda` package for diagnostics. You can use the `effectiveSize()` function to calculate the estimated effective sample size for convergence. Another example diagnostic illustrated here is the Geweke diagnostic, calculated using the `gewecke.diag()` function from `coda`. For more information about available plots and diagnostics, you can refer to the [**coda** package documentation](https://cran.r-project.org/package=coda).
+You can run some MCMC diagnostics to check convergence. The `BBTm()` function returns an ["mcmc"](https://cran.r-project.org/package=coda) object that can be used with the `coda` package for diagnostics. You can use the `effectiveSize()` function to calculate the estimated effective sample size for convergence. Another example diagnostic illustrated here is the Geweke diagnostic, calculated using the `geweke.diag()` function from `coda`. For more information about available plots and diagnostics, you can refer to the [**coda** package documentation](https://cran.r-project.org/package=coda).
 
 ```{r some_diags}
 effectiveSize(wimbledonModel[, grep("beta", varnames(wimbledonModel))])
