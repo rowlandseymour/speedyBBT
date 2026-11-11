@@ -72,7 +72,7 @@ test_that("speedyBBTm produces a warning but still runs when a deprecated argume
       outcome = rep(1, length(forcedMarriage$comparisons$win)),
       item1 = forcedMarriage$comparisons$win,
       player2 = forcedMarriage$comparisons$lost,
-      player.prior.var = prior.var,
+      item.prior.var = prior.var,
       n.iter = 2,
       burn.in = 0
     ),
@@ -318,7 +318,8 @@ test_that("BBTm.no.formula produces results within tolerance", {
     n.iter = 1000
   )
 
-  lambda_means <- colMeans(forcedMarriageModel[,
+  lambda_means <- colMeans(forcedMarriageModel[
+    ,
     grep(
       "lambda",
       varnames(forcedMarriageModel)
@@ -469,7 +470,6 @@ test_that("BBTm.ties produces an error when n.iter < burn.in", {
   n.objects <- nrow(darEsSalaam$adjacencyMatrix)
   expect_error(
     darTiedModel <- BBTm.ties(
-      n.objects = n.objects,
       outcome = darEsSalaam$comparisons$outcome,
       item1 = darEsSalaam$comparisons$subward1,
       item2 = darEsSalaam$comparisons$subward2,
