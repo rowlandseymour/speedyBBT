@@ -12,3 +12,5 @@ Rplots.ps
 docs
 .kilo/
 README.html
+speedyBBT.Rcheck
+*.tar.gz
