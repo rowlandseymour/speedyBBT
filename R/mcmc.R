@@ -301,7 +301,7 @@ speedyBBTm <- function(
 #'
 #'
 #' # Fit BT model with ties
-#' # Using `n.iter = 3` here to reduce model runtime, you will need
+#' # Using `n.iter = 2` here to reduce model runtime, you will need
 #' # a larger number of iterations for valid inference.
 #' darTiedModel <- BBTm.ties(
 #'   outcome = darEsSalaam$comparisons$outcome,
@@ -309,7 +309,7 @@ speedyBBTm <- function(
 #'   item2 = darEsSalaam$comparisons$subward2,
 #'   item.prior.var = prior.var,
 #'   hyperparameter = TRUE,
-#'   rw.sd = 0.005, n.iter = 3, burn.in = 0, verbose = FALSE
+#'   rw.sd = 0.005, n.iter = 2, burn.in = 0, verbose = FALSE
 #' )
 #'
 #' # Get posterior means

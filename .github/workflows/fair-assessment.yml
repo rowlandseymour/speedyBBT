@@ -1,15 +1,21 @@
 name: "Run RSFC"
 
 on:
+  # Allows manual trigger from the Actions tab
   workflow_dispatch:
 
-permissions:
-  contents: write
+# Write permissions are not needed for this workflow by default
+permissions: {}
 
 jobs:
   run-rsfc:
     name: "RSFC analysis"
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    # This job needs write access to commit the generated report
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
@@ -62,12 +68,6 @@ jobs:
             rsfc_output/rsfc_assessment.json \
             RSFC_REPORT.md
 
-      - name: Update README badge
-        run: |
-          python fairification-framework/fairification-scripts/update_badge.py \
-            rsfc_output/rsfc_assessment.json \
-            README.md
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -82,10 +82,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add RSFC_REPORT.md README.md
+          git add RSFC_REPORT.md
 
           if ! git diff --cached --quiet; then
-            git commit -m "Update RSFC report and badge"
+            git commit -m "Update RSFC report"
             git push
           else
             echo "No changes to commit"

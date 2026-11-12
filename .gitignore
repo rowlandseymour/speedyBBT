@@ -11,3 +11,6 @@ Rplots.ps
 *.Rds
 docs
 .kilo/
+README.html
+speedyBBT.Rcheck
+*.tar.gz

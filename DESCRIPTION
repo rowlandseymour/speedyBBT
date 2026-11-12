@@ -1,6 +1,6 @@
 Package: speedyBBT
 Title: Efficient Bayesian Inference for the Bradley--Terry Model
-Version: 1.0.0.9000
+Version: 2.0.0
 Authors@R: 
     c(person(given = "Rowland",
            family = "Seymour",
@@ -44,7 +44,7 @@ Suggests:
 Depends: 
     R (>= 2.10)
 Config/testthat/edition: 3
-URL: https://www.rowlandseymour.com/speedyBBT, https://github.com/rowlandseymour/speedyBBT
+URL: https://www.rowlandseymour.com/speedyBBT/, https://github.com/rowlandseymour/speedyBBT
 BugReports: https://github.com/rowlandseymour/speedyBBT/issues
 Config/roxygen2/version: 8.1.0
 VignetteBuilder: knitr
